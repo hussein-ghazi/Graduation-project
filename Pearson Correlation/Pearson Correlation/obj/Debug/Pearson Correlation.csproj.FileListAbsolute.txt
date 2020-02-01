@@ -1,0 +1,9 @@
+C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.exe.config
+C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.exe
+C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.pdb
+C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csprojAssemblyReference.cache
+C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson_Correlation.Form1.resources
+C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson_Correlation.Properties.Resources.resources
+C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csproj.GenerateResource.cache
+C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.exe
+C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.pdb
