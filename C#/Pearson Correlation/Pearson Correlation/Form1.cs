@@ -17,10 +17,17 @@ namespace Pearson_Correlation
             InitializeComponent();
         }
 
+        //Count of users and movies
         static int users = 944, movies = 1683;
+ 
+        //Users x Movies array
         int[,] ratings_array = new int[users, movies];
 
-        private void Form1_Load(object sender, EventArgs e)
+        //Users x Users array
+        double[,] users_correlation = new double[users, movies];
+
+
+        private void load_data_to_ratings_array()
         {
             string FilePath = "data.txt";
             string[] lines = System.IO.File.ReadAllLines(FilePath);
@@ -37,28 +44,29 @@ namespace Pearson_Correlation
             }
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void show_ratings_array()
         {
-
-        }
-
-        private void dataGridView1_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
-        {
-            e.Column.FillWeight = 38;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            double max = 0;
-            int iindex = 0, jindex = 0;
-
-
-            double[,] users_corlation = new double[users, movies];
+            dataGridView1.ColumnCount = users;
 
             for (int i = 0; i < users; i++)
+                dataGridView1.Columns[i].Name = "Movie " + i.ToString();
+
+            string[] arr = new string[movies];
+            for (int i = 0; i < users; i++)
+            {
+                for (int j = 0; j < movies; j++)
+                    arr[j] = ratings_array[i, j].ToString();
+                dataGridView1.Rows.Add(arr);
+            }
+        }
+
+
+        private void load_pearson_correlation()
+        {
+            for (int i = 0; i < users; i++)
                 for (int j = 0; j < users; j++)
-                    users_corlation[i, j] = 1.0;
-                
+                    users_correlation[i, j] = 1.0;
+
             double xbar, ybar;
             double sumx = 0, sumy = 0;
             double upersum = 0, lower;
@@ -77,8 +85,8 @@ namespace Pearson_Correlation
                     }
                     if (sumx == 0 || sumy == 0)
                     {
-                        users_corlation[i, j + 1] = 0;
-                        users_corlation[j + 1, i] = 0;
+                        users_correlation[i, j + 1] = 0;
+                        users_correlation[j + 1, i] = 0;
                         sumx = 0;
                         sumy = 0;
                         continue;
@@ -96,14 +104,8 @@ namespace Pearson_Correlation
                     }
                     lower = Math.Sqrt(sumxipowr2 * sumyipowr2);
                     r = upersum / lower;
-                    if (r < max)
-                    {
-                        max = r;
-                        iindex = i;
-                        jindex = j + 1;
-                    }
-                    users_corlation[i, j + 1] = r;
-                    users_corlation[j + 1, i] = r;
+                    users_correlation[i, j + 1] = r;
+                    users_correlation[j + 1, i] = r;
                     sumx = 0;
                     sumy = 0;
                     upersum = 0;
@@ -111,8 +113,11 @@ namespace Pearson_Correlation
                     sumyipowr2 = 0;
                 }
             }
+        }
 
 
+        private void show_pearson_correlation()
+        {
             dataGridView1.ColumnCount = users;
             for (int i = 0; i < users; i++)
                 dataGridView1.Columns[i].Name = "User " + i.ToString();
@@ -122,29 +127,42 @@ namespace Pearson_Correlation
             for (int i = 0; i < users; i++)
             {
                 for (int j = 0; j < users; j++)
-                    arr[j] = users_corlation[i, j].ToString();
+                    arr[j] = users_correlation[i, j].ToString();
                 dataGridView1.Rows.Add(arr);
             }
+        }
 
-            //richTextBox1.Text += "max" + max + "  i:" + iindex.ToString() + "  J;" + jindex.ToString();
-            textBox1.Text = max.ToString();  
+
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+            
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            e.Column.FillWeight = 38;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+            load_data_to_ratings_array();
+            load_pearson_correlation();
+            show_pearson_correlation();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            dataGridView1.ColumnCount = users;
-
-            for (int i = 0; i < users; i++)
-                dataGridView1.Columns[i].Name = "Movie " + i.ToString();
-
-            string[] arr = new string[movies];
-            for (int i = 0; i < users; i++)
-            {
-                for (int j = 0; j < movies; j++)
-                    arr[j] = ratings_array[i, j].ToString();
-                dataGridView1.Rows.Add(arr);
-            }
-
+            dataGridView1.Rows.Clear();
+            load_data_to_ratings_array();
+            show_ratings_array();
         }
     }
 }

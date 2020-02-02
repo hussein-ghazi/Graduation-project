@@ -7,3 +7,12 @@ C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\obj\Debug\
 C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csproj.GenerateResource.cache
 C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.exe
 C:\Users\Zaid Kindman\Desktop\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.pdb
+C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.exe.config
+C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.exe
+C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.pdb
+C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csprojAssemblyReference.cache
+C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson_Correlation.Form1.resources
+C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson_Correlation.Properties.Resources.resources
+C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csproj.GenerateResource.cache
+C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.exe
+C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.pdb

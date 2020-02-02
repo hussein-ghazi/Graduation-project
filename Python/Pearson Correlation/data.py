@@ -80,10 +80,6 @@ def pearsonr(x, y):
 
 
 
-
-
-
-
 #from scipy.stats import pearsonr
 # calculate Pearson's correlation
 
