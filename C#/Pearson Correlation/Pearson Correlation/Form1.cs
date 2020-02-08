@@ -110,10 +110,11 @@ namespace Pearson_Correlation
                         }
                         lower = Math.Sqrt(sumxipowr2 * sumyipowr2);
                         r = upersum / lower;
+                        r= Math.Round(r, 4, MidpointRounding.ToEven);
                         users_correlation[i, j + 1] = r;
                         users_correlation[j + 1, i] = r;
 
-                        string line = i + "   " + (j+1) + "   " + r;
+                        string line = i + "\t" + (j+1) + "\t" + r;
                         file.WriteLine(line);
 
                         sumx = 0;
@@ -130,16 +131,20 @@ namespace Pearson_Correlation
 
         private void show_pearson_correlation()
         {
-            dataGridView1.ColumnCount = users;
-            for (int i = 0; i < users; i++)
-                dataGridView1.Columns[i].Name = "User " + i.ToString();
+            int temp_users = users;
+            dataGridView1.ColumnCount = temp_users + 1;
+            for (int i = 0; i < temp_users; i++)
+                dataGridView1.Columns[i+1].Name = "User " + i.ToString();
 
 
-            string[] arr = new string[users];
-            for (int i = 0; i < users; i++)
+            string[] arr = new string[temp_users + 1];
+            for (int i = 0; i < temp_users; i++)
             {
-                for (int j = 0; j < users; j++)
-                    arr[j] = users_correlation[i, j].ToString();
+                arr[0] = "User" + i;
+
+                for (int j = 0; j < temp_users; j++)
+                    arr[j+1] = users_correlation[i, j].ToString();
+              
                 dataGridView1.Rows.Add(arr);
             }
         }
@@ -172,21 +177,26 @@ namespace Pearson_Correlation
 
         private void button3_Click(object sender, EventArgs e)
         {
-            /*
-            load_pearson_correlation();
+            string[] lines = System.IO.File.ReadAllLines("Correlation.txt");
 
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"Correlation.txt"))
-            {
-                foreach (string line in lines)
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < users; j++)
                 {
-                    // If the line doesn't contain the word 'Second', write the line to the file.
-                    if (!line.Contains("Second"))
-                    {
-                        file.WriteLine(line);
-                    }
+                    if (i == j)
+                        users_correlation[i, j] = 1;
+                    else
+                        users_correlation[i, j] = 0.0;
                 }
+                    
+            string[] DataLine;
+            foreach (string line in lines)
+            {
+                DataLine = line.Split('\t');
+
+                users_correlation[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = double.Parse(DataLine[2]);
+                users_correlation[int.Parse(DataLine[1]), int.Parse(DataLine[0])] = double.Parse(DataLine[2]);
             }
-            */
+            show_pearson_correlation();
         }
 
         private void button1_Click(object sender, EventArgs e)
