@@ -9,11 +9,19 @@ rating = line.split('\t')
 users = 944
 movies = 1683
 RatingArray =  np.zeros((users, movies))
+counter = 0
 #loop through the entire file and insert the records to the database
 while line !="":
     rating = line.split('\t')
     RatingArray[int(rating[0])][int(rating[1])] = int(rating[2])
+    if int(rating[2]) > 0 :
+        counter = counter + 1
     line = filename.readline().rstrip()
+
+
+print("Counter =",counter," Result =",counter/(users*movies))
+
+
 
 
 '''
@@ -65,6 +73,13 @@ for i in range(0,x):
 
 '''
 
+
+
+
+
+
+
+'''
 from scipy import linalg
 def pearsonr(x, y):
     dtype = type(1.0 + x[0] + y[0])
@@ -80,11 +95,6 @@ def pearsonr(x, y):
 
 
 
-#from scipy.stats import pearsonr
-# calculate Pearson's correlation
-
-
-
 x=users
 UsersCorrelation =  np.ones((x,x))
 
@@ -96,6 +106,6 @@ for i in range(0,x):
         print(corr)
 
 
-
+'''
             
 
