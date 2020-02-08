@@ -26,10 +26,12 @@ namespace Pearson_Correlation
         //Users x Users array
         double[,] users_correlation = new double[users, movies];
 
+        string FilePath = "data.txt";
+
+
 
         private void load_data_to_ratings_array()
         {
-            string FilePath = "data.txt";
             string[] lines = System.IO.File.ReadAllLines(FilePath);
 
             for (int i = 0; i < users; i++)
@@ -74,44 +76,54 @@ namespace Pearson_Correlation
             double sumxipowr2 = 0, sumyipowr2 = 0;
             double r;
 
-            for (int i = 0; i < users; i++)
+            //this line allow us to write on file
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"Correlation.txt"))
             {
-                for (int j = i; j < users - 1; j++)
+                for (int i = 0; i < users; i++)
                 {
-                    for (int k = 0; k < movies; k++)
+                    for (int j = i; j < users - 1; j++)
                     {
-                        sumx += ratings_array[i, k];       //find sumation of x
-                        sumy += ratings_array[j + 1, k];  //find sumation of y
-                    }
-                    if (sumx == 0 || sumy == 0)
-                    {
-                        users_correlation[i, j + 1] = 0;
-                        users_correlation[j + 1, i] = 0;
+                        for (int k = 0; k < movies; k++)
+                        {
+                            sumx += ratings_array[i, k];       //find sumation of x
+                            sumy += ratings_array[j + 1, k];  //find sumation of y
+                        }
+                        if (sumx == 0 || sumy == 0)
+                        {
+                            users_correlation[i, j + 1] = 0;
+                            users_correlation[j + 1, i] = 0;
+
+                            sumx = 0;
+                            sumy = 0;
+                            continue;
+                        }
+                        xbar = sumx / movies;                  // find x = mean (x = xbar)
+                        ybar = sumy / movies;                    // find y = mean (y = ybar)
+                        for (int k = 0; k < movies; k++)
+                        {
+                            xi_xbar = ratings_array[i, k] - xbar;
+                            yi_ybar = ratings_array[j + 1, k] - ybar;
+                            upersum += xi_xbar * yi_ybar;
+
+                            sumxipowr2 += Math.Pow(xi_xbar, 2);
+                            sumyipowr2 += Math.Pow(yi_ybar, 2);
+                        }
+                        lower = Math.Sqrt(sumxipowr2 * sumyipowr2);
+                        r = upersum / lower;
+                        users_correlation[i, j + 1] = r;
+                        users_correlation[j + 1, i] = r;
+
+                        string line = i + "   " + (j+1) + "   " + r;
+                        file.WriteLine(line);
+
                         sumx = 0;
                         sumy = 0;
-                        continue;
+                        upersum = 0;
+                        sumxipowr2 = 0;
+                        sumyipowr2 = 0;
                     }
-                    xbar = sumx / movies;                  // find x = mean (x = xbar)
-                    ybar = sumy / movies;                    // find y = mean (y = ybar)
-                    for (int k = 0; k < movies; k++)
-                    {
-                        xi_xbar = ratings_array[i, k] - xbar;
-                        yi_ybar = ratings_array[j + 1, k] - ybar;
-                        upersum += xi_xbar * yi_ybar;
-
-                        sumxipowr2 += Math.Pow(xi_xbar, 2);
-                        sumyipowr2 += Math.Pow(yi_ybar, 2);
-                    }
-                    lower = Math.Sqrt(sumxipowr2 * sumyipowr2);
-                    r = upersum / lower;
-                    users_correlation[i, j + 1] = r;
-                    users_correlation[j + 1, i] = r;
-                    sumx = 0;
-                    sumy = 0;
-                    upersum = 0;
-                    sumxipowr2 = 0;
-                    sumyipowr2 = 0;
                 }
+
             }
         }
 
@@ -156,6 +168,25 @@ namespace Pearson_Correlation
             load_data_to_ratings_array();
             load_pearson_correlation();
             show_pearson_correlation();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            /*
+            load_pearson_correlation();
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"Correlation.txt"))
+            {
+                foreach (string line in lines)
+                {
+                    // If the line doesn't contain the word 'Second', write the line to the file.
+                    if (!line.Contains("Second"))
+                    {
+                        file.WriteLine(line);
+                    }
+                }
+            }
+            */
         }
 
         private void button1_Click(object sender, EventArgs e)
