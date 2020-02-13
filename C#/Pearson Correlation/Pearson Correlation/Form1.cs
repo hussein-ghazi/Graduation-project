@@ -207,23 +207,22 @@ namespace Pearson_Correlation
             }
 
 
-            for (int i = 0; i < users; i++)
+            for (int i = 1; i < users - 1; i++)
             {
                 for (int j = 0; j < neighbors; j++)
                 {
-                    for (int k = 0; k < users; k++)
+                    for (int k = 1; k < users -1; k++)
                     {
-                        if (users_correlation[i, k] > max)
+                        if (users_correlation[i, k] > max && i != k)
                         {
                             max = users_correlation[i, k];
                             temp_k = k;
                         }
                     }
+                    users_correlation[i, temp_k] = -1;
+                    max = -1;
 
-                    users_correlation[i, temp_k] = 0;
-                    max = 0;
-
-                    user_neighbors[i, j] = temp_k;
+                    user_neighbors[i-1, j] = temp_k;
                 }
             }
                
@@ -231,16 +230,16 @@ namespace Pearson_Correlation
             
             dataGridView1.ColumnCount = neighbors + 1;
             for (int i = 0; i < neighbors; i++)
-                dataGridView1.Columns[i + 1].Name = "Neighbors " + (i + 1).ToString();
+                dataGridView1.Columns[i + 1].Name = "Neighbor " + (i + 1).ToString();
 
 
             string[] arr = new string[neighbors + 1];
             for (int i = 0; i < users; i++)
             {
-                arr[0] = "User" + i;
+                arr[0] = "User" + (i + 1);
 
-                for (int j = 1; j < neighbors; j++)
-                    arr[j] = user_neighbors[i, j].ToString();
+                for (int j = 1; j < neighbors+1; j++)
+                    arr[j] = user_neighbors[i, j-1].ToString();
 
                 dataGridView1.Rows.Add(arr);
             }

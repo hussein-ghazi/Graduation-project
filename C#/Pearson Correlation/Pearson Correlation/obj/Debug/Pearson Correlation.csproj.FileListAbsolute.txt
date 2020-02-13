@@ -16,3 +16,12 @@ C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pe
 C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csproj.GenerateResource.cache
 C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.exe
 C:\My Data\4th Stage\Recommendation System Project\Code\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.pdb
+D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.exe.config
+D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.exe
+D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.pdb
+D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csprojAssemblyReference.cache
+D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson_Correlation.Form1.resources
+D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson_Correlation.Properties.Resources.resources
+D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csproj.GenerateResource.cache
+D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.exe
+D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.pdb
