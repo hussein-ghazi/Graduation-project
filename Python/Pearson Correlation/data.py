@@ -19,7 +19,8 @@ while line !="":
     line = filename.readline().rstrip()
 
 
-print("Counter =",counter," Result =",counter/(users*movies))
+print(RatingArray)
+#print("Counter =",counter," Result =",counter/(users*movies))
 
 
 

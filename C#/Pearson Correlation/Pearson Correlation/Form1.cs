@@ -20,6 +20,9 @@ namespace Pearson_Correlation
         //Count of users, movies and neighbors
         private static readonly int users = 944, movies = 1683, neighbors = 50;
 
+        //Variables used to show data
+        private static readonly int UsersShow = 50, MoviesShow = 10, NeighborsShow = 10;
+
         //Users x Movies array
         readonly int[,] ratings_array = new int[users, movies];
 
@@ -30,7 +33,7 @@ namespace Pearson_Correlation
         readonly double[,] user_neighbors = new double[users, neighbors];
 
         //Raw ratings file path
-        readonly string RatingsFile = "data.txt";
+        readonly string RatingsFile = "Ratings.txt";
 
         //Correlation file path
         readonly string CorrelationFile = "Correlation.txt";
@@ -50,7 +53,8 @@ namespace Pearson_Correlation
             foreach (string line in lines)
             {
                 DataLine = line.Split('\t');
-                ratings_array[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = int.Parse(DataLine[2]);
+                //-1 because there is no movie or user with id 0
+                ratings_array[int.Parse(DataLine[0]) - 1, int.Parse(DataLine[1]) - 1] = int.Parse(DataLine[2]);
             }
         }
 
@@ -59,17 +63,19 @@ namespace Pearson_Correlation
          */
         private void ShowRatings()
         {
-            dataGridView1.ColumnCount = movies;
+            // All +1 index is for presenting purposes
+            dataGridView1.ColumnCount = MoviesShow + 1;
 
-            for (int i = 0; i < movies; i++)
-                dataGridView1.Columns[i].Name = "Movie " + i.ToString();
+            for (int i = 0; i < MoviesShow; i++)
+                dataGridView1.Columns[i + 1].Name = "Movie " + (i + 1).ToString();
 
-            string[] arr = new string[movies];
-            for (int i = 1; i < users; i++)
+            string[] MoviesArray = new string[MoviesShow + 1];
+            for (int i = 0; i < UsersShow; i++)
             {
-                for (int j = 1; j < movies; j++)
-                    arr[j] = ratings_array[i, j].ToString();
-                dataGridView1.Rows.Add(arr);
+                MoviesArray[0] = "User " + (i + 1).ToString();
+                for (int j = 0; j < MoviesShow; j++)
+                    MoviesArray[j + 1] = ratings_array[i, j].ToString();
+                dataGridView1.Rows.Add(MoviesArray);
             }
         }
 
@@ -79,8 +85,8 @@ namespace Pearson_Correlation
          */
         private void CalculatePearson()
         {
-            for (int i = 1; i < users; i++)
-                for (int j = 1; j < users; j++)
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < users; j++)
                     users_correlation[i, j] = 1.0;
 
             double xbar, ybar;
@@ -93,11 +99,11 @@ namespace Pearson_Correlation
             //this line allow us to write on file
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(CorrelationFile))
             {
-                for (int i = 1; i < users; i++)
+                for (int i = 0; i < users; i++)
                 {
                     for (int j = i; j < users - 1; j++)
                     {
-                        for (int k = 1; k < movies; k++)
+                        for (int k = 0; k < movies; k++)
                         {
                             sumx += ratings_array[i, k];       //find sumation of x
                             sumy += ratings_array[j + 1, k];  //find sumation of y
@@ -149,8 +155,8 @@ namespace Pearson_Correlation
         {
             string[] lines = System.IO.File.ReadAllLines(CorrelationFile);
 
-            for (int i = 1; i < users; i++)
-                for (int j = 1; j < users; j++)
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < users; j++)
                 {
                     if (i == j)
                         users_correlation[i, j] = 1;
@@ -162,7 +168,6 @@ namespace Pearson_Correlation
             foreach (string line in lines)
             {
                 DataLine = line.Split('\t');
-
                 users_correlation[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = double.Parse(DataLine[2]);
                 users_correlation[int.Parse(DataLine[1]), int.Parse(DataLine[0])] = double.Parse(DataLine[2]);
             }
@@ -173,21 +178,20 @@ namespace Pearson_Correlation
         */
         private void ShowPearson()
         {
-            int temp_users = users;
-            dataGridView1.ColumnCount = temp_users + 1;
-            for (int i = 0; i < temp_users; i++)
-                dataGridView1.Columns[i+1].Name = "User " + (i+1).ToString();
+            dataGridView1.ColumnCount = UsersShow + 1;
+            for (int i = 0; i < UsersShow; i++)
+                dataGridView1.Columns[i+1].Name = "User " + (i + 1);
 
 
-            string[] arr = new string[temp_users];
-            for (int i = 1; i < temp_users; i++)
+            string[] UsersArray = new string[UsersShow + 1];
+            for (int i = 0; i < UsersShow; i++)
             {
-                arr[0] = "User" + i;
+                UsersArray[0] = "User" + (i + 1);
 
-                for (int j = 1; j < temp_users; j++)
-                    arr[j] = users_correlation[i, j].ToString();
+                for (int j = 0; j < UsersShow; j++)
+                    UsersArray[j+1] = users_correlation[i, j].ToString();
               
-                dataGridView1.Rows.Add(arr);
+                dataGridView1.Rows.Add(UsersArray);
             }
         }
 
