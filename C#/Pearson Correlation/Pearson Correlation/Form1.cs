@@ -18,25 +18,28 @@ namespace Pearson_Correlation
         }
 
         //Count of users, movies and neighbors
-        private static readonly int users = 943, movies = 1683, neighbors = 50;
+        private static readonly int users = 943, movies = 1682, neighbors = 50;
 
         //Variables used to show data
         private static readonly int UsersShow = 50, MoviesShow = 10, NeighborsShow = 10;
 
         //Users x Movies array
-        readonly int[,] ratings_array = new int[users, movies];
+        private readonly int[,] ratings_array = new int[users, movies];
 
         //Users x Users array
-        readonly double[,] users_correlation = new double[users, users];
+        private readonly double[,] users_correlation = new double[users, users];
 
         //Neighbors array
-        readonly double[,] user_neighbors = new double[users, neighbors];
+        private readonly double[,] user_neighbors = new double[users, neighbors];
 
         //Raw ratings file path
-        readonly string RatingsFile = "Ratings.txt";
+        private readonly string RatingsFile = "Ratings.txt";
 
         //Correlation file path
-        readonly string CorrelationFile = "Correlation.txt";
+        private readonly string CorrelationFile = "Correlation.txt";
+
+        //Correlation file path
+        private readonly string NeighborsFile = "Neighbors.txt";
 
         /*
          * Load ratings from the raw ratings file into an array 
@@ -221,48 +224,53 @@ namespace Pearson_Correlation
          */
         private void FindNearestNeighbors()
         {
-            int temp_k = 0;
-            double max = -1;
-            //int neighbor_index = 0;
+            int NeighborIndex = 0;
+            double Max = -1;
+            string NeighborsString; 
 
-            string[] lines = System.IO.File.ReadAllLines(CorrelationFile);
-
-            for (int i = 1; i < users; i++)
-                for (int j = 1; j < users; j++)
+            LoadPearson();
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(NeighborsFile))
+            {
+                for (int i = 0; i < users; i++)
                 {
-                    if (i == j)
-                        users_correlation[i, j] = 1;
-                    else
-                        users_correlation[i, j] = 0.0;
-                }
+                    NeighborsString = i.ToString();
 
+                    for (int j = 0; j < neighbors; j++)
+                    {
+
+                        for (int k = 0; k < users; k++)
+                        {
+                            if (users_correlation[i, k] > Max && i != k)
+                            {
+                                Max = users_correlation[i, k];
+                                NeighborIndex = k;
+                            }
+                        }
+                        users_correlation[i, NeighborIndex] = -1;
+                        Max = -1;
+
+                        //Neighbor index + 1 = User ID
+                        user_neighbors[i, j] = NeighborIndex;
+                        NeighborsString += '\t' + NeighborIndex.ToString() ;
+                    }
+                    file.WriteLine(NeighborsString);
+                }
+            }
+        }
+
+        private void LoadNeighbors()
+        {
+            //Read all lines from file
+            string[] lines = System.IO.File.ReadAllLines(NeighborsFile);
+
+            //Read each line and fill it into the users correlation array
             string[] DataLine;
             foreach (string line in lines)
             {
                 DataLine = line.Split('\t');
 
-                users_correlation[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = double.Parse(DataLine[2]);
-                users_correlation[int.Parse(DataLine[1]), int.Parse(DataLine[0])] = double.Parse(DataLine[2]);
-            }
-
-
-            for (int i = 1; i < users - 1; i++)
-            {
-                for (int j = 0; j < neighbors; j++)
-                {
-                    for (int k = 1; k < users - 1; k++)
-                    {
-                        if (users_correlation[i, k] > max && i != k)
-                        {
-                            max = users_correlation[i, k];
-                            temp_k = k;
-                        }
-                    }
-                    users_correlation[i, temp_k] = -1;
-                    max = -1;
-
-                    user_neighbors[i - 1, j] = temp_k;
-                }
+                for(int i = 0; i < neighbors; i++)
+                    user_neighbors[int.Parse(DataLine[0]), i] = double.Parse(DataLine[i+1]);
             }
         }
 
@@ -276,15 +284,15 @@ namespace Pearson_Correlation
                 dataGridView1.Columns[i + 1].Name = "Neighbor " + (i + 1).ToString();
 
 
-            string[] arr = new string[neighbors + 1];
+            string[] NeighborsArray = new string[neighbors + 1];
             for (int i = 0; i < users; i++)
             {
-                arr[0] = "User" + (i + 1);
+                NeighborsArray[0] = "User" + (i + 1);
 
-                for (int j = 1; j < neighbors + 1; j++)
-                    arr[j] = user_neighbors[i, j - 1].ToString();
+                for (int j = 0; j < neighbors; j++)
+                    NeighborsArray[j + 1] = user_neighbors[i, j].ToString();
 
-                dataGridView1.Rows.Add(arr);
+                dataGridView1.Rows.Add(NeighborsArray);
             }
         }
 
@@ -303,6 +311,13 @@ namespace Pearson_Correlation
         private void dataGridView1_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
         {
             e.Column.FillWeight = 38;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+            LoadNeighbors();
+            ShowNeighbors();
         }
 
         private void button2_Click(object sender, EventArgs e)
