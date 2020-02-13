@@ -25,3 +25,12 @@ D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pears
 D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csproj.GenerateResource.cache
 D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.exe
 D:\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.pdb
+C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.exe.config
+C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.exe
+C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\bin\Debug\Pearson Correlation.pdb
+C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson_Correlation.Form1.resources
+C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson_Correlation.Properties.Resources.resources
+C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csproj.GenerateResource.cache
+C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.exe
+C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.pdb
+C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csprojAssemblyReference.cache

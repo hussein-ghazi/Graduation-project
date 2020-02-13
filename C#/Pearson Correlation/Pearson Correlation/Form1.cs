@@ -17,26 +17,30 @@ namespace Pearson_Correlation
             InitializeComponent();
         }
 
-        //Count of users and movies
-        static int users = 944, movies = 1683, neighbors = 50;
- 
+        //Count of users, movies and neighbors
+        private static readonly int users = 944, movies = 1683, neighbors = 50;
+
         //Users x Movies array
-        int[,] ratings_array = new int[users, movies];
+        readonly int[,] ratings_array = new int[users, movies];
 
         //Users x Users array
-        double[,] users_correlation = new double[users, users];
+        readonly double[,] users_correlation = new double[users, users];
 
-        //
-        double[,] user_neighbors = new double[users, neighbors];
+        //Neighbors array
+        readonly double[,] user_neighbors = new double[users, neighbors];
 
+        //Raw ratings file path
+        readonly string RatingsFile = "data.txt";
 
-        string FilePath = "data.txt";
+        //Correlation file path
+        readonly string CorrelationFile = "Correlation.txt";
 
-
-
-        private void load_data_to_ratings_array()
+        /*
+         * Load ratings from the raw ratings file into an array 
+         */
+        private void LoadRatings()
         {
-            string[] lines = System.IO.File.ReadAllLines(FilePath);
+            string[] lines = System.IO.File.ReadAllLines(RatingsFile);
 
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
@@ -51,7 +55,10 @@ namespace Pearson_Correlation
             }
         }
 
-        private void show_ratings_array()
+        /*
+         * Show ratings array on data grid view
+         */
+        private void ShowRatings()
         {
             dataGridView1.ColumnCount = users;
 
@@ -68,7 +75,10 @@ namespace Pearson_Correlation
         }
 
 
-        private void load_pearson_correlation()
+        /*
+         * Calculate pearson correlation among users
+         */
+        private void CalculatePearson()
         {
             for (int i = 1; i < users; i++)
                 for (int j = 1; j < users; j++)
@@ -82,7 +92,7 @@ namespace Pearson_Correlation
             double r;
 
             //this line allow us to write on file
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"Correlation.txt"))
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(CorrelationFile))
             {
                 for (int i = 1; i < users; i++)
                 {
@@ -134,7 +144,10 @@ namespace Pearson_Correlation
         }
 
 
-        private void show_pearson_correlation()
+        /*
+        * Show pearson correlation array on data grid view
+        */
+        private void ShowPearson()
         {
             int temp_users = users;
             dataGridView1.ColumnCount = temp_users + 1;
@@ -175,9 +188,9 @@ namespace Pearson_Correlation
         private void button2_Click(object sender, EventArgs e)
         {
             dataGridView1.Rows.Clear();
-            load_data_to_ratings_array();
-            load_pearson_correlation();
-            show_pearson_correlation();
+            LoadRatings();
+            CalculatePearson();
+            ShowPearson();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -186,7 +199,7 @@ namespace Pearson_Correlation
             double max = -1;
             //int neighbor_index = 0;
 
-            string[] lines = System.IO.File.ReadAllLines("Correlation.txt");
+            string[] lines = System.IO.File.ReadAllLines(CorrelationFile);
 
             for (int i = 1; i < users; i++)
                 for (int j = 1; j < users; j++)
@@ -249,7 +262,7 @@ namespace Pearson_Correlation
 
         private void button3_Click(object sender, EventArgs e)
         {
-            string[] lines = System.IO.File.ReadAllLines("Correlation.txt");
+            string[] lines = System.IO.File.ReadAllLines(CorrelationFile);
 
             for (int i = 1; i < users; i++)
                 for (int j = 1; j < users; j++)
@@ -268,14 +281,14 @@ namespace Pearson_Correlation
                 users_correlation[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = double.Parse(DataLine[2]);
                 users_correlation[int.Parse(DataLine[1]), int.Parse(DataLine[0])] = double.Parse(DataLine[2]);
             }
-            show_pearson_correlation();
+            ShowPearson();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             dataGridView1.Rows.Clear();
-            load_data_to_ratings_array();
-            show_ratings_array();
+            LoadRatings();
+            ShowRatings();
         }
     }
 }
