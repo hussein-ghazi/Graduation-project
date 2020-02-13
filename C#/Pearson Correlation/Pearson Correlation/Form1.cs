@@ -50,7 +50,6 @@ namespace Pearson_Correlation
             foreach (string line in lines)
             {
                 DataLine = line.Split('\t');
-
                 ratings_array[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = int.Parse(DataLine[2]);
             }
         }
@@ -60,9 +59,9 @@ namespace Pearson_Correlation
          */
         private void ShowRatings()
         {
-            dataGridView1.ColumnCount = users;
+            dataGridView1.ColumnCount = movies;
 
-            for (int i = 0; i < users; i++)
+            for (int i = 0; i < movies; i++)
                 dataGridView1.Columns[i].Name = "Movie " + i.ToString();
 
             string[] arr = new string[movies];
@@ -143,6 +142,31 @@ namespace Pearson_Correlation
             }
         }
 
+        /*
+         * Load pearson correlation data from file
+         */
+        private void LoadPearson()
+        {
+            string[] lines = System.IO.File.ReadAllLines(CorrelationFile);
+
+            for (int i = 1; i < users; i++)
+                for (int j = 1; j < users; j++)
+                {
+                    if (i == j)
+                        users_correlation[i, j] = 1;
+                    else
+                        users_correlation[i, j] = 0.0;
+                }
+
+            string[] DataLine;
+            foreach (string line in lines)
+            {
+                DataLine = line.Split('\t');
+
+                users_correlation[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = double.Parse(DataLine[2]);
+                users_correlation[int.Parse(DataLine[1]), int.Parse(DataLine[0])] = double.Parse(DataLine[2]);
+            }
+        }
 
         /*
         * Show pearson correlation array on data grid view
@@ -167,35 +191,12 @@ namespace Pearson_Correlation
             }
         }
 
-
-
-        private void Form1_Load(object sender, EventArgs e)
+        /*
+         *  Find nearest neighbors from pearson correlation array
+         */
+        private void FindNearestNeighbors()
         {
-
-            
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
-        {
-            e.Column.FillWeight = 38;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            dataGridView1.Rows.Clear();
-            LoadRatings();
-            CalculatePearson();
-            ShowPearson();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            int  temp_k = 0;
+            int temp_k = 0;
             double max = -1;
             //int neighbor_index = 0;
 
@@ -224,7 +225,7 @@ namespace Pearson_Correlation
             {
                 for (int j = 0; j < neighbors; j++)
                 {
-                    for (int k = 1; k < users -1; k++)
+                    for (int k = 1; k < users - 1; k++)
                     {
                         if (users_correlation[i, k] > max && i != k)
                         {
@@ -235,12 +236,16 @@ namespace Pearson_Correlation
                     users_correlation[i, temp_k] = -1;
                     max = -1;
 
-                    user_neighbors[i-1, j] = temp_k;
+                    user_neighbors[i - 1, j] = temp_k;
                 }
             }
-               
+        }
 
-            
+        /*
+         * Show Neighbors array
+         */
+        private void ShowNeighbors()
+        {
             dataGridView1.ColumnCount = neighbors + 1;
             for (int i = 0; i < neighbors; i++)
                 dataGridView1.Columns[i + 1].Name = "Neighbor " + (i + 1).ToString();
@@ -251,36 +256,51 @@ namespace Pearson_Correlation
             {
                 arr[0] = "User" + (i + 1);
 
-                for (int j = 1; j < neighbors+1; j++)
-                    arr[j] = user_neighbors[i, j-1].ToString();
+                for (int j = 1; j < neighbors + 1; j++)
+                    arr[j] = user_neighbors[i, j - 1].ToString();
 
                 dataGridView1.Rows.Add(arr);
             }
+        }
 
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+            
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
         }
 
+        private void dataGridView1_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            e.Column.FillWeight = 38;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+            LoadRatings();
+            CalculatePearson();
+            ShowPearson();
+        }
+
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+            FindNearestNeighbors();
+            ShowNeighbors();
+        }
+
+
         private void button3_Click(object sender, EventArgs e)
         {
-            string[] lines = System.IO.File.ReadAllLines(CorrelationFile);
-
-            for (int i = 1; i < users; i++)
-                for (int j = 1; j < users; j++)
-                {
-                    if (i == j)
-                        users_correlation[i, j] = 1;
-                    else
-                        users_correlation[i, j] = 0.0;
-                }
-                    
-            string[] DataLine;
-            foreach (string line in lines)
-            {
-                DataLine = line.Split('\t');
-
-                users_correlation[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = double.Parse(DataLine[2]);
-                users_correlation[int.Parse(DataLine[1]), int.Parse(DataLine[0])] = double.Parse(DataLine[2]);
-            }
+            dataGridView1.Rows.Clear();
+            LoadPearson();
             ShowPearson();
         }
 
