@@ -18,7 +18,7 @@ namespace Pearson_Correlation
         }
 
         //Count of users, movies and neighbors
-        private static readonly int users = 944, movies = 1683, neighbors = 50;
+        private static readonly int users = 943, movies = 1683, neighbors = 50;
 
         //Variables used to show data
         private static readonly int UsersShow = 50, MoviesShow = 10, NeighborsShow = 10;
@@ -43,12 +43,15 @@ namespace Pearson_Correlation
          */
         private void LoadRatings()
         {
+            //Reading all lines in file
             string[] lines = System.IO.File.ReadAllLines(RatingsFile);
 
+            //Initialize the ratings array
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
                     ratings_array[i, j] = 0;
 
+            //Read each line and fill it into the ratings array
             string[] DataLine;
             foreach (string line in lines)
             {
@@ -64,11 +67,12 @@ namespace Pearson_Correlation
         private void ShowRatings()
         {
             // All +1 index is for presenting purposes
+            //Initialize the columns with names
             dataGridView1.ColumnCount = MoviesShow + 1;
-
             for (int i = 0; i < MoviesShow; i++)
                 dataGridView1.Columns[i + 1].Name = "Movie " + (i + 1).ToString();
 
+            //Reading from ratings array and fill it into the data grid view
             string[] MoviesArray = new string[MoviesShow + 1];
             for (int i = 0; i < UsersShow; i++)
             {
@@ -85,10 +89,12 @@ namespace Pearson_Correlation
          */
         private void CalculatePearson()
         {
+            //Initialize the users correlation array
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < users; j++)
                     users_correlation[i, j] = 1.0;
 
+            //Initialize the needed variables 
             double xbar, ybar;
             double sumx = 0, sumy = 0;
             double upersum = 0, lower;
@@ -96,18 +102,20 @@ namespace Pearson_Correlation
             double sumxipowr2 = 0, sumyipowr2 = 0;
             double r;
 
-            //this line allow us to write on file
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(CorrelationFile))
             {
                 for (int i = 0; i < users; i++)
                 {
                     for (int j = i; j < users - 1; j++)
                     {
+                        //Find the summation of vectors x and y
                         for (int k = 0; k < movies; k++)
                         {
-                            sumx += ratings_array[i, k];       //find sumation of x
-                            sumy += ratings_array[j + 1, k];  //find sumation of y
+                            sumx += ratings_array[i, k];      
+                            sumy += ratings_array[j + 1, k];  
                         }
+
+                        //If summation of any is 0 then zeroing and continue the loop
                         if (sumx == 0 || sumy == 0)
                         {
                             users_correlation[i, j + 1] = 0;
@@ -117,8 +125,11 @@ namespace Pearson_Correlation
                             sumy = 0;
                             continue;
                         }
-                        xbar = sumx / movies;                  // find x = mean (x = xbar)
-                        ybar = sumy / movies;                    // find y = mean (y = ybar)
+
+                        //Calculate the mean of x and y
+                        xbar = sumx / movies;                  
+                        ybar = sumy / movies; 
+                        
                         for (int k = 0; k < movies; k++)
                         {
                             xi_xbar = ratings_array[i, k] - xbar;
@@ -129,14 +140,20 @@ namespace Pearson_Correlation
                             sumyipowr2 += Math.Pow(yi_ybar, 2);
                         }
                         lower = Math.Sqrt(sumxipowr2 * sumyipowr2);
+
+                        //Calculate the correlation and round off the result
                         r = upersum / lower;
                         r= Math.Round(r, 4, MidpointRounding.ToEven);
+
+                        //Insert the result into the users correlation array
                         users_correlation[i, j + 1] = r;
                         users_correlation[j + 1, i] = r;
 
+                        //Write the data into the file
                         string line = i + "\t" + (j+1) + "\t" + r;
                         file.WriteLine(line);
 
+                        //Zeroing the needed variables 
                         sumx = 0;
                         sumy = 0;
                         upersum = 0;
@@ -153,8 +170,10 @@ namespace Pearson_Correlation
          */
         private void LoadPearson()
         {
+            //Read all lines from file
             string[] lines = System.IO.File.ReadAllLines(CorrelationFile);
 
+            //Initialize the users correlation array
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < users; j++)
                 {
@@ -164,6 +183,7 @@ namespace Pearson_Correlation
                         users_correlation[i, j] = 0.0;
                 }
 
+            //Read each line and fill it into the users correlation array
             string[] DataLine;
             foreach (string line in lines)
             {
@@ -178,11 +198,12 @@ namespace Pearson_Correlation
         */
         private void ShowPearson()
         {
+            //Initialize the columns with names
             dataGridView1.ColumnCount = UsersShow + 1;
             for (int i = 0; i < UsersShow; i++)
                 dataGridView1.Columns[i+1].Name = "User " + (i + 1);
 
-
+            //Reading from users correlation array and fill it into the data grid view
             string[] UsersArray = new string[UsersShow + 1];
             for (int i = 0; i < UsersShow; i++)
             {

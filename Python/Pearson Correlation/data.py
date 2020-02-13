@@ -19,7 +19,6 @@ while line !="":
     line = filename.readline().rstrip()
 
 
-print(RatingArray)
 #print("Counter =",counter," Result =",counter/(users*movies))
 
 
@@ -80,7 +79,6 @@ for i in range(0,x):
 
 
 
-'''
 from scipy import linalg
 def pearsonr(x, y):
     dtype = type(1.0 + x[0] + y[0])
@@ -104,9 +102,8 @@ for i in range(0,x):
         corr= pearsonr(RatingArray[i][:], RatingArray[j+1][:])
         UsersCorrelation[i][j+1] = corr
         UsersCorrelation[j + 1][i] = corr
-        print(corr)
 
+print(UsersCorrelation[1:3])
 
-'''
             
 
