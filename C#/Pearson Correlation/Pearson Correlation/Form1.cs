@@ -195,6 +195,55 @@ namespace Pearson_Correlation
                 users_correlation[int.Parse(DataLine[1]), int.Parse(DataLine[0])] = double.Parse(DataLine[2]);
             }
         }
+        /// <show>
+        private void Show(double[,]array,string ColumnsHeader,string RowsHeader)
+        {
+            //Initialize the columns with names
+            // matrix.GetLength(0)  -> Gets the first dimension size
+            int RowsNo = array.GetLength(0);
+            int ColumnsNo = array.GetLength(1);
+            dataGridView1.ColumnCount = ColumnsNo + 1;
+            dataGridView1.Columns[0].Name = ColumnsHeader + "/" + RowsHeader;
+            for (int i = 1; i < ColumnsNo + 1; i++)
+                dataGridView1.Columns[i].Name = ColumnsHeader + (i);
+
+            string[] TempVector = new string[ColumnsNo + 1];
+            for (int i = 0; i < RowsNo; i++)
+            {
+                TempVector[0] = RowsHeader + (i + 1);
+
+                for (int j = 0; j < ColumnsNo; j++)
+                    TempVector[j + 1] = array[i, j].ToString();
+                dataGridView1.Rows.Add(TempVector);
+            }
+        }
+
+        private void Show(int[,] array, string ColumnsHeader, string RowsHeader)
+        {
+            //Initialize the columns with names
+            // matrix.GetLength(0)  -> Gets the first dimension size
+            int RowsNo = array.GetLength(0);
+            int ColumnsNo = array.GetLength(1);
+            dataGridView1.ColumnCount = ColumnsNo + 1;
+            dataGridView1.Columns[0].Name = ColumnsHeader + "\\" + RowsHeader;
+            for (int i = 1; i < ColumnsNo + 1; i++)
+                dataGridView1.Columns[i].Name = ColumnsHeader + (i);
+
+            string[] TempVector = new string[ColumnsNo + 1];
+            for (int i = 0; i < RowsNo; i++)
+            {
+                TempVector[0] = RowsHeader + (i + 1);
+
+                for (int j = 0; j < ColumnsNo; j++)
+                    TempVector[j + 1] = array[i, j].ToString();
+                dataGridView1.Rows.Add(TempVector);
+            }
+        }
+        /// </show>
+
+
+
+
 
         /*
         * Show pearson correlation array on data grid view
@@ -442,6 +491,14 @@ namespace Pearson_Correlation
             LoadNeighbors();
             LoadRatings();
             AllUserRecommendation();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            //LoadRatings();
+            //Show(ratings_array, "M.No", "U.No");
+            LoadPearson();
+            Show(ratings_array, "U.No", "U.No");
         }
 
         private void button2_Click(object sender, EventArgs e)
