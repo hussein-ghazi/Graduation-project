@@ -30,7 +30,7 @@ namespace Pearson_Correlation
         private double[,] user_neighbors = new double[users, neighbors];
 
         //Rows:Movie ID , Movie Rating ; Columns:# of Recommended movies
-        private double[,] RecommendedMovies = new double[2, NoOfRecommendedMovies];
+        private double[,] RecommendedMovies = new double[users, NoOfRecommendedMovies];
 
         //Raw ratings file path
         private readonly string RatingsFile = "Ratings.txt";
@@ -57,7 +57,7 @@ namespace Pearson_Correlation
 
             //Setting column header
             dataGridView1.ColumnCount = ColumnsCount + 1;
-            dataGridView1.Columns[0].Name = ColumnHeader + "/" + RowHeader;
+            dataGridView1.Columns[0].Name = RowHeader + "\\" + ColumnHeader;
             for (int i = 1; i < ColumnsCount + 1; i++)
                 dataGridView1.Columns[i].Name = ColumnHeader + (i);
 
@@ -123,8 +123,8 @@ namespace Pearson_Correlation
                         //Find the summation of vectors x and y
                         for (int k = 0; k < movies; k++)
                         {
-                            sumx += ratings_array[i, k];      
-                            sumy += ratings_array[j + 1, k];  
+                            sumx += ratings_array[i, k];
+                            sumy += ratings_array[j + 1, k];
                         }
 
                         //If summation of any is 0 then zeroing and continue the loop
@@ -139,9 +139,9 @@ namespace Pearson_Correlation
                         }
 
                         //Calculate the mean of x and y
-                        xbar = sumx / movies;                  
-                        ybar = sumy / movies; 
-                        
+                        xbar = sumx / movies;
+                        ybar = sumy / movies;
+
                         for (int k = 0; k < movies; k++)
                         {
                             xi_xbar = ratings_array[i, k] - xbar;
@@ -155,14 +155,14 @@ namespace Pearson_Correlation
 
                         //Calculate the correlation and round off the result
                         r = upersum / lower;
-                        r= Math.Round(r, 4, MidpointRounding.ToEven);
+                        r = Math.Round(r, 4, MidpointRounding.ToEven);
 
                         //Insert the result into the users correlation array
                         users_correlation[i, j + 1] = r;
                         users_correlation[j + 1, i] = r;
 
                         //Write the data into the file
-                        string line = i + "\t" + (j+1) + "\t" + r;
+                        string line = i + "\t" + (j + 1) + "\t" + r;
                         file.WriteLine(line);
 
                         //Zeroing the needed variables 
@@ -213,7 +213,7 @@ namespace Pearson_Correlation
         {
             int NeighborIndex = 0;
             double Max = -1;
-            string NeighborsString; 
+            string NeighborsString;
 
             LoadPearson();
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(NeighborsFile))
@@ -237,7 +237,7 @@ namespace Pearson_Correlation
 
                         //Neighbor index + 1 (C++) = Real User ID (MovieLens)
                         user_neighbors[i, j] = NeighborIndex;
-                        NeighborsString += '\t' + NeighborIndex.ToString() ;
+                        NeighborsString += '\t' + NeighborIndex.ToString();
                     }
                     file.WriteLine(NeighborsString);
                 }
@@ -255,8 +255,8 @@ namespace Pearson_Correlation
             {
                 DataLine = line.Split('\t');
 
-                for(int i = 0; i < neighbors; i++)
-                    user_neighbors[int.Parse(DataLine[0]), i] = double.Parse(DataLine[i+1]);
+                for (int i = 0; i < neighbors; i++)
+                    user_neighbors[int.Parse(DataLine[0]), i] = double.Parse(DataLine[i + 1]);
             }
         }
 
@@ -265,45 +265,60 @@ namespace Pearson_Correlation
             //index 0 ==> summation
             //index 1 ==> counter
             double[,] TempNeighborsInfo = new double[users * 2, movies];
-            double[,] NeighborsInfo = new double[users , movies];
-            int UserID = 0;
+            double[,] NeighborsInfo = new double[users, movies];
 
-            for (int i = 0; i < users * 2; i++)
+            for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
                 {
-                    TempNeighborsInfo[i, j] = 0;
-                    TempNeighborsInfo[i, j] = 0;
+                    TempNeighborsInfo[i * 2, j] = 0;
+                    TempNeighborsInfo[i * 2 + 1, j] = 0;
                 }
 
-            for (int i = 0; i < users * 2; i += 2)
+            for (int i = 0; i < users; i++)
             {
                 for (int j = 0; j < 50; j++)
                     for (int k = 0; k < movies; k++)
                     {
-                        if (ratings_array[Convert.ToInt16(user_neighbors[UserID, j]), k] > 0)
+                        if (ratings_array[Convert.ToInt16(user_neighbors[i, j]), k] > 0)
                         {
-                            TempNeighborsInfo[i, k] += ratings_array[Convert.ToInt16(user_neighbors[UserID, j]), k];
-                            TempNeighborsInfo[i + 1, k]++;
+                            TempNeighborsInfo[i * 2, k] += ratings_array[Convert.ToInt16(user_neighbors[i, j]), k];
+                            TempNeighborsInfo[i * 2 + 1, k]++;
                         }
                     }
-                UserID++;
             }
 
-            for (int i = 0; i < users * 2; i += 2)
+            for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
-                        if (TempNeighborsInfo[i+1, j] > 40)   // count > 10
-                            TempNeighborsInfo[i, j] = TempNeighborsInfo[i, j] / TempNeighborsInfo[i+1, j];
-                        else
-                            TempNeighborsInfo[i, j] = 0;
-            int temp = 0;
-            for (int i = 0; i < users * 2; i += 2)
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && ratings_array[i, j] == 0)   // count > 10
+                        NeighborsInfo[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
+                    else
+                        NeighborsInfo[i, j] = 0;
+
+
+            //Needed variables
+            double Max = 0;
+            int MovieIndex = 0;
+
+            //Sorting the array for n movies
+            for (int i = 0; i < users; i++)
             {
-                for (int j = 0; j < movies; j++)
-                    NeighborsInfo[temp, j] = TempNeighborsInfo[i, j];
-                temp++;
+                for (int j = 0; j < NoOfRecommendedMovies; j++)
+                {
+                    for (int k = 0; k < movies; k++)
+                    {
+                        if (NeighborsInfo[i, k] > Max)
+                        {
+                            Max = NeighborsInfo[i, k];
+                            MovieIndex = k;
+                        }
+                    }
+                    RecommendedMovies[i, j] = MovieIndex;
+                    NeighborsInfo[i, MovieIndex] = 0;
+                    Max = 0;
+                }
             }
 
-            ShowData(ref NeighborsInfo,"Movie ","Rating ",10);
+        ShowData(ref RecommendedMovies,"User ","Movie ",NoOfRecommendedMovies);
         }
 
         private void UserRecommendation(int UserID)
@@ -320,18 +335,18 @@ namespace Pearson_Correlation
                 
             //Calculate the sum and count for each movie and for all neighbors
             for (int i = 0; i < 50; i++)
-                for (int j =0; j < movies; j++)
+                for (int j = 0; j < movies; j++)
                 {
-                    if(ratings_array[Convert.ToInt16(user_neighbors[UserID, i]) + 1, j] > 0)
+                    if(ratings_array[Convert.ToInt16(user_neighbors[UserID, i]) , j] > 0)
                     {
-                        NeighborsInfo[0, j] += ratings_array[Convert.ToInt16(user_neighbors[UserID, i]) + 1, j];
+                        NeighborsInfo[0, j] += ratings_array[Convert.ToInt16(user_neighbors[UserID, i]), j];
                         NeighborsInfo[1, j]++;
                     }
                 }
 
             //Calculate the average rating for each movie if seen by more than 10 users
             for (int i = 0; i < movies; i++)
-                if (NeighborsInfo[1, i] > 10)
+                if (NeighborsInfo[1, i] > 10 && ratings_array[UserID, i] == 0)
                     NeighborsInfo[0, i] = NeighborsInfo[0, i] / NeighborsInfo[1, i];
                 else
                     NeighborsInfo[0, i] = 0;
@@ -359,6 +374,8 @@ namespace Pearson_Correlation
                     Max = 0;
                 }
             }
+
+            
         }
 
 
@@ -390,8 +407,8 @@ namespace Pearson_Correlation
             LoadNeighbors();
             LoadRatings();
             LoadPearson();
-            UserRecommendation(10);
-            ShowData(ref RecommendedMovies, "Movie ", "Info. ", 150);
+            UserRecommendation(int.Parse(textBox3.Text) - 1);
+            ShowData(ref RecommendedMovies, "Movie ", "Info. ", NoOfRecommendedMovies);
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -403,13 +420,31 @@ namespace Pearson_Correlation
 
         private void button2_Click(object sender, EventArgs e)
         {
-            LoadRatings();
+            //LoadRatings();
             CalculatePearson();
+            MessageBox.Show("pearson calculated");
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            ratings_array[int.Parse(textBox1.Text) - 1, int.Parse(textBox2.Text) - 1] = 0;
+            MessageBox.Show("[user,movie] [" + textBox1.Text + "," + textBox2.Text + "] now = 0");
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            ShowData(ref ratings_array, "Movie ", "User ", 10);
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             FindNearestNeighbors();
+            MessageBox.Show("neighbors found");
         }
 
         private void button3_Click(object sender, EventArgs e)
