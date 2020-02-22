@@ -20,17 +20,14 @@ namespace Pearson_Correlation
         //Count of users, movies and neighbors
         private static readonly int users = 943, movies = 1682, neighbors = 50;
 
-        //Variables used to show data
-        private static readonly int UsersShow = 50, MoviesShow = 50, NeighborsShow = 10;
-
         //Users x Movies array
-        private readonly int[,] ratings_array = new int[users, movies];
+        private int[,] ratings_array = new int[users, movies];
 
         //Users x Users array
-        private readonly double[,] users_correlation = new double[users, users];
+        private double[,] users_correlation = new double[users, users];
 
         //Neighbors array
-        private readonly double[,] user_neighbors = new double[users, neighbors];
+        private double[,] user_neighbors = new double[users, neighbors];
 
         //Raw ratings file path
         private readonly string RatingsFile = "Ratings.txt";
@@ -40,6 +37,38 @@ namespace Pearson_Correlation
 
         //Correlation file path
         private readonly string NeighborsFile = "Neighbors.txt";
+
+        /*
+        * Generic show function
+        */
+        private void ShowData<T>(ref T[,] DataArray, string ColumnHeader, string RowHeader, int ColumnsCount)
+        {
+            //Clear the datagridview 
+            dataGridView1.Rows.Clear();
+
+            int RowsNo = DataArray.GetLength(0);
+
+            //If the ColumnsCount is 0 ==> show all columns of DataArray
+            if (ColumnsCount == 0)
+                ColumnsCount = DataArray.GetLength(1);
+
+            //Setting column header
+            dataGridView1.ColumnCount = ColumnsCount + 1;
+            dataGridView1.Columns[0].Name = ColumnHeader + "/" + RowHeader;
+            for (int i = 1; i < ColumnsCount + 1; i++)
+                dataGridView1.Columns[i].Name = ColumnHeader + (i);
+
+            //Process of adding rows
+            string[] Row = new string[ColumnsCount + 1];
+            for (int i = 0; i < RowsNo; i++)
+            {
+                Row[0] = RowHeader + (i + 1);
+
+                for (int j = 0; j < ColumnsCount; j++)
+                    Row[j + 1] = DataArray[i, j].ToString();
+                dataGridView1.Rows.Add(Row);
+            }
+        }
 
         /*
          * Load ratings from the raw ratings file into an array 
@@ -63,29 +92,6 @@ namespace Pearson_Correlation
                 ratings_array[int.Parse(DataLine[0]) - 1, int.Parse(DataLine[1]) - 1] = int.Parse(DataLine[2]);
             }
         }
-
-        /*
-         * Show ratings array on data grid view
-         */
-        private void ShowRatings()
-        {
-            // All +1 index is for presenting purposes
-            //Initialize the columns with names
-            dataGridView1.ColumnCount = MoviesShow + 1;
-            for (int i = 0; i < MoviesShow; i++)
-                dataGridView1.Columns[i + 1].Name = "Movie " + (i + 1).ToString();
-
-            //Reading from ratings array and fill it into the data grid view
-            string[] MoviesArray = new string[MoviesShow + 1];
-            for (int i = 0; i < UsersShow; i++)
-            {
-                MoviesArray[0] = "User " + (i + 1).ToString();
-                for (int j = 0; j < MoviesShow; j++)
-                    MoviesArray[j + 1] = ratings_array[i, j].ToString();
-                dataGridView1.Rows.Add(MoviesArray);
-            }
-        }
-
 
         /*
          * Calculate pearson correlation among users
@@ -195,78 +201,7 @@ namespace Pearson_Correlation
                 users_correlation[int.Parse(DataLine[1]), int.Parse(DataLine[0])] = double.Parse(DataLine[2]);
             }
         }
-        /// <show>
-        private void Show(double[,]array,string ColumnsHeader,string RowsHeader)
-        {
-            //Initialize the columns with names
-            // matrix.GetLength(0)  -> Gets the first dimension size
-            int RowsNo = array.GetLength(0);
-            int ColumnsNo = array.GetLength(1);
-            dataGridView1.ColumnCount = ColumnsNo + 1;
-            dataGridView1.Columns[0].Name = ColumnsHeader + "/" + RowsHeader;
-            for (int i = 1; i < ColumnsNo + 1; i++)
-                dataGridView1.Columns[i].Name = ColumnsHeader + (i);
 
-            string[] TempVector = new string[ColumnsNo + 1];
-            for (int i = 0; i < RowsNo; i++)
-            {
-                TempVector[0] = RowsHeader + (i + 1);
-
-                for (int j = 0; j < ColumnsNo; j++)
-                    TempVector[j + 1] = array[i, j].ToString();
-                dataGridView1.Rows.Add(TempVector);
-            }
-        }
-
-        private void Show(int[,] array, string ColumnsHeader, string RowsHeader)
-        {
-            //Initialize the columns with names
-            // matrix.GetLength(0)  -> Gets the first dimension size
-            int RowsNo = array.GetLength(0);
-            int ColumnsNo = array.GetLength(1);
-            dataGridView1.ColumnCount = ColumnsNo + 1;
-            dataGridView1.Columns[0].Name = ColumnsHeader + "\\" + RowsHeader;
-            for (int i = 1; i < ColumnsNo + 1; i++)
-                dataGridView1.Columns[i].Name = ColumnsHeader + (i);
-
-            string[] TempVector = new string[ColumnsNo + 1];
-            for (int i = 0; i < RowsNo; i++)
-            {
-                TempVector[0] = RowsHeader + (i + 1);
-
-                for (int j = 0; j < ColumnsNo; j++)
-                    TempVector[j + 1] = array[i, j].ToString();
-                dataGridView1.Rows.Add(TempVector);
-            }
-        }
-        /// </show>
-
-
-
-
-
-        /*
-        * Show pearson correlation array on data grid view
-        */
-        private void ShowPearson()
-        {
-            //Initialize the columns with names
-            dataGridView1.ColumnCount = UsersShow + 1;
-            for (int i = 0; i < UsersShow; i++)
-                dataGridView1.Columns[i+1].Name = "User " + (i + 1);
-
-            //Reading from users correlation array and fill it into the data grid view
-            string[] UsersArray = new string[UsersShow + 1];
-            for (int i = 0; i < UsersShow; i++)
-            {
-                UsersArray[0] = "User" + (i + 1);
-
-                for (int j = 0; j < UsersShow; j++)
-                    UsersArray[j+1] = users_correlation[i, j].ToString();
-              
-                dataGridView1.Rows.Add(UsersArray);
-            }
-        }
 
         /*
          *  Find nearest neighbors from pearson correlation array
@@ -323,28 +258,6 @@ namespace Pearson_Correlation
             }
         }
 
-        /*
-         * Show Neighbors array
-         */
-        private void ShowNeighbors()
-        {
-            dataGridView1.ColumnCount = neighbors + 1;
-            for (int i = 0; i < neighbors; i++)
-                dataGridView1.Columns[i + 1].Name = "Neighbor " + (i + 1).ToString();
-
-
-            string[] NeighborsArray = new string[neighbors + 1];
-            for (int i = 0; i < users; i++)
-            {
-                NeighborsArray[0] = "User" + (i + 1);
-
-                for (int j = 0; j < neighbors; j++)
-                    NeighborsArray[j + 1] = user_neighbors[i, j].ToString();
-
-                dataGridView1.Rows.Add(NeighborsArray);
-            }
-        }
-
         private void AllUserRecommendation()
         {
             //index 0 ==> summation
@@ -388,21 +301,7 @@ namespace Pearson_Correlation
                 temp++;
             }
 
-
-            ///////////////////////////////////////////////////////////////////   show
-            dataGridView1.ColumnCount = MoviesShow;
-            for (int i = 0; i < MoviesShow; i++)
-                dataGridView1.Columns[i].Name = "Movie " + (i);
-
-            string[] UsersArray = new string[MoviesShow];
-
-            for (int i = 0; i < users; i++)
-            {
-                for (int j = 0; j < MoviesShow; j++)
-                    UsersArray[j] = NeighborsInfo[i, j].ToString();
-                dataGridView1.Rows.Add(UsersArray);
-            }
-            //////////////////////////////////
+            ShowData(ref NeighborsInfo,"Movie ","Rating ",10);
         }
 
         private void UserRecommendation(int UserID)
@@ -432,27 +331,11 @@ namespace Pearson_Correlation
                     NeighborsInfo[0, i] = NeighborsInfo[0, i] / NeighborsInfo[1, i];
                 else
                     NeighborsInfo[0, i] = 0;
-
-
-
-            ////////////////////////////
-            dataGridView1.ColumnCount = MoviesShow;
-            for (int i = 0; i < MoviesShow; i++)
-                dataGridView1.Columns[i].Name = "Movie " + (i);
-
-            string[] UsersArray = new string[MoviesShow];
-
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 0; j < MoviesShow; j++)
-                    UsersArray[j] = NeighborsInfo[i, j].ToString();
-                dataGridView1.Rows.Add(UsersArray);
-            }
-            //////////////////////////////////
-
-
-
+            //Wrong RowHeader Name
+            ShowData(ref NeighborsInfo, "Movie ", "Rating ", 10);
         }
+
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -472,14 +355,12 @@ namespace Pearson_Correlation
 
         private void button5_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
             LoadNeighbors();
-            ShowNeighbors();
+            ShowData(ref user_neighbors, "Neighbor ", "User ",0);
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
             LoadNeighbors();
             LoadRatings();
             LoadPearson();
@@ -493,43 +374,27 @@ namespace Pearson_Correlation
             AllUserRecommendation();
         }
 
-        private void button8_Click(object sender, EventArgs e)
-        {
-            //LoadRatings();
-            //Show(ratings_array, "M.No", "U.No");
-            LoadPearson();
-            Show(ratings_array, "U.No", "U.No");
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
             LoadRatings();
             CalculatePearson();
-            ShowPearson();
         }
-
 
         private void button4_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
             FindNearestNeighbors();
-            ShowNeighbors();
         }
-
 
         private void button3_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
             LoadPearson();
-            ShowPearson();
+            ShowData(ref users_correlation,"User ","User ",10);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
             LoadRatings();
-            ShowRatings();
+            ShowData(ref ratings_array,"Movie ","User ",10);
         }
     }
 }
