@@ -296,6 +296,65 @@ namespace Pearson_Correlation
             }
         }
 
+        private void AllUserRecommendation()
+        {
+            //index 0 ==> summation
+            //index 1 ==> counter
+            double[,] TempNeighborsInfo = new double[users * 2, movies];
+            double[,] NeighborsInfo = new double[users , movies];
+            int UserID = 0;
+
+            for (int i = 0; i < users * 2; i++)
+                for (int j = 0; j < movies; j++)
+                {
+                    TempNeighborsInfo[i, j] = 0;
+                    TempNeighborsInfo[i, j] = 0;
+                }
+
+            for (int i = 0; i < users * 2; i += 2)
+            {
+                for (int j = 0; j < 50; j++)
+                    for (int k = 0; k < movies; k++)
+                    {
+                        if (ratings_array[Convert.ToInt16(user_neighbors[UserID, j]), k] > 0)
+                        {
+                            TempNeighborsInfo[i, k] += ratings_array[Convert.ToInt16(user_neighbors[UserID, j]), k];
+                            TempNeighborsInfo[i + 1, k]++;
+                        }
+                    }
+                UserID++;
+            }
+
+            for (int i = 0; i < users * 2; i += 2)
+                for (int j = 0; j < movies; j++)
+                        if (TempNeighborsInfo[i+1, j] > 40)   // count > 10
+                            TempNeighborsInfo[i, j] = TempNeighborsInfo[i, j] / TempNeighborsInfo[i+1, j];
+                        else
+                            TempNeighborsInfo[i, j] = 0;
+            int temp = 0;
+            for (int i = 0; i < users * 2; i += 2)
+            {
+                for (int j = 0; j < movies; j++)
+                    NeighborsInfo[temp, j] = TempNeighborsInfo[i, j];
+                temp++;
+            }
+
+
+            ///////////////////////////////////////////////////////////////////   show
+            dataGridView1.ColumnCount = MoviesShow;
+            for (int i = 0; i < MoviesShow; i++)
+                dataGridView1.Columns[i].Name = "Movie " + (i);
+
+            string[] UsersArray = new string[MoviesShow];
+
+            for (int i = 0; i < users; i++)
+            {
+                for (int j = 0; j < MoviesShow; j++)
+                    UsersArray[j] = NeighborsInfo[i, j].ToString();
+                dataGridView1.Rows.Add(UsersArray);
+            }
+            //////////////////////////////////
+        }
 
         private void UserRecommendation(int UserID)
         {
@@ -376,6 +435,13 @@ namespace Pearson_Correlation
             LoadRatings();
             LoadPearson();
             UserRecommendation(10);
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            LoadNeighbors();
+            LoadRatings();
+            AllUserRecommendation();
         }
 
         private void button2_Click(object sender, EventArgs e)
