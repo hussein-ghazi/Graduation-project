@@ -297,6 +297,49 @@ namespace Pearson_Correlation
         }
 
 
+        private void UserRecommendation(int UserID)
+        {
+            double[,] NeighborsInfo = new double[2, movies];
+
+            for (int i = 0; i < movies; i++)
+            {
+                NeighborsInfo[0, i] = 0 ;
+                NeighborsInfo[1, i] = 0 ;
+            }
+                
+
+
+            
+
+            for (int i = 0; i < 50; i++)
+                for (int j =0; j<movies; j++)
+                {
+                    if(ratings_array[Convert.ToInt16(user_neighbors[UserID, i]) + 1, j] > 0)
+                    {
+                        NeighborsInfo[0, j] += ratings_array[Convert.ToInt16(user_neighbors[UserID, i]) + 1, j];
+                        NeighborsInfo[1, j]++;
+                    }
+                }
+
+            ////////////////////////////
+            dataGridView1.ColumnCount = movies;
+            for (int i = 0; i < movies; i++)
+                dataGridView1.Columns[i].Name = "Movie " + (i);
+
+            string[] UsersArray = new string[movies];
+
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < movies; j++)
+                    UsersArray[j] = NeighborsInfo[i, j].ToString();
+                dataGridView1.Rows.Add(UsersArray);
+            }
+            //////////////////////////////////
+
+
+
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -318,6 +361,15 @@ namespace Pearson_Correlation
             dataGridView1.Rows.Clear();
             LoadNeighbors();
             ShowNeighbors();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+            LoadNeighbors();
+            LoadRatings();
+            LoadPearson();
+            UserRecommendation(10);
         }
 
         private void button2_Click(object sender, EventArgs e)
