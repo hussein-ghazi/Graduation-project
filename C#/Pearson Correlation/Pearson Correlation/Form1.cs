@@ -21,7 +21,7 @@ namespace Pearson_Correlation
         private static readonly int users = 943, movies = 1682, neighbors = 50;
 
         //Variables used to show data
-        private static readonly int UsersShow = 50, MoviesShow = 10, NeighborsShow = 10;
+        private static readonly int UsersShow = 50, MoviesShow = 50, NeighborsShow = 10;
 
         //Users x Movies array
         private readonly int[,] ratings_array = new int[users, movies];
@@ -299,20 +299,18 @@ namespace Pearson_Correlation
 
         private void UserRecommendation(int UserID)
         {
+            //index 0 ==> summation
+            //index 1 ==> counter
             double[,] NeighborsInfo = new double[2, movies];
 
             for (int i = 0; i < movies; i++)
             {
-                NeighborsInfo[0, i] = 0 ;
+                NeighborsInfo[0, i] = 0 ; 
                 NeighborsInfo[1, i] = 0 ;
             }
                 
-
-
-            
-
             for (int i = 0; i < 50; i++)
-                for (int j =0; j<movies; j++)
+                for (int j =0; j < movies; j++)
                 {
                     if(ratings_array[Convert.ToInt16(user_neighbors[UserID, i]) + 1, j] > 0)
                     {
@@ -321,16 +319,24 @@ namespace Pearson_Correlation
                     }
                 }
 
-            ////////////////////////////
-            dataGridView1.ColumnCount = movies;
             for (int i = 0; i < movies; i++)
+                if (NeighborsInfo[1, i] > 10)
+                    NeighborsInfo[0, i] = NeighborsInfo[0, i] / NeighborsInfo[1, i];
+                else
+                    NeighborsInfo[0, i] = 0;
+
+
+
+            ////////////////////////////
+            dataGridView1.ColumnCount = MoviesShow;
+            for (int i = 0; i < MoviesShow; i++)
                 dataGridView1.Columns[i].Name = "Movie " + (i);
 
-            string[] UsersArray = new string[movies];
+            string[] UsersArray = new string[MoviesShow];
 
             for (int i = 0; i < 2; i++)
             {
-                for (int j = 0; j < movies; j++)
+                for (int j = 0; j < MoviesShow; j++)
                     UsersArray[j] = NeighborsInfo[i, j].ToString();
                 dataGridView1.Rows.Add(UsersArray);
             }
