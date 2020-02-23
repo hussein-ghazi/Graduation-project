@@ -33,3 +33,4 @@ C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Corre
 C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csproj.GenerateResource.cache
 C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.exe
 C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.pdb
+C:\Users\Kindman\Desktop\Graduation-project\C#\Pearson Correlation\Pearson Correlation\obj\Debug\Pearson Correlation.csprojAssemblyReference.cache

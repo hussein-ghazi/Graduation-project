@@ -29,9 +29,6 @@ namespace Pearson_Correlation
         //Neighbors array
         private double[,] user_neighbors = new double[users, neighbors];
 
-        //Rows:Movie ID , Movie Rating ; Columns:# of Recommended movies
-        private double[,] RecommendedMovies = new double[users, NoOfRecommendedMovies];
-
         //Raw ratings file path
         private readonly string RatingsFile = "Ratings.txt";
 
@@ -267,6 +264,9 @@ namespace Pearson_Correlation
             double[,] TempNeighborsInfo = new double[users * 2, movies];
             double[,] NeighborsInfo = new double[users, movies];
 
+            //Rows:Users ; Columns:# of Recommended movies
+            double[,] RecommendedMovies = new double[users, NoOfRecommendedMovies];
+
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
                 {
@@ -317,14 +317,16 @@ namespace Pearson_Correlation
                     Max = 0;
                 }
             }
-
-        ShowData(ref RecommendedMovies,"User ","Movie ",NoOfRecommendedMovies);
+            ShowData(ref RecommendedMovies,"Movie ", "User ", 0);
         }
 
         private void UserRecommendation(int UserID)
         {
             //0 => Sum , 1 => Count
             double[,] NeighborsInfo = new double[2, movies];
+
+            //Rows:Movie ID , Movie Rating ; Columns:# of Recommended movies
+            double[,] UserRecommendedMovies = new double[2, NoOfRecommendedMovies];
 
             //Zeroing the array
             for (int i = 0; i < movies; i++)
@@ -351,37 +353,29 @@ namespace Pearson_Correlation
                 else
                     NeighborsInfo[0, i] = 0;
 
-            ShowData(ref NeighborsInfo, "Movie ", "Info. ", NoOfRecommendedMovies);
 
 
-            /*
             //Needed variables
             double Max = 0 ;
             int MovieIndex = 0;
 
             //Sorting the array for n movies
-            for (int i = 0; i < 1; i++)
+            for (int j = 0; j < NoOfRecommendedMovies; j++)
             {
-            {
-                for (int j = 0; j < NoOfRecommendedMovies; j++)
+                for (int k = 0; k < movies; k++)
                 {
-                    for (int k = 0; k < movies; k++)
+                    if (NeighborsInfo[0, k] > Max)
                     {
-                        if (NeighborsInfo[0, k] > Max)
-                        {
-                            Max = NeighborsInfo[0, k];
-                            MovieIndex = k;
-                        }
+                        Max = NeighborsInfo[0, k];
+                        MovieIndex = k;
                     }
-                    RecommendedMovies[0, j] = MovieIndex + 1;
-                    RecommendedMovies[1, j] = Max;
-                    NeighborsInfo[0, MovieIndex] = 0;
-                    Max = 0;
                 }
+                UserRecommendedMovies[0, j] = MovieIndex + 1;
+                UserRecommendedMovies[1, j] = Max;
+                NeighborsInfo[0, MovieIndex] = 0;
+                Max = 0;
             }
-            */
-
-
+            ShowData(ref UserRecommendedMovies, "Movie ", "Info. ", 0);
         }
 
 
@@ -411,9 +405,12 @@ namespace Pearson_Correlation
         private void button6_Click(object sender, EventArgs e)
         {
             LoadNeighbors();
-            LoadRatings();
             LoadPearson();
-            UserRecommendation(int.Parse(textBox3.Text) - 1);
+
+            if (textBox3.Text != "")
+                UserRecommendation(int.Parse(textBox3.Text) - 1);
+            else
+                MessageBox.Show("Enter user id!");
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -425,7 +422,6 @@ namespace Pearson_Correlation
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //LoadRatings();
             CalculatePearson();
             MessageBox.Show("pearson calculated");
         }
