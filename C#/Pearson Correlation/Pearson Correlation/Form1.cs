@@ -114,8 +114,8 @@ namespace Pearson_Correlation
             double sumxipowr2 = 0, sumyipowr2 = 0;
             double r;
 
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(CorrelationFile))
-            {
+            //using (System.IO.StreamWriter file = new System.IO.StreamWriter(CorrelationFile))
+            //{
                 for (int i = 0; i < users; i++)
                 {
                     for (int j = i; j < users - 1; j++)
@@ -162,8 +162,8 @@ namespace Pearson_Correlation
                         users_correlation[j + 1, i] = r;
 
                         //Write the data into the file
-                        string line = i + "\t" + (j + 1) + "\t" + r;
-                        file.WriteLine(line);
+                        //string line = i + "\t" + (j + 1) + "\t" + r;
+                        //file.WriteLine(line);
 
                         //Zeroing the needed variables 
                         sumx = 0;
@@ -174,7 +174,7 @@ namespace Pearson_Correlation
                     }
                 }
 
-            }
+            //}
         }
 
         /*
@@ -216,8 +216,8 @@ namespace Pearson_Correlation
             string NeighborsString;
 
             LoadPearson();
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(NeighborsFile))
-            {
+            //using (System.IO.StreamWriter file = new System.IO.StreamWriter(NeighborsFile))
+            //{
                 for (int i = 0; i < users; i++)
                 {
                     NeighborsString = i.ToString();
@@ -237,11 +237,11 @@ namespace Pearson_Correlation
 
                         //Neighbor index + 1 (C++) = Real User ID (MovieLens)
                         user_neighbors[i, j] = NeighborIndex;
-                        NeighborsString += '\t' + NeighborIndex.ToString();
+                       // NeighborsString += '\t' + NeighborIndex.ToString();
                     }
-                    file.WriteLine(NeighborsString);
+                   // file.WriteLine(NeighborsString);
                 }
-            }
+            //}
         }
 
         private void LoadNeighbors()
@@ -312,7 +312,7 @@ namespace Pearson_Correlation
                             MovieIndex = k;
                         }
                     }
-                    RecommendedMovies[i, j] = MovieIndex;
+                    RecommendedMovies[i, j] = MovieIndex + 1;
                     NeighborsInfo[i, MovieIndex] = 0;
                     Max = 0;
                 }
@@ -351,12 +351,17 @@ namespace Pearson_Correlation
                 else
                     NeighborsInfo[0, i] = 0;
 
+            ShowData(ref NeighborsInfo, "Movie ", "Info. ", NoOfRecommendedMovies);
+
+
+            /*
             //Needed variables
             double Max = 0 ;
             int MovieIndex = 0;
 
             //Sorting the array for n movies
             for (int i = 0; i < 1; i++)
+            {
             {
                 for (int j = 0; j < NoOfRecommendedMovies; j++)
                 {
@@ -368,14 +373,15 @@ namespace Pearson_Correlation
                             MovieIndex = k;
                         }
                     }
-                    RecommendedMovies[0, j] = MovieIndex;
+                    RecommendedMovies[0, j] = MovieIndex + 1;
                     RecommendedMovies[1, j] = Max;
                     NeighborsInfo[0, MovieIndex] = 0;
                     Max = 0;
                 }
             }
+            */
 
-            
+
         }
 
 
@@ -408,7 +414,6 @@ namespace Pearson_Correlation
             LoadRatings();
             LoadPearson();
             UserRecommendation(int.Parse(textBox3.Text) - 1);
-            ShowData(ref RecommendedMovies, "Movie ", "Info. ", NoOfRecommendedMovies);
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -456,7 +461,7 @@ namespace Pearson_Correlation
         private void button1_Click(object sender, EventArgs e)
         {
             LoadRatings();
-            ShowData(ref ratings_array,"Movie ","User ",10);
+            ShowData(ref ratings_array,"Movie ","User ",1000);
         }
     }
 }

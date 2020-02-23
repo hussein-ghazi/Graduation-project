@@ -143,11 +143,11 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(784, 480);
+            this.button7.Location = new System.Drawing.Point(343, 578);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.Size = new System.Drawing.Size(141, 23);
             this.button7.TabIndex = 7;
-            this.button7.Text = "All";
+            this.button7.Text = "All Users recommend";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
@@ -205,7 +205,7 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(818, 541);
+            this.textBox3.Location = new System.Drawing.Point(803, 547);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 20);
             this.textBox3.TabIndex = 14;
@@ -214,7 +214,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(815, 570);
+            this.label3.Location = new System.Drawing.Point(687, 551);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(110, 13);
             this.label3.TabIndex = 15;
