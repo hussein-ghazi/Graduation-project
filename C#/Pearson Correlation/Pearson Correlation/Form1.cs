@@ -568,11 +568,11 @@ namespace Pearson_Correlation
 
         private void button6_Click(object sender, EventArgs e)
         {
-            LoadNeighbors();
-            LoadPearson();
+            //LoadNeighbors();
+            //LoadPearson();
 
             if (textBox3.Text != "")
-                TopNUserRecommendation(int.Parse(textBox3.Text) - 1);
+                AllInOneRecommend(int.Parse(textBox3.Text) - 1, ratings_array);
             else
                 MessageBox.Show("Enter user id!");
         }
@@ -608,8 +608,8 @@ namespace Pearson_Correlation
 
         private void button10_Click(object sender, EventArgs e)
         {
-            LoadRatings();
-            AllInOneRecommend(942,ratings_array);
+            //LoadRatings();
+            AllInOneRecommend(0,ratings_array);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -627,7 +627,7 @@ namespace Pearson_Correlation
         private void button1_Click(object sender, EventArgs e)
         {
             LoadRatings();
-            ShowData(ref ratings_array,"Movie ","User ",1000);
+            ShowData(ref ratings_array,"Movie ","User ",100);
         }
     }
 }
