@@ -1,0 +1,9 @@
+C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\bin\Debug\Recommendation System.exe.config
+C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\bin\Debug\Recommendation System.exe
+C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\bin\Debug\Recommendation System.pdb
+C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\obj\Debug\Recommendation System.csprojAssemblyReference.cache
+C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\obj\Debug\Recommendation_System.Properties.Resources.resources
+C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\obj\Debug\Recommendation System.csproj.GenerateResource.cache
+C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\obj\Debug\Recommendation System.exe
+C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\obj\Debug\Recommendation System.pdb
+C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\obj\Debug\Recommendation_System.MainWindow.resources
