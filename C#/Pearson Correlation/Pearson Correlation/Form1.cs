@@ -352,7 +352,7 @@ namespace Pearson_Correlation
             ShowData(ref RecommendedMovies,"Movie ", "User ", 0);
         }
 
-        private void UserRecommendation(int UserID)
+        private void TopNUserRecommendation(int UserID)
         {
             //0 => Sum , 1 => Count
             double[,] NeighborsInfo = new double[2, movies];
@@ -409,6 +409,8 @@ namespace Pearson_Correlation
             }
             ShowData(ref UserRecommendedMovies, "Movie ", "Info. ", 0);
         }
+
+       
 
         private double[] UserCorrelation(int PersonID, int[,] RatingsArray)
         {
@@ -475,14 +477,10 @@ namespace Pearson_Correlation
             return UserCorrelation;
         }
 
-        private double[] UserNeighbors(int PersonID, int[,] RatingsArray)
+        private double[] UserNeighbors(int PersonID, double[] PearsonCorrelation)
         {
             int NeighborIndex = 0;
             double Max = -1;
-
-            double[] PearsonCorrelation = new double[users];
-            PearsonCorrelation = UserCorrelation(PersonID, RatingsArray);
-
             double[] UserNeighbors = new double[users];
 
             for (int j = 0; j < neighbors; j++)
@@ -502,13 +500,46 @@ namespace Pearson_Correlation
             return UserNeighbors;
         }
 
+        private double[] UserRecommendation(int UserID, int[,] RatingsArray, double[] UserNeighbors)
+        {
+            //0 => Sum , 1 => Count
+            double[,] NeighborsInfo = new double[2, movies];
+
+            //Rows:Movie ID , Movie Rating ; Columns:# movies
+            double[] UserMovies = new double[movies];
+
+            //Zeroing the array
+            for (int i = 0; i < movies; i++)
+            {
+                NeighborsInfo[0, i] = 0;
+                NeighborsInfo[1, i] = 0;
+            }
+
+            //Calculate the sum and count for each movie and for all neighbors
+            for (int i = 0; i < 50; i++)
+                for (int j = 0; j < movies; j++)
+                {
+                    if (RatingsArray[Convert.ToInt16(UserNeighbors[i]), j] > 0)
+                    {
+                        NeighborsInfo[0, j] += RatingsArray[Convert.ToInt16(UserNeighbors[i]), j];
+                        NeighborsInfo[1, j]++;
+                    }
+                }
+
+            //Calculate the average rating for each movie if seen by more than 10 users
+            for (int i = 0; i < movies; i++)
+                if (NeighborsInfo[1, i] > 10 && RatingsArray[UserID, i] == 0)
+                    UserMovies[i] = NeighborsInfo[0, i] / NeighborsInfo[1, i];
+                else
+                    UserMovies[i] = 0;
+            return UserMovies;
+        }
+
         private void AllInOneRecommend(int PersonID, int[,] RatingsArray)
         {
-            double[] CorrelationArray = new double[users];
-            double[] NeighborsArray = new double[neighbors];
-
-            CorrelationArray = UserCorrelation(PersonID, RatingsArray);
-            NeighborsArray = UserNeighbors(PersonID, RatingsArray);
+            double[] UserRecommendedMovies = new double[movies];
+            UserRecommendedMovies = UserRecommendation(PersonID,RatingsArray, UserNeighbors(PersonID, UserCorrelation(PersonID, RatingsArray)));
+            ShowData(ref UserRecommendedMovies,"M ","User " + PersonID,100);
         }
 
 
@@ -541,7 +572,7 @@ namespace Pearson_Correlation
             LoadPearson();
 
             if (textBox3.Text != "")
-                UserRecommendation(int.Parse(textBox3.Text) - 1);
+                TopNUserRecommendation(int.Parse(textBox3.Text) - 1);
             else
                 MessageBox.Show("Enter user id!");
         }
@@ -578,14 +609,7 @@ namespace Pearson_Correlation
         private void button10_Click(object sender, EventArgs e)
         {
             LoadRatings();
-            /*
-            double[] temp = new double[users];
-            temp = UserCorrelation(0, ratings_array);
-            ShowData(ref temp,"U ","User",10);
-            */
-            double[] temp = new double[users];
-            temp = UserNeighbors(0, ratings_array);
-            ShowData(ref temp, "Neighbor ", "User", 10);
+            AllInOneRecommend(942,ratings_array);
         }
 
         private void button4_Click(object sender, EventArgs e)
