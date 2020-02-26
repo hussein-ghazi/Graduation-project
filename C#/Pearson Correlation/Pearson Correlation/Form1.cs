@@ -70,6 +70,38 @@ namespace Pearson_Correlation
             }
         }
 
+        private void ShowData<T>(ref T[] DataArray, string ColumnHeader, string RowHeader, int ColumnsCount)
+        {
+            //Clear the datagridview 
+            dataGridView1.Rows.Clear();
+
+            //If the ColumnsCount is 0 ==> show all columns of DataArray
+            if (ColumnsCount == 0)
+                ColumnsCount = DataArray.GetLength(0);
+
+            //Setting column header
+            dataGridView1.ColumnCount = ColumnsCount + 1;
+            dataGridView1.Columns[0].Name = RowHeader + "\\" + ColumnHeader;
+            for (int i = 1; i < ColumnsCount + 1; i++)
+                dataGridView1.Columns[i].Name = ColumnHeader + (i);
+
+            //Process of adding rows
+            string[] Row = new string[ColumnsCount + 1];
+            Row[0] = RowHeader;
+            for (int i = 0; i < ColumnsCount; i++)
+            {
+               
+                Row[i + 1] = DataArray[i].ToString();
+            }
+            dataGridView1.Rows.Add(Row);
+        }
+
+
+
+
+
+
+
         /*
          * Load ratings from the raw ratings file into an array 
          */
@@ -378,6 +410,107 @@ namespace Pearson_Correlation
             ShowData(ref UserRecommendedMovies, "Movie ", "Info. ", 0);
         }
 
+        private double[] UserCorrelation(int PersonID, int[,] RatingsArray)
+        {
+            double[] UserCorrelation = new double[users];
+            //Initialize the user correlation array
+            for (int i = 0; i < users; i++)
+                UserCorrelation[i] = 1.0;
+
+            //Initialize the needed variables 
+            double xbar, ybar;
+            double sumx = 0, sumy = 0;
+            double upersum = 0, lower;
+            double xi_xbar, yi_ybar;
+            double sumxipowr2 = 0, sumyipowr2 = 0;
+            double r;
+
+            for (int j = 0; j < users; j++)
+            {
+                if (PersonID != j)
+                {
+                    for (int k = 0; k < movies; k++)
+                    {
+                        sumx += RatingsArray[PersonID, k];
+                        sumy += RatingsArray[j, k];
+                    }
+
+                    if (sumx == 0 || sumy == 0)
+                    {
+                        UserCorrelation[j] = 0;
+                        UserCorrelation[j] = 0;
+                        sumx = 0;
+                        sumy = 0;
+                        continue;
+                    }
+
+                    xbar = sumx / movies;
+                    ybar = sumy / movies;
+
+                    for (int k = 0; k < movies; k++)
+                    {
+                        xi_xbar = RatingsArray[PersonID, k] - xbar;
+                        yi_ybar = RatingsArray[j, k] - ybar;
+                        upersum += xi_xbar * yi_ybar;
+
+                        sumxipowr2 += Math.Pow(xi_xbar, 2);
+                        sumyipowr2 += Math.Pow(yi_ybar, 2);
+                    }
+                    lower = Math.Sqrt(sumxipowr2 * sumyipowr2);
+
+                    r = upersum / lower;
+                    r = Math.Round(r, 4, MidpointRounding.ToEven);
+
+                    UserCorrelation[j] = r;
+
+                    sumx = 0;
+                    sumy = 0;
+                    upersum = 0;
+                    sumxipowr2 = 0;
+                    sumyipowr2 = 0;
+                }
+                else
+                    UserCorrelation[j] = 1;
+            }
+            return UserCorrelation;
+        }
+
+        private double[] UserNeighbors(int PersonID, int[,] RatingsArray)
+        {
+            int NeighborIndex = 0;
+            double Max = -1;
+
+            double[] PearsonCorrelation = new double[users];
+            PearsonCorrelation = UserCorrelation(PersonID, RatingsArray);
+
+            double[] UserNeighbors = new double[users];
+
+            for (int j = 0; j < neighbors; j++)
+            {
+                for (int k = 0; k < users; k++)
+                {
+                    if (PearsonCorrelation[k] > Max && PersonID != k)
+                    {
+                        Max = PearsonCorrelation[k];
+                        NeighborIndex = k;
+                    }
+                }
+                PearsonCorrelation[NeighborIndex] = -1;
+                Max = -1;
+                UserNeighbors[j] = NeighborIndex;
+            }
+            return UserNeighbors;
+        }
+
+        private void AllInOneRecommend(int PersonID, int[,] RatingsArray)
+        {
+            double[] CorrelationArray = new double[users];
+            double[] NeighborsArray = new double[neighbors];
+
+            CorrelationArray = UserCorrelation(PersonID, RatingsArray);
+            NeighborsArray = UserNeighbors(PersonID, RatingsArray);
+        }
+
 
 
         private void Form1_Load(object sender, EventArgs e)
@@ -440,6 +573,19 @@ namespace Pearson_Correlation
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            LoadRatings();
+            /*
+            double[] temp = new double[users];
+            temp = UserCorrelation(0, ratings_array);
+            ShowData(ref temp,"U ","User",10);
+            */
+            double[] temp = new double[users];
+            temp = UserNeighbors(0, ratings_array);
+            ShowData(ref temp, "Neighbor ", "User", 10);
         }
 
         private void button4_Click(object sender, EventArgs e)

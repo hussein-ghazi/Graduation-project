@@ -44,6 +44,7 @@
             this.button9 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.button10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -226,12 +227,23 @@
             this.label3.TabIndex = 15;
             this.label3.Text = "User ID";
             // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(580, 540);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(119, 23);
+            this.button10.TabIndex = 16;
+            this.button10.Text = "one correlation";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1184, 615);
+            this.Controls.Add(this.button10);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.button9);
@@ -278,6 +290,7 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button10;
     }
 }
 
