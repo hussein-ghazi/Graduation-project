@@ -90,16 +90,10 @@ namespace Pearson_Correlation
             Row[0] = RowHeader;
             for (int i = 0; i < ColumnsCount; i++)
             {
-               
                 Row[i + 1] = DataArray[i].ToString();
             }
             dataGridView1.Rows.Add(Row);
         }
-
-
-
-
-
 
 
         /*
@@ -386,7 +380,6 @@ namespace Pearson_Correlation
                     NeighborsInfo[0, i] = 0;
 
 
-
             //Needed variables
             double Max = 0 ;
             int MovieIndex = 0;
@@ -530,8 +523,8 @@ namespace Pearson_Correlation
             for (int i = 0; i < movies; i++)
                 if (NeighborsInfo[1, i] > 10 && RatingsArray[UserID, i] == 0)
                     UserMovies[i] = NeighborsInfo[0, i] / NeighborsInfo[1, i];
-                else
-                    UserMovies[i] = 0;
+                //else
+                    //UserMovies[i] = 0;
             return UserMovies;
         }
 
@@ -541,6 +534,198 @@ namespace Pearson_Correlation
             UserRecommendedMovies = UserRecommendation(PersonID,RatingsArray, UserNeighbors(PersonID, UserCorrelation(PersonID, RatingsArray)));
             ShowData(ref UserRecommendedMovies,"M ","User " + PersonID,100);
         }
+
+
+
+
+
+
+
+
+
+        private void MAE()
+        {
+            //using (System.IO.StreamWriter file = new System.IO.StreamWriter("RemovedRatings.txt"))
+            //{
+                LoadRatings();
+                Random random = new Random();
+                int num;
+                int RemovedRatings = 0;
+                string RemovedString;
+
+                double[,] PredictiveRatings = new double[users, movies];
+                int[] RatingsCount = new int[users];
+
+                for (int i = 0; i < users; i++)
+                    RatingsCount[i] = 0;
+
+
+                for (int i = 0; i < users; i++)
+                    for (int j = 0; j < movies; j++)
+                    {
+                        PredictiveRatings[i, j] = Convert.ToDouble(ratings_array[i, j]);
+
+                        if (ratings_array[i, j] > 0)
+                            RatingsCount[i]++;
+                    }
+
+                for (int i = 0; i < users; i++)
+                {
+                    RemovedRatings = RatingsCount[i] / 5;
+                    RemovedString = i.ToString() + "\t";
+
+                    while (RemovedRatings > 0)
+                    {
+                        num = random.Next(0, movies);
+                        if (PredictiveRatings[i, num] != 0)
+                        {
+                            RemovedString += num.ToString() + "\t";
+                            PredictiveRatings[i, num] = 0;
+                            RemovedRatings--;
+                        }
+                    }
+                    //file.WriteLine(RemovedString);
+                }
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///
+            //index 0 ==> summation
+            //index 1 ==> counter
+            double[,] TempNeighborsInfo = new double[users * 2, movies];
+            double[,] NeighborsInfo = new double[users, movies];
+
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < movies; j++)
+                {
+                    TempNeighborsInfo[i * 2, j] = 0;
+                    TempNeighborsInfo[i * 2 + 1, j] = 0;
+                }
+
+            for (int i = 0; i < users; i++)
+            {
+                for (int j = 0; j < 50; j++)
+                    for (int k = 0; k < movies; k++)
+                    {
+                        if (ratings_array[Convert.ToInt16(user_neighbors[i, j]), k] > 0)
+                        {
+                            TempNeighborsInfo[i * 2, k] += ratings_array[Convert.ToInt16(user_neighbors[i, j]), k];
+                            TempNeighborsInfo[i * 2 + 1, k]++;
+                        }
+                    }
+            }
+
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < movies; j++)
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && PredictiveRatings[i, j] == 0)   // count > 10
+                        NeighborsInfo[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
+                    else
+                        NeighborsInfo[i, j] = 0;
+
+            ShowData(ref NeighborsInfo, "m", "u", 0);
+            //}
+        }
+
+
+
+        private void AlldadadasdasUserRecommendation()
+        {
+            //index 0 ==> summation
+            //index 1 ==> counter
+            double[,] TempNeighborsInfo = new double[users * 2, movies];
+            double[,] NeighborsInfo = new double[users, movies];
+
+            //Rows:Users ; Columns:# of Recommended movies
+            double[,] RecommendedMovies = new double[users, NoOfRecommendedMovies];
+
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < movies; j++)
+                {
+                    TempNeighborsInfo[i * 2, j] = 0;
+                    TempNeighborsInfo[i * 2 + 1, j] = 0;
+                }
+
+            for (int i = 0; i < users; i++)
+            {
+                for (int j = 0; j < 50; j++)
+                    for (int k = 0; k < movies; k++)
+                    {
+                        if (ratings_array[Convert.ToInt16(user_neighbors[i, j]), k] > 0)
+                        {
+                            TempNeighborsInfo[i * 2, k] += ratings_array[Convert.ToInt16(user_neighbors[i, j]), k];
+                            TempNeighborsInfo[i * 2 + 1, k]++;
+                        }
+                    }
+            }
+
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < movies; j++)
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && ratings_array[i, j] == 0)   // count > 10
+                        NeighborsInfo[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
+                    else
+                        NeighborsInfo[i, j] = 0;
+
+
+            //Needed variables
+            double Max = 0;
+            int MovieIndex = 0;
+
+            //Sorting the array for n movies
+            for (int i = 0; i < users; i++)
+            {
+                for (int j = 0; j < NoOfRecommendedMovies; j++)
+                {
+                    for (int k = 0; k < movies; k++)
+                    {
+                        if (NeighborsInfo[i, k] > Max)
+                        {
+                            Max = NeighborsInfo[i, k];
+                            MovieIndex = k;
+                        }
+                    }
+                    RecommendedMovies[i, j] = MovieIndex + 1;
+                    NeighborsInfo[i, MovieIndex] = 0;
+                    Max = 0;
+                }
+            }
+            ShowData(ref RecommendedMovies, "Movie ", "User ", 0);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -568,8 +753,9 @@ namespace Pearson_Correlation
 
         private void button6_Click(object sender, EventArgs e)
         {
-            //LoadNeighbors();
-            //LoadPearson();
+            LoadNeighbors();
+            LoadPearson();
+            LoadRatings();
 
             if (textBox3.Text != "")
                 AllInOneRecommend(int.Parse(textBox3.Text) - 1, ratings_array);
@@ -610,6 +796,11 @@ namespace Pearson_Correlation
         {
             //LoadRatings();
             AllInOneRecommend(0,ratings_array);
+        }
+
+        private void button10_Click_1(object sender, EventArgs e)
+        {
+            MAE();
         }
 
         private void button4_Click(object sender, EventArgs e)
