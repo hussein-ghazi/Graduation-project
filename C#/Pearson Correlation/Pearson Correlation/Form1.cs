@@ -18,7 +18,7 @@ namespace Pearson_Correlation
         }
 
         //Count of users, movies and neighbors
-        private static readonly int users = 943, movies = 1682, neighbors = 50, NoOfRecommendedMovies = 200;
+        private static readonly int users = 943, movies = 1682, neighbors = 500, NoOfRecommendedMovies = 200;
 
         //Users x Movies array
         private int[,] ratings_array = new int[users, movies];
@@ -240,8 +240,8 @@ namespace Pearson_Correlation
             string NeighborsString;
 
             LoadPearson();
-            //using (System.IO.StreamWriter file = new System.IO.StreamWriter(NeighborsFile))
-            //{
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(NeighborsFile))
+            {
                 for (int i = 0; i < users; i++)
                 {
                     NeighborsString = i.ToString();
@@ -261,11 +261,11 @@ namespace Pearson_Correlation
 
                         //Neighbor index + 1 (C++) = Real User ID (MovieLens)
                         user_neighbors[i, j] = NeighborIndex;
-                       // NeighborsString += '\t' + NeighborIndex.ToString();
+                        NeighborsString += '\t' + NeighborIndex.ToString();
                     }
-                   // file.WriteLine(NeighborsString);
+                    file.WriteLine(NeighborsString);
                 }
-            //}
+            }
         }
 
         private void LoadNeighbors()
@@ -303,7 +303,7 @@ namespace Pearson_Correlation
 
             for (int i = 0; i < users; i++)
             {
-                for (int j = 0; j < 50; j++)
+                for (int j = 0; j < neighbors; j++)
                     for (int k = 0; k < movies; k++)
                     {
                         if (ratings_array[Convert.ToInt16(user_neighbors[i, j]), k] > 0)
@@ -363,7 +363,7 @@ namespace Pearson_Correlation
             }
                 
             //Calculate the sum and count for each movie and for all neighbors
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < neighbors; i++)
                 for (int j = 0; j < movies; j++)
                 {
                     if(ratings_array[Convert.ToInt16(user_neighbors[UserID, i]) , j] > 0)
@@ -510,7 +510,7 @@ namespace Pearson_Correlation
             }
 
             //Calculate the sum and count for each movie and for all neighbors
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < neighbors; i++)
                 for (int j = 0; j < movies; j++)
                 {
                     if (RatingsArray[Convert.ToInt16(UserNeighbors[i]), j] > 0)
@@ -546,30 +546,32 @@ namespace Pearson_Correlation
 
         private void MAE()
         {
-            //using (System.IO.StreamWriter file = new System.IO.StreamWriter("RemovedRatings.txt"))
-            //{
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter("RemovedRatings.txt"))
+            {
             LoadRatings();
             Random random = new Random();
             int num;
             int RemovedRatings = 0;
             string RemovedString;
 
-            double[,] PredictiveRatings = new double[users, movies];
+            double[,] NewRatings = new double[users, movies];
             int[] RatingsCount = new int[users];
 
             for (int i = 0; i < users; i++)
                 RatingsCount[i] = 0;
 
 
+            //count of ratings for each user
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
                 {
-                    PredictiveRatings[i, j] = Convert.ToDouble(ratings_array[i, j]);
+                    NewRatings[i, j] = Convert.ToDouble(ratings_array[i, j]);
 
                     if (ratings_array[i, j] > 0)
                         RatingsCount[i]++;
                 }
 
+            //prepare test set
             for (int i = 0; i < users; i++)
             {
                 RemovedRatings = RatingsCount[i] / 5;
@@ -578,23 +580,24 @@ namespace Pearson_Correlation
                 while (RemovedRatings > 0)
                 {
                     num = random.Next(0, movies);
-                    if (PredictiveRatings[i, num] != 0)
+                    if (NewRatings[i, num] != 0)
                     {
                         RemovedString += num.ToString() + "\t";
-                        PredictiveRatings[i, num] = 0;
+                        NewRatings[i, num] = 0;
                         RemovedRatings--;
                     }
                 }
-                //file.WriteLine(RemovedString);
+                file.WriteLine(RemovedString);
             }
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             ///
+
             LoadNeighbors();
             //index 0 ==> summation
             //index 1 ==> counter
             double[,] TempNeighborsInfo = new double[users * 2, movies];
-            double[,] NeighborsInfo = new double[users, movies];
+            double[,] PredictiveRatings = new double[users, movies];
 
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
@@ -605,7 +608,7 @@ namespace Pearson_Correlation
 
             for (int i = 0; i < users; i++)
             {
-                for (int j = 0; j < 50; j++)
+                for (int j = 0; j < neighbors; j++)
                     for (int k = 0; k < movies; k++)
                     {
                         if (ratings_array[Convert.ToInt16(user_neighbors[i, j]), k] > 0)
@@ -618,19 +621,107 @@ namespace Pearson_Correlation
     
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
-                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && PredictiveRatings[i, j] == 0)   // count > 10
-                        NeighborsInfo[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 20 && PredictiveRatings[i, j] == 0)   // count > 10
+                        PredictiveRatings[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
                     else
-                        NeighborsInfo[i, j] = 0;
+                        PredictiveRatings[i, j] = 0;
           
             ///////////////////////////////////////////////////////////////////////////////////
             ///    load index of removed data in test
+           
+            MessageBox.Show("Done!");
+           }
+        }
+
+        private void ReadMAE()
+        {
+            LoadRatings();
+            Random random = new Random();
+            int num;
+            int RemovedRatings = 0;
+            string RemovedString;
+
+            double[,] NewRatings = new double[users, movies];
+            int[] RatingsCount = new int[users];
+
+            for (int i = 0; i < users; i++)
+                RatingsCount[i] = 0;
+
+
+            //count of ratings for each user
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < movies; j++)
+                {
+                    NewRatings[i, j] = Convert.ToDouble(ratings_array[i, j]);
+
+                    if (ratings_array[i, j] > 0)
+                        RatingsCount[i]++;
+                }
+
+            //prepare test set
+            for (int i = 0; i < users; i++)
+            {
+                RemovedRatings = RatingsCount[i] / 5;
+                RemovedString = i.ToString() + "\t";
+
+                while (RemovedRatings > 0)
+                {
+                    num = random.Next(0, movies);
+                    if (NewRatings[i, num] != 0)
+                    {
+                        RemovedString += num.ToString() + "\t";
+                        NewRatings[i, num] = 0;
+                        RemovedRatings--;
+                    }
+                }
+            }
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///
+
+            LoadNeighbors();
+            //index 0 ==> summation
+            //index 1 ==> counter
+            double[,] TempNeighborsInfo = new double[users * 2, movies];
+            double[,] PredictiveRatings = new double[users, movies];
+
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < movies; j++)
+                {
+                    TempNeighborsInfo[i * 2, j] = 0;
+                    TempNeighborsInfo[i * 2 + 1, j] = 0;
+                }
+
+            for (int i = 0; i < users; i++)
+            {
+                for (int j = 0; j < neighbors; j++)
+                    for (int k = 0; k < movies; k++)
+                    {
+                        if (ratings_array[Convert.ToInt16(user_neighbors[i, j]), k] > 0)
+                        {
+                            TempNeighborsInfo[i * 2, k] += ratings_array[Convert.ToInt16(user_neighbors[i, j]), k];
+                            TempNeighborsInfo[i * 2 + 1, k]++;
+                        }
+                    }
+            }
+
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < movies; j++)
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && PredictiveRatings[i, j] == 0)   // count > 10
+                        PredictiveRatings[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
+                    else
+                        PredictiveRatings[i, j] = 0;
+
+            ///////////////////////////////////////////////////////////////////////////////////
+            ///    load index of removed data in test
+            ///    
             LoadRatings();
             //Reading all lines in file
             string[] lines = System.IO.File.ReadAllLines(RemovedRatingsFile);
             double sum = 0;
             int count = 0;
-            int i_index,j_index;
+            int i_index, j_index;
+            int temp = 0;
 
             //Read each line and fill it into the ratings array
             string[] DataLine;
@@ -638,43 +729,21 @@ namespace Pearson_Correlation
             {
                 DataLine = line.Split('\t');
                 i_index = int.Parse(DataLine[0]);
-                for (int j=1; j< DataLine.Length - 1;j++)
+                for (int j = 1; j < DataLine.Length - 1; j++)
                 {
                     j_index = int.Parse(DataLine[j]);
-                        sum += Math.Abs(NeighborsInfo[i_index, j_index] - ratings_array[i_index, j_index]);
-                        count++;
+                    sum += Math.Abs(PredictiveRatings[i_index, j_index] - ratings_array[i_index, j_index]);
+                    count++;
+                    if (PredictiveRatings[i_index, j_index] == 0)
+                        temp++;
                 }
             }
 
             //ShowData(ref NeighborsInfo, "m", "u", 100);
             double MAE = sum / count;
-
+            MessageBox.Show(temp.ToString());
             MessageBox.Show(MAE.ToString());
-
-            //}
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -758,6 +827,12 @@ namespace Pearson_Correlation
         private void button10_Click_1(object sender, EventArgs e)
         {
             MAE();
+            
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            ReadMAE();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -769,7 +844,7 @@ namespace Pearson_Correlation
         private void button3_Click(object sender, EventArgs e)
         {
             LoadPearson();
-            ShowData(ref users_correlation,"User ","User ",10);
+            ShowData(ref users_correlation,"User ","User ",100);
         }
 
         private void button1_Click(object sender, EventArgs e)
