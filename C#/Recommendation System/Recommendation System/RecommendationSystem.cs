@@ -60,8 +60,8 @@ namespace RecommendationSystem
             //Check for errors
             if(users <= 0 || movies <= 0)
                 throw new ArgumentException("Wrong arguments value!");
-            if (ratingsFile == "")
-                throw new IOException("Empty file name!");
+            if (string.IsNullOrEmpty(ratingsFile))
+                throw new MissingFieldException("Please enter file path!");
 
             //Set and initialize ratings array
             int[,] Ratings = new int[users, movies];
@@ -92,8 +92,8 @@ namespace RecommendationSystem
             //Check for errors
             if (users <= 0)
                 throw new ArgumentException("Wrong arguments value!");
-            if (correlationFile == "")
-                throw new IOException("Empty file name!");
+            if (string.IsNullOrEmpty(correlationFile))
+                throw new MissingFieldException("Please enter file path!");
 
             //Read all lines from file
             string[] lines = System.IO.File.ReadAllLines(correlationFile);
@@ -130,8 +130,8 @@ namespace RecommendationSystem
             //Check for errors
             if (users <= 0)
                 throw new ArgumentException("Wrong arguments value!");
-            if (NeighborsFile == "")
-                throw new IOException("Empty file name!");
+            if (string.IsNullOrEmpty(neighborsFile))
+                throw new MissingFieldException("Please enter file path!");
 
             //Read all lines from file
             string[] lines = System.IO.File.ReadAllLines(neighborsFile);
@@ -143,7 +143,6 @@ namespace RecommendationSystem
             foreach (string line in lines)
             {
                 DataLine = line.Split('\t');
-
                 for (int i = 0; i < neighbors; i++)
                     UsersNeighbors[int.Parse(DataLine[0]), i] = double.Parse(DataLine[i + 1]);
             }

@@ -50,7 +50,7 @@ namespace Recommendation_System
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void DataPreparationTab_Click(object sender, EventArgs e)
@@ -63,21 +63,58 @@ namespace Recommendation_System
             Recommendation R = new Recommendation();
             R.Users = 943; R.Movies = 1682;
             R.RatingsFile = "Ratings.txt";
-
             int[,] temp = new int[R.Users, R.Movies];
-            temp = R.LoadRatings();
-            ShowData(ref temp, "M ", "U ", 0);
-            
+
+            try
+            {
+                temp = R.LoadRatings();
+                ShowData(ref temp, "M ", "U ", 6);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void NeighborsButton_Click(object sender, EventArgs e)
         {
-            
+            Recommendation RE = new Recommendation();
+            RE.Users = 943; RE.Movies = 1682; RE.Neighbors = 50;
+            RE.NeighborsFile = "Neighbors.txt";
+            double[,] temp = new double[RE.Users, RE.Neighbors];
+
+            try
+            {
+                temp = RE.LoadUsersNeighbors();
+                ShowData(ref temp, "N ", "U ", 6);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void DataPreperationDataGrid_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
         {
             e.Column.FillWeight = 38;
+        }
+
+        private void CorrelationButton_Click(object sender, EventArgs e)
+        {
+            Recommendation R = new Recommendation();
+            R.Users = 943; R.Movies = 1682;
+            R.CorrelationFile = "Correlation.txt";
+            double[,] temp = new double[R.Users, R.Users];
+
+            try
+            {
+                temp = R.LoadUsersCorrelations();
+                ShowData(ref temp, "U ", "U ", 6);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

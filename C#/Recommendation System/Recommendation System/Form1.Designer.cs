@@ -95,6 +95,7 @@
             this.CorrelationButton.TabIndex = 2;
             this.CorrelationButton.Text = "Load Correlations";
             this.CorrelationButton.UseVisualStyleBackColor = false;
+            this.CorrelationButton.Click += new System.EventHandler(this.CorrelationButton_Click);
             // 
             // RatingsButton
             // 
