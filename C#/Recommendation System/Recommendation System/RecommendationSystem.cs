@@ -52,6 +52,17 @@ namespace RecommendationSystem
             set { neighborsFile = value; }
         }
 
+        public Recommendation()
+        {
+            this.users = 0;
+            this.movies = 0;
+            this.neighbors = 0;
+        }
+        ~Recommendation()
+        {
+
+        }
+
         /*
          * Load data from ratings file
          */
@@ -118,7 +129,6 @@ namespace RecommendationSystem
                 UsersCorrelations[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = double.Parse(DataLine[2]);
                 UsersCorrelations[int.Parse(DataLine[1]), int.Parse(DataLine[0])] = double.Parse(DataLine[2]);
             }
-
             return UsersCorrelations;
         }
 
@@ -146,8 +156,91 @@ namespace RecommendationSystem
                 for (int i = 0; i < neighbors; i++)
                     UsersNeighbors[int.Parse(DataLine[0]), i] = double.Parse(DataLine[i + 1]);
             }
-
             return UsersNeighbors;
         }
+
+        /*
+        * Calculate pearson correlation among users
+        */
+        private void CalculatePearson()
+        {
+            //Initialize the users correlation array
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < users; j++)
+                    users_correlation[i, j] = 1.0;
+
+            //Initialize the needed variables 
+            double xbar, ybar;
+            double sumx = 0, sumy = 0;
+            double upersum = 0, lower;
+            double xi_xbar, yi_ybar;
+            double sumxipowr2 = 0, sumyipowr2 = 0;
+            double r;
+
+            //using (System.IO.StreamWriter file = new System.IO.StreamWriter(CorrelationFile))
+            //{
+            for (int i = 0; i < users; i++)
+            {
+                for (int j = i; j < users - 1; j++)
+                {
+                    //Find the summation of vectors x and y
+                    for (int k = 0; k < movies; k++)
+                    {
+                        sumx += ratings_array[i, k];
+                        sumy += ratings_array[j + 1, k];
+                    }
+
+                    //If summation of any is 0 then zeroing and continue the loop
+                    if (sumx == 0 || sumy == 0)
+                    {
+                        users_correlation[i, j + 1] = 0;
+                        users_correlation[j + 1, i] = 0;
+
+                        sumx = 0;
+                        sumy = 0;
+                        continue;
+                    }
+
+                    //Calculate the mean of x and y
+                    xbar = sumx / movies;
+                    ybar = sumy / movies;
+
+                    for (int k = 0; k < movies; k++)
+                    {
+                        xi_xbar = ratings_array[i, k] - xbar;
+                        yi_ybar = ratings_array[j + 1, k] - ybar;
+                        upersum += xi_xbar * yi_ybar;
+
+                        sumxipowr2 += Math.Pow(xi_xbar, 2);
+                        sumyipowr2 += Math.Pow(yi_ybar, 2);
+                    }
+                    lower = Math.Sqrt(sumxipowr2 * sumyipowr2);
+
+                    //Calculate the correlation and round off the result
+                    r = upersum / lower;
+                    r = Math.Round(r, 4, MidpointRounding.ToEven);
+
+                    //Insert the result into the users correlation array
+                    users_correlation[i, j + 1] = r;
+                    users_correlation[j + 1, i] = r;
+
+                    //Write the data into the file
+                    //string line = i + "\t" + (j + 1) + "\t" + r;
+                    //file.WriteLine(line);
+
+                    //Zeroing the needed variables 
+                    sumx = 0;
+                    sumy = 0;
+                    upersum = 0;
+                    sumxipowr2 = 0;
+                    sumyipowr2 = 0;
+                }
+            }
+
+            //}
+        }
+
+
+
     }
 }

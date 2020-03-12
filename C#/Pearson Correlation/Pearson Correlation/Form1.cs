@@ -18,7 +18,7 @@ namespace Pearson_Correlation
         }
 
         //Count of users, movies and neighbors
-        private static readonly int users = 943, movies = 1682, neighbors = 500, NoOfRecommendedMovies = 200;
+        private static readonly int users = 943, movies = 1682, neighbors = 300, NoOfRecommendedMovies = 200;
 
         //Users x Movies array
         private int[,] ratings_array = new int[users, movies];
@@ -621,7 +621,7 @@ namespace Pearson_Correlation
     
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
-                    if (TempNeighborsInfo[i * 2 + 1, j] > 20 && PredictiveRatings[i, j] == 0)   // count > 10
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && PredictiveRatings[i, j] == 0)   // count > 10
                         PredictiveRatings[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
                     else
                         PredictiveRatings[i, j] = 0;
@@ -707,7 +707,7 @@ namespace Pearson_Correlation
 
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
-                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && PredictiveRatings[i, j] == 0)   // count > 10
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 0 && PredictiveRatings[i, j] == 0)   // count > 10
                         PredictiveRatings[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
                     else
                         PredictiveRatings[i, j] = 0;
