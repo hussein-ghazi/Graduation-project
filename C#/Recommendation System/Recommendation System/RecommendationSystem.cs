@@ -8,10 +8,9 @@ using System.Data;
 
 namespace RecommendationSystem
 {
-    class Recommendation
+    class RecommendationEngine
     {
         private int users, movies, neighbors;
-        private string ratingsFile, correlationFile, neighborsFile;
 
         /*
          * Property methods
@@ -34,31 +33,13 @@ namespace RecommendationSystem
             set { neighbors = value; }
         }
 
-        public string RatingsFile
-        {
-            get { return ratingsFile; }
-            set { ratingsFile = value; }
-        }
-
-        public string CorrelationFile
-        {
-            get { return correlationFile; }
-            set { correlationFile = value; }
-        }
-
-        public string NeighborsFile
-        {
-            get { return neighborsFile; }
-            set { neighborsFile = value; }
-        }
-
-        public Recommendation()
+        public RecommendationEngine()
         {
             this.users = 0;
             this.movies = 0;
             this.neighbors = 0;
         }
-        ~Recommendation()
+        ~RecommendationEngine()
         {
 
         }
@@ -66,7 +47,7 @@ namespace RecommendationSystem
         /*
          * Load data from ratings file
          */
-        public int[,] LoadRatings()
+        public int[,] ReadRatingsFile(string ratingsFile)
         {
             //Check for errors
             if(users <= 0 || movies <= 0)
@@ -91,14 +72,13 @@ namespace RecommendationSystem
                 //-1 because there is no movie or user with id 0
                 Ratings[int.Parse(DataLine[0]) - 1, int.Parse(DataLine[1]) - 1] = int.Parse(DataLine[2]);
             }
-
             return Ratings;
         }
 
         /*
          * Load data from correlation file
          */
-        public double[,] LoadUsersCorrelations()
+        public double[,] ReadUsersCorrelationsFile(string correlationFile)
         {
             //Check for errors
             if (users <= 0)
@@ -135,7 +115,7 @@ namespace RecommendationSystem
         /*
          * Load data from neighbors file
          */
-        public double[,] LoadUsersNeighbors()
+        public double[,] ReadUsersNeighborsFile(string neighborsFile)
         {
             //Check for errors
             if (users <= 0)
@@ -162,12 +142,17 @@ namespace RecommendationSystem
         /*
         * Calculate pearson correlation among users
         */
-        private void CalculatePearson()
+        private double[,] CalculatePearsonCorrelation(int[,] Ratings)
         {
+            //Check for errors
+            if (users <= 0 || movies <= 0)
+                throw new ArgumentException("Wrong arguments value!");
+
             //Initialize the users correlation array
+            double[,] UsersCorrelation = new double[users, movies];
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < users; j++)
-                    users_correlation[i, j] = 1.0;
+                    UsersCorrelation[i, j] = 1.0;
 
             //Initialize the needed variables 
             double xbar, ybar;
@@ -177,8 +162,6 @@ namespace RecommendationSystem
             double sumxipowr2 = 0, sumyipowr2 = 0;
             double r;
 
-            //using (System.IO.StreamWriter file = new System.IO.StreamWriter(CorrelationFile))
-            //{
             for (int i = 0; i < users; i++)
             {
                 for (int j = i; j < users - 1; j++)
@@ -186,16 +169,15 @@ namespace RecommendationSystem
                     //Find the summation of vectors x and y
                     for (int k = 0; k < movies; k++)
                     {
-                        sumx += ratings_array[i, k];
-                        sumy += ratings_array[j + 1, k];
+                        sumx += Ratings[i, k];
+                        sumy += Ratings[j + 1, k];
                     }
 
                     //If summation of any is 0 then zeroing and continue the loop
                     if (sumx == 0 || sumy == 0)
                     {
-                        users_correlation[i, j + 1] = 0;
-                        users_correlation[j + 1, i] = 0;
-
+                        UsersCorrelation[i, j + 1] = 0;
+                        UsersCorrelation[j + 1, i] = 0;
                         sumx = 0;
                         sumy = 0;
                         continue;
@@ -207,8 +189,8 @@ namespace RecommendationSystem
 
                     for (int k = 0; k < movies; k++)
                     {
-                        xi_xbar = ratings_array[i, k] - xbar;
-                        yi_ybar = ratings_array[j + 1, k] - ybar;
+                        xi_xbar = Ratings[i, k] - xbar;
+                        yi_ybar = Ratings[j + 1, k] - ybar;
                         upersum += xi_xbar * yi_ybar;
 
                         sumxipowr2 += Math.Pow(xi_xbar, 2);
@@ -221,14 +203,9 @@ namespace RecommendationSystem
                     r = Math.Round(r, 4, MidpointRounding.ToEven);
 
                     //Insert the result into the users correlation array
-                    users_correlation[i, j + 1] = r;
-                    users_correlation[j + 1, i] = r;
+                    UsersCorrelation[i, j + 1] = r;
+                    UsersCorrelation[j + 1, i] = r;
 
-                    //Write the data into the file
-                    //string line = i + "\t" + (j + 1) + "\t" + r;
-                    //file.WriteLine(line);
-
-                    //Zeroing the needed variables 
                     sumx = 0;
                     sumy = 0;
                     upersum = 0;
@@ -236,11 +213,7 @@ namespace RecommendationSystem
                     sumyipowr2 = 0;
                 }
             }
-
-            //}
+            return UsersCorrelation;
         }
-
-
-
     }
 }
