@@ -14,6 +14,10 @@ namespace Recommendation_System
 {
     public partial class MainWindow : Form
     {
+        // Public variables
+        RecommendationEngine RE = new RecommendationEngine();
+        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -60,12 +64,34 @@ namespace Recommendation_System
 
         private void RatingsButton_Click(object sender, EventArgs e)
         {
-        
+            RE.Users = 943;
+            RE.Neighbors = 50;
+            double[,] Neighbors = new double[RE.Users, RE.Neighbors];
+            try
+            {
+                Neighbors = RE.ReadUsersNeighborsFile("Neighbors.txt");
+                ShowData(ref Neighbors, "U", "U", 6);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void NeighborsButton_Click(object sender, EventArgs e)
         {
-            RecommendationEngine RE = new RecommendationEngine();
+            RE.Users = 943;
+            RE.Movies = 1682;
+            int[,] Ratings = new int[RE.Users, RE.Movies];
+            try
+            {
+                Ratings = RE.ReadRatingsFile("Ratings.txt");
+                ShowData(ref Ratings,"M","U",6);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void DataPreperationDataGrid_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
@@ -75,7 +101,18 @@ namespace Recommendation_System
 
         private void CorrelationButton_Click(object sender, EventArgs e)
         {
-
+            RE.Users = 943;
+            RE.Movies = 1682;
+            double[,] Correlations = new double[RE.Users, RE.Users];
+            try
+            {
+                Correlations = RE.ReadUsersCorrelationsFile("Correlation.txt");
+                ShowData(ref Correlations, "U", "U", 6);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
