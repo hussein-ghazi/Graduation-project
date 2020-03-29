@@ -65,12 +65,12 @@ namespace Recommendation_System
         private void RatingsButton_Click(object sender, EventArgs e)
         {
             RE.Users = 943;
-            RE.Neighbors = 50;
-            double[,] Neighbors = new double[RE.Users, RE.Neighbors];
+            RE.Movies = 1682;
+            int[,] Ratings = new int[RE.Users, RE.Movies];
             try
             {
-                Neighbors = RE.ReadUsersNeighborsFile("Neighbors.txt");
-                ShowData(ref Neighbors, "U", "U", 6);
+                Ratings = RE.ReadRatingsFile("Ratings.txt");
+                ShowData(ref Ratings, "M", "U", 6);
             }
             catch (Exception ex)
             {
@@ -81,12 +81,12 @@ namespace Recommendation_System
         private void NeighborsButton_Click(object sender, EventArgs e)
         {
             RE.Users = 943;
-            RE.Movies = 1682;
-            int[,] Ratings = new int[RE.Users, RE.Movies];
+            RE.Neighbors = 50;
+            double[,] Neighbors = new double[RE.Users, RE.Neighbors];
             try
             {
-                Ratings = RE.ReadRatingsFile("Ratings.txt");
-                ShowData(ref Ratings,"M","U",6);
+                Neighbors = RE.ReadUsersNeighborsFile("Neighbors.txt");
+                ShowData(ref Neighbors, "U", "U", 6);
             }
             catch (Exception ex)
             {

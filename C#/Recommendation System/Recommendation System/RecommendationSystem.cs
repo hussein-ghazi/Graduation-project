@@ -51,9 +51,11 @@ namespace RecommendationSystem
         {
             //Check for errors
             if(users <= 0 || movies <= 0)
-                throw new ArgumentException("Wrong arguments value!");
+                throw new IOException("Please enter appropriate numbers");
             if (string.IsNullOrEmpty(ratingsFile))
-                throw new MissingFieldException("Please enter file path!");
+                throw new MissingFieldException("Please enter a file path!");
+            if (!System.IO.File.Exists(ratingsFile))
+                throw new FileNotFoundException("File not found!");
 
             //Set and initialize ratings array
             int[,] Ratings = new int[users, movies];
@@ -82,12 +84,15 @@ namespace RecommendationSystem
         {
             //Check for errors
             if (users <= 0)
-                throw new ArgumentException("Wrong arguments value!");
+                throw new IOException("Please enter appropriate numbers");
             if (string.IsNullOrEmpty(correlationFile))
-                throw new MissingFieldException("Please enter file path!");
+                throw new MissingFieldException("Please enter a file path!");
+            if (!System.IO.File.Exists(correlationFile))
+                throw new FileNotFoundException("File not found!");
 
             //Read all lines from file
             string[] lines = System.IO.File.ReadAllLines(correlationFile);
+            
 
             //Set and initialize the users correlation array
             double[,] UsersCorrelations = new double[users, users];
@@ -119,9 +124,11 @@ namespace RecommendationSystem
         {
             //Check for errors
             if (users <= 0)
-                throw new ArgumentException("Wrong arguments value!");
+                throw new IOException("Please enter appropriate numbers");
             if (string.IsNullOrEmpty(neighborsFile))
-                throw new MissingFieldException("Please enter file path!");
+                throw new MissingFieldException("Please enter a file path!");
+            if (!System.IO.File.Exists(neighborsFile))
+                throw new FileNotFoundException("File not found!");
 
             //Read all lines from file
             string[] lines = System.IO.File.ReadAllLines(neighborsFile);
