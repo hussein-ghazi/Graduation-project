@@ -35,8 +35,10 @@
             this.RatingsButton = new System.Windows.Forms.Button();
             this.DataPreperationDataGrid = new System.Windows.Forms.DataGridView();
             this.RecommendationTab = new System.Windows.Forms.TabPage();
-            this.RecommendationDataGrid = new System.Windows.Forms.DataGridView();
             this.CalculateCorrelations = new System.Windows.Forms.Button();
+            this.RecommendationDataGrid = new System.Windows.Forms.DataGridView();
+            this.FindNeighbors = new System.Windows.Forms.Button();
+            this.RecommendationsBtn = new System.Windows.Forms.Button();
             this.TabControl.SuspendLayout();
             this.DataPreparationTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataPreperationDataGrid)).BeginInit();
@@ -90,7 +92,7 @@
             this.CorrelationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CorrelationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CorrelationButton.ForeColor = System.Drawing.Color.White;
-            this.CorrelationButton.Location = new System.Drawing.Point(257, 468);
+            this.CorrelationButton.Location = new System.Drawing.Point(260, 468);
             this.CorrelationButton.Name = "CorrelationButton";
             this.CorrelationButton.Size = new System.Drawing.Size(229, 37);
             this.CorrelationButton.TabIndex = 2;
@@ -104,7 +106,7 @@
             this.RatingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RatingsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RatingsButton.ForeColor = System.Drawing.Color.White;
-            this.RatingsButton.Location = new System.Drawing.Point(515, 468);
+            this.RatingsButton.Location = new System.Drawing.Point(520, 468);
             this.RatingsButton.Name = "RatingsButton";
             this.RatingsButton.Size = new System.Drawing.Size(229, 37);
             this.RatingsButton.TabIndex = 1;
@@ -126,6 +128,8 @@
             // 
             // RecommendationTab
             // 
+            this.RecommendationTab.Controls.Add(this.RecommendationsBtn);
+            this.RecommendationTab.Controls.Add(this.FindNeighbors);
             this.RecommendationTab.Controls.Add(this.CalculateCorrelations);
             this.RecommendationTab.Controls.Add(this.RecommendationDataGrid);
             this.RecommendationTab.Location = new System.Drawing.Point(4, 25);
@@ -135,17 +139,6 @@
             this.RecommendationTab.TabIndex = 1;
             this.RecommendationTab.Text = "Recommendation";
             this.RecommendationTab.UseVisualStyleBackColor = true;
-            // 
-            // RecommendationDataGrid
-            // 
-            this.RecommendationDataGrid.AllowUserToAddRows = false;
-            this.RecommendationDataGrid.AllowUserToDeleteRows = false;
-            this.RecommendationDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.RecommendationDataGrid.Location = new System.Drawing.Point(0, 0);
-            this.RecommendationDataGrid.Name = "RecommendationDataGrid";
-            this.RecommendationDataGrid.ReadOnly = true;
-            this.RecommendationDataGrid.Size = new System.Drawing.Size(752, 462);
-            this.RecommendationDataGrid.TabIndex = 1;
             // 
             // CalculateCorrelations
             // 
@@ -160,6 +153,45 @@
             this.CalculateCorrelations.Text = "Calculate Correlations";
             this.CalculateCorrelations.UseVisualStyleBackColor = false;
             this.CalculateCorrelations.Click += new System.EventHandler(this.CalculateCorrelations_Click);
+            // 
+            // RecommendationDataGrid
+            // 
+            this.RecommendationDataGrid.AllowUserToAddRows = false;
+            this.RecommendationDataGrid.AllowUserToDeleteRows = false;
+            this.RecommendationDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.RecommendationDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.RecommendationDataGrid.Name = "RecommendationDataGrid";
+            this.RecommendationDataGrid.ReadOnly = true;
+            this.RecommendationDataGrid.Size = new System.Drawing.Size(752, 462);
+            this.RecommendationDataGrid.TabIndex = 1;
+            // 
+            // FindNeighbors
+            // 
+            this.FindNeighbors.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.FindNeighbors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.FindNeighbors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FindNeighbors.ForeColor = System.Drawing.Color.White;
+            this.FindNeighbors.Location = new System.Drawing.Point(520, 468);
+            this.FindNeighbors.Name = "FindNeighbors";
+            this.FindNeighbors.Size = new System.Drawing.Size(229, 37);
+            this.FindNeighbors.TabIndex = 5;
+            this.FindNeighbors.Text = "Find Neighbors";
+            this.FindNeighbors.UseVisualStyleBackColor = false;
+            this.FindNeighbors.Click += new System.EventHandler(this.FindNeighbors_Click);
+            // 
+            // RecommendationsBtn
+            // 
+            this.RecommendationsBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.RecommendationsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RecommendationsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RecommendationsBtn.ForeColor = System.Drawing.Color.White;
+            this.RecommendationsBtn.Location = new System.Drawing.Point(260, 468);
+            this.RecommendationsBtn.Name = "RecommendationsBtn";
+            this.RecommendationsBtn.Size = new System.Drawing.Size(229, 37);
+            this.RecommendationsBtn.TabIndex = 6;
+            this.RecommendationsBtn.Text = "Recommndations";
+            this.RecommendationsBtn.UseVisualStyleBackColor = false;
+            this.RecommendationsBtn.Click += new System.EventHandler(this.RecommendationsBtn_Click);
             // 
             // MainWindow
             // 
@@ -194,6 +226,8 @@
         private System.Windows.Forms.Button CorrelationButton;
         private System.Windows.Forms.Button RatingsButton;
         private System.Windows.Forms.Button CalculateCorrelations;
+        private System.Windows.Forms.Button FindNeighbors;
+        private System.Windows.Forms.Button RecommendationsBtn;
     }
 }
 

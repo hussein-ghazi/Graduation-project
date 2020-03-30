@@ -10,7 +10,7 @@ namespace RecommendationSystem
 {
     class RecommendationEngine
     {
-        private int users, movies, neighbors;
+        private int users, movies, neighbors, noOfRecommendedMovies;
 
         /*
          * Property methods
@@ -33,6 +33,12 @@ namespace RecommendationSystem
             set { neighbors = value; }
         }
 
+        public int NoOfRecommendedMovies
+        {
+            get { return noOfRecommendedMovies; }
+            set { noOfRecommendedMovies = value; }
+        }
+
         public RecommendationEngine()
         {
             this.users = 0;
@@ -50,7 +56,7 @@ namespace RecommendationSystem
         public int[,] ReadRatingsFile(string ratingsFile)
         {
             //Check for errors
-            if(users <= 0 || movies <= 0)
+            if (users <= 0 || movies <= 0)
                 throw new IOException("Please enter appropriate numbers");
             if (string.IsNullOrEmpty(ratingsFile))
                 throw new MissingFieldException("Please enter a file path!");
@@ -65,7 +71,7 @@ namespace RecommendationSystem
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
                     Ratings[i, j] = 0;
-            
+
             //Read each line and fill it into the ratings array
             string[] DataLine;
             foreach (string line in lines)
@@ -92,7 +98,7 @@ namespace RecommendationSystem
 
             //Read all lines from file
             string[] lines = System.IO.File.ReadAllLines(correlationFile);
-            
+
 
             //Set and initialize the users correlation array
             double[,] UsersCorrelations = new double[users, users];
@@ -123,7 +129,7 @@ namespace RecommendationSystem
         public double[,] ReadUsersNeighborsFile(string neighborsFile)
         {
             //Check for errors
-            if (users <= 0)
+            if (users <= 0 || neighbors <= 0)
                 throw new IOException("Please enter appropriate numbers");
             if (string.IsNullOrEmpty(neighborsFile))
                 throw new MissingFieldException("Please enter a file path!");
@@ -221,6 +227,114 @@ namespace RecommendationSystem
                 }
             }
             return UsersCorrelation;
+        }
+
+        /*
+        * Find nearest neighbors for all users
+        */
+        public double[,] FindNearestNeighbors(double[,] Correlations)
+        {
+            //Check for errors
+            if (users <= 0 || neighbors <= 0)
+                throw new IOException("Please enter appropriate numbers");
+
+            int NeighborIndex = 0;
+            double Max = -1;
+            string NeighborsString;
+            double[,] UserNeighbors = new double[users,neighbors];
+
+            for (int i = 0; i < users; i++)
+            {
+                NeighborsString = i.ToString();
+
+                for (int j = 0; j < neighbors; j++)
+                {
+                    for (int k = 0; k < users; k++)
+                    {
+                        if (Correlations[i, k] > Max && i != k)
+                        {
+                            Max = Correlations[i, k];
+                            NeighborIndex = k;
+                        }
+                    }
+                    Correlations[i, NeighborIndex] = -1;
+                    Max = -1;
+
+                    //Neighbor index + 1 (C#) = Real User ID (MovieLens)
+                    UserNeighbors[i, j] = NeighborIndex;
+                }
+            }
+            return UserNeighbors;
+        }
+
+        /*
+         * Recommend for all users
+         */
+        public double[,] Recommendations(int[,] Ratings, double[,] Neighbors)
+        {
+            //Check for errors
+            if (users <= 0 || neighbors <= 0 || movies<= 0 || noOfRecommendedMovies <=0)
+                throw new IOException("Please enter appropriate numbers");
+
+            //index 0 ==> summation
+            //index 1 ==> counter
+            double[,] TempNeighborsInfo = new double[users * 2, movies];
+            double[,] NeighborsInfo = new double[users, movies];
+
+            //Rows:Users ; Columns:# of Recommended movies
+            double[,] RecommendedMovies = new double[users, noOfRecommendedMovies];
+
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < movies; j++)
+                {
+                    TempNeighborsInfo[i * 2, j] = 0;
+                    TempNeighborsInfo[i * 2 + 1, j] = 0;
+                }
+
+            for (int i = 0; i < users; i++)
+            {
+                for (int j = 0; j < neighbors; j++)
+                    for (int k = 0; k < movies; k++)
+                    {
+                        if (Ratings[Convert.ToInt16(Neighbors[i, j]), k] > 0)
+                        {
+                            TempNeighborsInfo[i * 2, k] += Ratings[Convert.ToInt16(Neighbors[i, j]), k];
+                            TempNeighborsInfo[i * 2 + 1, k]++;
+                        }
+                    }
+            }
+
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < movies; j++)
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && Ratings[i, j] == 0)   // count > 10
+                        NeighborsInfo[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
+                    else
+                        NeighborsInfo[i, j] = 0;
+
+
+            //Needed variables
+            double Max = 0;
+            int MovieIndex = 0;
+
+            //Sorting the array for n movies
+            for (int i = 0; i < users; i++)
+            {
+                for (int j = 0; j < noOfRecommendedMovies; j++)
+                {
+                    for (int k = 0; k < movies; k++)
+                    {
+                        if (NeighborsInfo[i, k] > Max)
+                        {
+                            Max = NeighborsInfo[i, k];
+                            MovieIndex = k;
+                        }
+                    }
+                    RecommendedMovies[i, j] = MovieIndex + 1;
+                    NeighborsInfo[i, MovieIndex] = 0;
+                    Max = 0;
+                }
+            }
+            return RecommendedMovies;
         }
     }
 }

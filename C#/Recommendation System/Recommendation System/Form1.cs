@@ -15,7 +15,13 @@ namespace Recommendation_System
     public partial class MainWindow : Form
     {
         // Public variables
-        RecommendationEngine RE = new RecommendationEngine();
+        RecommendationEngine RE = new RecommendationEngine() 
+        {
+            Users = 943,
+            Movies = 1682,
+            Neighbors = 50,
+            NoOfRecommendedMovies = 1682
+        };
         
 
         public MainWindow()
@@ -97,8 +103,6 @@ namespace Recommendation_System
 
         private void RatingsButton_Click(object sender, EventArgs e)
         {
-            RE.Users = 943;
-            RE.Movies = 1682;
             int[,] Ratings = new int[RE.Users, RE.Movies];
             try
             {
@@ -113,8 +117,6 @@ namespace Recommendation_System
 
         private void NeighborsButton_Click(object sender, EventArgs e)
         {
-            RE.Users = 943;
-            RE.Neighbors = 50;
             double[,] Neighbors = new double[RE.Users, RE.Neighbors];
             try
             {
@@ -134,8 +136,6 @@ namespace Recommendation_System
 
         private void CorrelationButton_Click(object sender, EventArgs e)
         {
-            RE.Users = 943;
-            RE.Movies = 1682;
             double[,] Correlations = new double[RE.Users, RE.Users];
             try
             {
@@ -150,8 +150,6 @@ namespace Recommendation_System
 
         private void CalculateCorrelations_Click(object sender, EventArgs e)
         {
-            RE.Users = 943;
-            RE.Movies = 1682;
             int[,] Ratings = new int[RE.Users, RE.Movies];
             double[,] Correlations = new double[RE.Users, RE.Users];
             try
@@ -159,6 +157,45 @@ namespace Recommendation_System
                 Ratings = RE.ReadRatingsFile("Ratings.txt");
                 Correlations = RE.CalculateCorrelations(Ratings);
                 ShowData(ref Correlations, "U", "U", 6, 2);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void FindNeighbors_Click(object sender, EventArgs e)
+        {
+            int[,] Ratings = new int[RE.Users, RE.Movies];
+            double[,] Correlations = new double[RE.Users, RE.Users];
+            double[,] Neighbors = new double[RE.Users, RE.Neighbors];
+            try
+            {
+                Ratings = RE.ReadRatingsFile("Ratings.txt");
+                Correlations = RE.ReadUsersCorrelationsFile("Correlation.txt");
+                Neighbors = RE.FindNearestNeighbors(Correlations);
+                ShowData(ref Neighbors, "U", "U", 6, 2);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void RecommendationsBtn_Click(object sender, EventArgs e)
+        {
+            int[,] Ratings = new int[RE.Users, RE.Movies];
+            double[,] Correlations = new double[RE.Users, RE.Users];
+            double[,] Neighbors = new double[RE.Users, RE.Neighbors];
+            double[,] Recommendations = new double[RE.Users, RE.NoOfRecommendedMovies];
+
+            try
+            {
+                Ratings = RE.ReadRatingsFile("Ratings.txt");
+                Correlations = RE.ReadUsersCorrelationsFile("Correlation.txt");
+                Neighbors = RE.ReadUsersNeighborsFile("Neighbors.txt");
+                Recommendations = RE.Recommendations(Ratings,Neighbors);
+                ShowData(ref Recommendations, "M", "U", 6, 2);
             }
             catch (Exception ex)
             {

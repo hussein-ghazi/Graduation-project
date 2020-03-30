@@ -538,12 +538,6 @@ namespace Pearson_Correlation
 
 
 
-
-
-
-
-
-
         private void MAE()
         {
             using (System.IO.StreamWriter file = new System.IO.StreamWriter("RemovedRatings.txt"))
