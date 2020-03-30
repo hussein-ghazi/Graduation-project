@@ -36,6 +36,7 @@
             this.DataPreperationDataGrid = new System.Windows.Forms.DataGridView();
             this.RecommendationTab = new System.Windows.Forms.TabPage();
             this.RecommendationDataGrid = new System.Windows.Forms.DataGridView();
+            this.CalculateCorrelations = new System.Windows.Forms.Button();
             this.TabControl.SuspendLayout();
             this.DataPreparationTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataPreperationDataGrid)).BeginInit();
@@ -125,6 +126,7 @@
             // 
             // RecommendationTab
             // 
+            this.RecommendationTab.Controls.Add(this.CalculateCorrelations);
             this.RecommendationTab.Controls.Add(this.RecommendationDataGrid);
             this.RecommendationTab.Location = new System.Drawing.Point(4, 25);
             this.RecommendationTab.Name = "RecommendationTab";
@@ -142,8 +144,22 @@
             this.RecommendationDataGrid.Location = new System.Drawing.Point(0, 0);
             this.RecommendationDataGrid.Name = "RecommendationDataGrid";
             this.RecommendationDataGrid.ReadOnly = true;
-            this.RecommendationDataGrid.Size = new System.Drawing.Size(752, 324);
+            this.RecommendationDataGrid.Size = new System.Drawing.Size(752, 462);
             this.RecommendationDataGrid.TabIndex = 1;
+            // 
+            // CalculateCorrelations
+            // 
+            this.CalculateCorrelations.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.CalculateCorrelations.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CalculateCorrelations.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CalculateCorrelations.ForeColor = System.Drawing.Color.White;
+            this.CalculateCorrelations.Location = new System.Drawing.Point(3, 468);
+            this.CalculateCorrelations.Name = "CalculateCorrelations";
+            this.CalculateCorrelations.Size = new System.Drawing.Size(229, 37);
+            this.CalculateCorrelations.TabIndex = 4;
+            this.CalculateCorrelations.Text = "Calculate Correlations";
+            this.CalculateCorrelations.UseVisualStyleBackColor = false;
+            this.CalculateCorrelations.Click += new System.EventHandler(this.CalculateCorrelations_Click);
             // 
             // MainWindow
             // 
@@ -177,6 +193,7 @@
         private System.Windows.Forms.Button NeighborsButton;
         private System.Windows.Forms.Button CorrelationButton;
         private System.Windows.Forms.Button RatingsButton;
+        private System.Windows.Forms.Button CalculateCorrelations;
     }
 }
 

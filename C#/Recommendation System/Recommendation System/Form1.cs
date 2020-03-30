@@ -23,32 +23,65 @@ namespace Recommendation_System
             InitializeComponent();
         }
 
-        private void ShowData<T>(ref T[,] DataArray, string ColumnHeader, string RowHeader, int ColumnsCount)
+        private void ShowData<T>(ref T[,] DataArray, string ColumnHeader, string RowHeader, int ColumnsCount, int DataGrid)
         {
-            //Clear the datagridview 
-            DataPreperationDataGrid.Rows.Clear();
-
-            int RowsNo = DataArray.GetLength(0);
-
-            //If the ColumnsCount is 0 ==> show all columns of DataArray
-            if (ColumnsCount == 0)
-                ColumnsCount = DataArray.GetLength(1);
-
-            //Setting column header
-            DataPreperationDataGrid.ColumnCount = ColumnsCount + 1;
-            DataPreperationDataGrid.Columns[0].Name = RowHeader + "\\" + ColumnHeader;
-            for (int i = 1; i < ColumnsCount + 1; i++)
-                DataPreperationDataGrid.Columns[i].Name = ColumnHeader + (i);
-
-            //Process of adding rows
-            string[] Row = new string[ColumnsCount + 1];
-            for (int i = 0; i < RowsNo; i++)
+            if(DataGrid == 1)
             {
-                Row[0] = RowHeader + (i + 1);
+                // Clear the datagridview 
+                DataPreperationDataGrid.Rows.Clear();
 
-                for (int j = 0; j < ColumnsCount; j++)
-                    Row[j + 1] = DataArray[i, j].ToString();
-                DataPreperationDataGrid.Rows.Add(Row);
+                // Get count of rows
+                int RowsNo = DataArray.GetLength(0);
+
+                // If the ColumnsCount is 0 ==> show all columns of DataArray
+                if (ColumnsCount == 0)
+                    ColumnsCount = DataArray.GetLength(1);
+
+                // Setting column header
+                DataPreperationDataGrid.ColumnCount = ColumnsCount + 1;
+                DataPreperationDataGrid.Columns[0].Name = RowHeader + "\\" + ColumnHeader;
+                for (int i = 1; i < ColumnsCount + 1; i++)
+                    DataPreperationDataGrid.Columns[i].Name = ColumnHeader + (i);
+
+                // Process of adding rows
+                string[] Row = new string[ColumnsCount + 1];
+                for (int i = 0; i < RowsNo; i++)
+                {
+                    Row[0] = RowHeader + (i + 1);
+
+                    for (int j = 0; j < ColumnsCount; j++)
+                        Row[j + 1] = DataArray[i, j].ToString();
+                    DataPreperationDataGrid.Rows.Add(Row);
+                }
+            }
+            if (DataGrid == 2)
+            {
+                // Clear the datagridview 
+                RecommendationDataGrid.Rows.Clear();
+
+                // Get count of rows
+                int RowsNo = DataArray.GetLength(0);
+
+                // If the ColumnsCount is 0 ==> show all columns of DataArray
+                if (ColumnsCount == 0)
+                    ColumnsCount = DataArray.GetLength(1);
+
+                // Setting column header
+                RecommendationDataGrid.ColumnCount = ColumnsCount + 1;
+                RecommendationDataGrid.Columns[0].Name = RowHeader + "\\" + ColumnHeader;
+                for (int i = 1; i < ColumnsCount + 1; i++)
+                    RecommendationDataGrid.Columns[i].Name = ColumnHeader + (i);
+
+                // Process of adding rows
+                string[] Row = new string[ColumnsCount + 1];
+                for (int i = 0; i < RowsNo; i++)
+                {
+                    Row[0] = RowHeader + (i + 1);
+
+                    for (int j = 0; j < ColumnsCount; j++)
+                        Row[j + 1] = DataArray[i, j].ToString();
+                    RecommendationDataGrid.Rows.Add(Row);
+                }
             }
         }
 
@@ -70,7 +103,7 @@ namespace Recommendation_System
             try
             {
                 Ratings = RE.ReadRatingsFile("Ratings.txt");
-                ShowData(ref Ratings, "M", "U", 6);
+                ShowData(ref Ratings, "M", "U", 6, 1);
             }
             catch (Exception ex)
             {
@@ -86,7 +119,7 @@ namespace Recommendation_System
             try
             {
                 Neighbors = RE.ReadUsersNeighborsFile("Neighbors.txt");
-                ShowData(ref Neighbors, "U", "U", 6);
+                ShowData(ref Neighbors, "U", "U", 6, 1);
             }
             catch (Exception ex)
             {
@@ -107,7 +140,25 @@ namespace Recommendation_System
             try
             {
                 Correlations = RE.ReadUsersCorrelationsFile("Correlation.txt");
-                ShowData(ref Correlations, "U", "U", 6);
+                ShowData(ref Correlations, "U", "U", 6, 1);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void CalculateCorrelations_Click(object sender, EventArgs e)
+        {
+            RE.Users = 943;
+            RE.Movies = 1682;
+            int[,] Ratings = new int[RE.Users, RE.Movies];
+            double[,] Correlations = new double[RE.Users, RE.Users];
+            try
+            {
+                Ratings = RE.ReadRatingsFile("Ratings.txt");
+                Correlations = RE.CalculateCorrelations(Ratings);
+                ShowData(ref Correlations, "U", "U", 6, 2);
             }
             catch (Exception ex)
             {

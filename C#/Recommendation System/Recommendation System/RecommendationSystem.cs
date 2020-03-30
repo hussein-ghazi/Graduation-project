@@ -149,11 +149,11 @@ namespace RecommendationSystem
         /*
         * Calculate pearson correlation among users
         */
-        private double[,] CalculatePearsonCorrelation(int[,] Ratings)
+        public double[,] CalculateCorrelations(int[,] Ratings)
         {
             //Check for errors
             if (users <= 0 || movies <= 0)
-                throw new ArgumentException("Wrong arguments value!");
+                throw new IOException("Please enter appropriate numbers");
 
             //Initialize the users correlation array
             double[,] UsersCorrelation = new double[users, movies];
