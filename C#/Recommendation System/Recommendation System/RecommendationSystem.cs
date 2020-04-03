@@ -134,7 +134,7 @@ namespace RecommendationSystem
         /*
         * Find nearest neighbors for all users
         */
-        public double[,] FindNearestNeighbors(double[,] Correlations)
+        public double[,] FindNeighbors(double[,] Correlations)
         {
             users = Correlations.GetLength(0);
 
@@ -243,6 +243,145 @@ namespace RecommendationSystem
                 }
             }
             return RecommendedMovies;
+        }
+
+        /*
+        * Calculate pearson correlation for one user
+        */
+        public double[] CalculateUserCorrelations(int UserID, int[,] Ratings)
+        {
+            // Get the length of the matrix
+            users = Ratings.GetLength(0);
+            movies = Ratings.GetLength(1);
+
+            double[] UserCorrelation = new double[users];
+            // Initialize the user correlation array
+            for (int i = 0; i < users; i++)
+                UserCorrelation[i] = 1.0;
+
+            // Initialize the needed variables 
+            double xbar, ybar;
+            double sumx = 0, sumy = 0;
+            double upersum = 0, lower;
+            double xi_xbar, yi_ybar;
+            double sumxipowr2 = 0, sumyipowr2 = 0;
+            double r;
+
+            for (int j = 0; j < users; j++)
+            {
+                if (UserID != j)
+                {
+                    for (int k = 0; k < movies; k++)
+                    {
+                        sumx += Ratings[UserID, k];
+                        sumy += Ratings[j, k];
+                    }
+
+                    if (sumx == 0 || sumy == 0)
+                    {
+                        UserCorrelation[j] = 0;
+                        UserCorrelation[j] = 0;
+                        sumx = 0;
+                        sumy = 0;
+                        continue;
+                    }
+
+                    xbar = sumx / movies;
+                    ybar = sumy / movies;
+
+                    for (int k = 0; k < movies; k++)
+                    {
+                        xi_xbar = Ratings[UserID, k] - xbar;
+                        yi_ybar = Ratings[j, k] - ybar;
+                        upersum += xi_xbar * yi_ybar;
+
+                        sumxipowr2 += Math.Pow(xi_xbar, 2);
+                        sumyipowr2 += Math.Pow(yi_ybar, 2);
+                    }
+                    lower = Math.Sqrt(sumxipowr2 * sumyipowr2);
+
+                    r = upersum / lower;
+                    r = Math.Round(r, 4, MidpointRounding.ToEven);
+
+                    UserCorrelation[j] = r;
+
+                    sumx = 0;
+                    sumy = 0;
+                    upersum = 0;
+                    sumxipowr2 = 0;
+                    sumyipowr2 = 0;
+                }
+                else
+                    UserCorrelation[j] = 1;
+            }
+            return UserCorrelation;
+        }
+
+        /*
+        * Find nearest neighbors for one user
+        */
+        public double[] FindUserNeighbors(int UserID, double[] UserCorrelation)
+        {
+            users = UserCorrelation.GetLength(0);
+
+            int NeighborIndex = 0;
+            double Max = -1;
+            double[] UserNeighbors = new double[users];
+
+            for (int j = 0; j < neighbors; j++)
+            {
+                for (int k = 0; k < users; k++)
+                {
+                    if (UserCorrelation[k] > Max && UserID != k)
+                    {
+                        Max = UserCorrelation[k];
+                        NeighborIndex = k;
+                    }
+                }
+                UserCorrelation[NeighborIndex] = -1;
+                Max = -1;
+                UserNeighbors[j] = NeighborIndex;
+            }
+            return UserNeighbors;
+        }
+
+        /*
+        * Recommend for one user
+        */
+        public double[] UserRecommendations(int UserID, int[,] Ratings, double[] Neighbors)
+        {
+            movies = Ratings.GetLength(1);
+
+            //0 => Sum , 1 => Count
+            double[,] NeighborsInfo = new double[2, movies];
+
+            //Rows:Movie ID , Movie Rating ; Columns:# movies
+            double[] UserMovies = new double[movies];
+
+            //Zeroing the array
+            for (int i = 0; i < movies; i++)
+            {
+                NeighborsInfo[0, i] = 0;
+                NeighborsInfo[1, i] = 0;
+            }
+
+            //Calculate the sum and count for each movie and for all neighbors
+            for (int i = 0; i < neighbors; i++)
+                for (int j = 0; j < movies; j++)
+                {
+                    if (Ratings[Convert.ToInt16(Neighbors[i]), j] > 0)
+                    {
+                        NeighborsInfo[0, j] += Ratings[Convert.ToInt16(Neighbors[i]), j];
+                        NeighborsInfo[1, j]++;
+                    }
+                }
+
+            //Calculate the average rating for each movie if seen by more than 10 users
+            for (int i = 0; i < movies; i++)
+                if (NeighborsInfo[1, i] > 10 && Ratings[UserID, i] == 0)
+                    UserMovies[i] = NeighborsInfo[0, i] / NeighborsInfo[1, i];
+
+            return UserMovies;
         }
     }
 }

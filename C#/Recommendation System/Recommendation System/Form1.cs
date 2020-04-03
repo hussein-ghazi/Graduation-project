@@ -29,7 +29,6 @@ namespace Recommendation_System
             Neighbors = 50,
         };
         
-
         public MainWindow()
         {
             InitializeComponent();
@@ -171,7 +170,7 @@ namespace Recommendation_System
             {
                 int[,] Ratings = RSF.ReadRatingsFile("Ratings.txt");
                 double[,] Correlations = RSF.ReadUsersCorrelationsFile("Correlation.txt");
-                double[,] Neighbors = RE.FindNearestNeighbors(Correlations);
+                double[,] Neighbors = RE.FindNeighbors(Correlations);
                 ShowData(ref Neighbors, "U", "U", 10, 2);
             }
             catch (Exception ex)
