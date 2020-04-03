@@ -18,13 +18,11 @@ namespace RecommendationSystem
         public int Users
         {
             get { return users; }
-            set { users = value; }
         }
 
         public int Movies
         {
             get { return movies; }
-            set { movies = value; }
         }
 
         public int Neighbors
@@ -44,112 +42,12 @@ namespace RecommendationSystem
             this.users = 0;
             this.movies = 0;
             this.neighbors = 0;
+            this.noOfRecommendedMovies = 0;
         }
+
         ~RecommendationEngine()
         {
 
-        }
-
-        /*
-         * Load data from ratings file
-         */
-        public int[,] ReadRatingsFile(string ratingsFile)
-        {
-            //Check for errors
-            if (users <= 0 || movies <= 0)
-                throw new IOException("Please enter appropriate numbers");
-            if (string.IsNullOrEmpty(ratingsFile))
-                throw new MissingFieldException("Please enter a file path!");
-            if (!System.IO.File.Exists(ratingsFile))
-                throw new FileNotFoundException("File not found!");
-
-            //Set and initialize ratings array
-            int[,] Ratings = new int[users, movies];
-            //Reading all lines in file
-            string[] lines = System.IO.File.ReadAllLines(ratingsFile);
-
-            for (int i = 0; i < users; i++)
-                for (int j = 0; j < movies; j++)
-                    Ratings[i, j] = 0;
-
-            //Read each line and fill it into the ratings array
-            string[] DataLine;
-            foreach (string line in lines)
-            {
-                DataLine = line.Split('\t');
-                //-1 because there is no movie or user with id 0
-                Ratings[int.Parse(DataLine[0]) - 1, int.Parse(DataLine[1]) - 1] = int.Parse(DataLine[2]);
-            }
-            return Ratings;
-        }
-
-        /*
-         * Load data from correlation file
-         */
-        public double[,] ReadUsersCorrelationsFile(string correlationFile)
-        {
-            //Check for errors
-            if (users <= 0)
-                throw new IOException("Please enter appropriate numbers");
-            if (string.IsNullOrEmpty(correlationFile))
-                throw new MissingFieldException("Please enter a file path!");
-            if (!System.IO.File.Exists(correlationFile))
-                throw new FileNotFoundException("File not found!");
-
-            //Read all lines from file
-            string[] lines = System.IO.File.ReadAllLines(correlationFile);
-
-
-            //Set and initialize the users correlation array
-            double[,] UsersCorrelations = new double[users, users];
-
-            for (int i = 0; i < users; i++)
-                for (int j = 0; j < users; j++)
-                {
-                    if (i == j)
-                        UsersCorrelations[i, j] = 1;
-                    else
-                        UsersCorrelations[i, j] = 0.0;
-                }
-
-            //Read each line and fill it into the users correlation array
-            string[] DataLine;
-            foreach (string line in lines)
-            {
-                DataLine = line.Split('\t');
-                UsersCorrelations[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = double.Parse(DataLine[2]);
-                UsersCorrelations[int.Parse(DataLine[1]), int.Parse(DataLine[0])] = double.Parse(DataLine[2]);
-            }
-            return UsersCorrelations;
-        }
-
-        /*
-         * Load data from neighbors file
-         */
-        public double[,] ReadUsersNeighborsFile(string neighborsFile)
-        {
-            //Check for errors
-            if (users <= 0 || neighbors <= 0)
-                throw new IOException("Please enter appropriate numbers");
-            if (string.IsNullOrEmpty(neighborsFile))
-                throw new MissingFieldException("Please enter a file path!");
-            if (!System.IO.File.Exists(neighborsFile))
-                throw new FileNotFoundException("File not found!");
-
-            //Read all lines from file
-            string[] lines = System.IO.File.ReadAllLines(neighborsFile);
-
-            double[,] UsersNeighbors = new double[users, neighbors];
-
-            //Read each line and fill it into the users correlation array
-            string[] DataLine;
-            foreach (string line in lines)
-            {
-                DataLine = line.Split('\t');
-                for (int i = 0; i < neighbors; i++)
-                    UsersNeighbors[int.Parse(DataLine[0]), i] = double.Parse(DataLine[i + 1]);
-            }
-            return UsersNeighbors;
         }
 
         /*
@@ -157,17 +55,21 @@ namespace RecommendationSystem
         */
         public double[,] CalculateCorrelations(int[,] Ratings)
         {
-            //Check for errors
+            // Get the length of the matrix
+            users = Ratings.GetLength(0);
+            movies = Ratings.GetLength(1);
+
+            // Check for errors
             if (users <= 0 || movies <= 0)
                 throw new IOException("Please enter appropriate numbers");
 
-            //Initialize the users correlation array
+            // Initialize the users correlation array
             double[,] UsersCorrelation = new double[users, movies];
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < users; j++)
                     UsersCorrelation[i, j] = 1.0;
 
-            //Initialize the needed variables 
+            // Initialize the needed variables 
             double xbar, ybar;
             double sumx = 0, sumy = 0;
             double upersum = 0, lower;
@@ -234,6 +136,8 @@ namespace RecommendationSystem
         */
         public double[,] FindNearestNeighbors(double[,] Correlations)
         {
+            users = Correlations.GetLength(0);
+
             //Check for errors
             if (users <= 0 || neighbors <= 0)
                 throw new IOException("Please enter appropriate numbers");
@@ -272,6 +176,10 @@ namespace RecommendationSystem
          */
         public double[,] Recommendations(int[,] Ratings, double[,] Neighbors)
         {
+            // Get the length of the matrix
+            users = Ratings.GetLength(0);
+            movies = Ratings.GetLength(1);
+
             //Check for errors
             if (users <= 0 || neighbors <= 0 || movies<= 0 || noOfRecommendedMovies <=0)
                 throw new IOException("Please enter appropriate numbers");

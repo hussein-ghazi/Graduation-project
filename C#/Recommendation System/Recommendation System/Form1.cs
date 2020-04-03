@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using RecommendationSystem;
+using LoadRSFiles;
 
 namespace Recommendation_System
 {
@@ -17,10 +18,15 @@ namespace Recommendation_System
         // Public variables
         RecommendationEngine RE = new RecommendationEngine() 
         {
+            Neighbors = 50,
+            NoOfRecommendedMovies = 1682
+        };
+
+        LoadRSFile RSF = new LoadRSFile()
+        {
             Users = 943,
             Movies = 1682,
             Neighbors = 50,
-            NoOfRecommendedMovies = 1682
         };
         
 
@@ -34,7 +40,7 @@ namespace Recommendation_System
             if(DataGrid == 1)
             {
                 // Clear the datagridview 
-                DataPreperationDataGrid.Rows.Clear();
+                LoadFilesDG.Rows.Clear();
 
                 // Get count of rows
                 int RowsNo = DataArray.GetLength(0);
@@ -44,10 +50,10 @@ namespace Recommendation_System
                     ColumnsCount = DataArray.GetLength(1);
 
                 // Setting column header
-                DataPreperationDataGrid.ColumnCount = ColumnsCount + 1;
-                DataPreperationDataGrid.Columns[0].Name = RowHeader + "\\" + ColumnHeader;
+                LoadFilesDG.ColumnCount = ColumnsCount + 1;
+                LoadFilesDG.Columns[0].Name = RowHeader + "\\" + ColumnHeader;
                 for (int i = 1; i < ColumnsCount + 1; i++)
-                    DataPreperationDataGrid.Columns[i].Name = ColumnHeader + (i);
+                    LoadFilesDG.Columns[i].Name = ColumnHeader + (i);
 
                 // Process of adding rows
                 string[] Row = new string[ColumnsCount + 1];
@@ -57,13 +63,13 @@ namespace Recommendation_System
 
                     for (int j = 0; j < ColumnsCount; j++)
                         Row[j + 1] = DataArray[i, j].ToString();
-                    DataPreperationDataGrid.Rows.Add(Row);
+                    LoadFilesDG.Rows.Add(Row);
                 }
             }
             if (DataGrid == 2)
             {
                 // Clear the datagridview 
-                RecommendationDataGrid.Rows.Clear();
+                RecommendationDG.Rows.Clear();
 
                 // Get count of rows
                 int RowsNo = DataArray.GetLength(0);
@@ -73,10 +79,10 @@ namespace Recommendation_System
                     ColumnsCount = DataArray.GetLength(1);
 
                 // Setting column header
-                RecommendationDataGrid.ColumnCount = ColumnsCount + 1;
-                RecommendationDataGrid.Columns[0].Name = RowHeader + "\\" + ColumnHeader;
+                RecommendationDG.ColumnCount = ColumnsCount + 1;
+                RecommendationDG.Columns[0].Name = RowHeader + "\\" + ColumnHeader;
                 for (int i = 1; i < ColumnsCount + 1; i++)
-                    RecommendationDataGrid.Columns[i].Name = ColumnHeader + (i);
+                    RecommendationDG.Columns[i].Name = ColumnHeader + (i);
 
                 // Process of adding rows
                 string[] Row = new string[ColumnsCount + 1];
@@ -86,7 +92,7 @@ namespace Recommendation_System
 
                     for (int j = 0; j < ColumnsCount; j++)
                         Row[j + 1] = DataArray[i, j].ToString();
-                    RecommendationDataGrid.Rows.Add(Row);
+                    RecommendationDG.Rows.Add(Row);
                 }
             }
         }
@@ -103,11 +109,10 @@ namespace Recommendation_System
 
         private void RatingsButton_Click(object sender, EventArgs e)
         {
-            int[,] Ratings = new int[RE.Users, RE.Movies];
             try
             {
-                Ratings = RE.ReadRatingsFile("Ratings.txt");
-                ShowData(ref Ratings, "M", "U", 6, 1);
+                int[,] Ratings = RSF.ReadRatingsFile("Ratings.txt");
+                ShowData(ref Ratings, "M", "U", 10, 1);
             }
             catch (Exception ex)
             {
@@ -117,11 +122,10 @@ namespace Recommendation_System
 
         private void NeighborsButton_Click(object sender, EventArgs e)
         {
-            double[,] Neighbors = new double[RE.Users, RE.Neighbors];
             try
             {
-                Neighbors = RE.ReadUsersNeighborsFile("Neighbors.txt");
-                ShowData(ref Neighbors, "U", "U", 6, 1);
+                double[,] Neighbors = RSF.ReadUsersNeighborsFile("Neighbors.txt");
+                ShowData(ref Neighbors, "U", "U", 10, 1);
             }
             catch (Exception ex)
             {
@@ -136,11 +140,10 @@ namespace Recommendation_System
 
         private void CorrelationButton_Click(object sender, EventArgs e)
         {
-            double[,] Correlations = new double[RE.Users, RE.Users];
             try
             {
-                Correlations = RE.ReadUsersCorrelationsFile("Correlation.txt");
-                ShowData(ref Correlations, "U", "U", 6, 1);
+                double[,] Correlations = RSF.ReadUsersCorrelationsFile("Correlation.txt");
+                ShowData(ref Correlations, "U", "U", 10, 1);
             }
             catch (Exception ex)
             {
@@ -150,13 +153,11 @@ namespace Recommendation_System
 
         private void CalculateCorrelations_Click(object sender, EventArgs e)
         {
-            int[,] Ratings = new int[RE.Users, RE.Movies];
-            double[,] Correlations = new double[RE.Users, RE.Users];
             try
             {
-                Ratings = RE.ReadRatingsFile("Ratings.txt");
-                Correlations = RE.CalculateCorrelations(Ratings);
-                ShowData(ref Correlations, "U", "U", 6, 2);
+                int[,] Ratings = RSF.ReadRatingsFile("Ratings.txt");
+                double[,] Correlations = RE.CalculateCorrelations(Ratings);
+                ShowData(ref Correlations, "U", "U", 10, 2);
             }
             catch (Exception ex)
             {
@@ -166,15 +167,12 @@ namespace Recommendation_System
 
         private void FindNeighbors_Click(object sender, EventArgs e)
         {
-            int[,] Ratings = new int[RE.Users, RE.Movies];
-            double[,] Correlations = new double[RE.Users, RE.Users];
-            double[,] Neighbors = new double[RE.Users, RE.Neighbors];
             try
             {
-                Ratings = RE.ReadRatingsFile("Ratings.txt");
-                Correlations = RE.ReadUsersCorrelationsFile("Correlation.txt");
-                Neighbors = RE.FindNearestNeighbors(Correlations);
-                ShowData(ref Neighbors, "U", "U", 6, 2);
+                int[,] Ratings = RSF.ReadRatingsFile("Ratings.txt");
+                double[,] Correlations = RSF.ReadUsersCorrelationsFile("Correlation.txt");
+                double[,] Neighbors = RE.FindNearestNeighbors(Correlations);
+                ShowData(ref Neighbors, "U", "U", 10, 2);
             }
             catch (Exception ex)
             {
@@ -184,22 +182,31 @@ namespace Recommendation_System
 
         private void RecommendationsBtn_Click(object sender, EventArgs e)
         {
-            int[,] Ratings = new int[RE.Users, RE.Movies];
-            double[,] Correlations = new double[RE.Users, RE.Users];
-            double[,] Neighbors = new double[RE.Users, RE.Neighbors];
-            double[,] Recommendations = new double[RE.Users, RE.NoOfRecommendedMovies];
-
             try
             {
-                Ratings = RE.ReadRatingsFile("Ratings.txt");
-                Correlations = RE.ReadUsersCorrelationsFile("Correlation.txt");
-                Neighbors = RE.ReadUsersNeighborsFile("Neighbors.txt");
-                Recommendations = RE.Recommendations(Ratings,Neighbors);
-                ShowData(ref Recommendations, "M", "U", 6, 2);
+                int[,] Ratings = RSF.ReadRatingsFile("Ratings.txt");
+                double[,] Correlations = RSF.ReadUsersCorrelationsFile("Correlation.txt");
+                double[,] Neighbors = RSF.ReadUsersNeighborsFile("Neighbors.txt");
+                double[,] Recommendations = RE.Recommendations(Ratings,Neighbors);
+                ShowData(ref Recommendations, "M", "U", 10, 2);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void SelectFolderBtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog SFD = new SaveFileDialog();
+            SFD.Filter = "Text Files (*.txt)|*.txt|Comma-Separated Values  (*.csv)|*.csv";
+            SFD.DefaultExt = "txt";
+            SFD.AddExtension = true;
+            //SFD.FileName = "Correlations";
+
+            if (SFD.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show(SFD.FileName);
             }
         }
     }
