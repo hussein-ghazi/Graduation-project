@@ -19,7 +19,7 @@ namespace Recommendation_System
         RecommendationEngine RE = new RecommendationEngine() 
         {
             Neighbors = 50,
-            NoOfRecommendedMovies = 1682
+            TopNrecommendations = 1682
         };
 
         LoadRSFile RSF = new LoadRSFile()

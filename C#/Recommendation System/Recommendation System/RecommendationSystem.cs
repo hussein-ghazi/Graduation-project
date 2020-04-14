@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Data;
+using RSExceptions;
 
 namespace RecommendationSystem
 {
     class RecommendationEngine
     {
-        private int users, movies, neighbors, noOfRecommendedMovies;
+        private int users, movies, neighbors, topNrecommendations;
 
         /*
          * Property methods
@@ -31,10 +32,10 @@ namespace RecommendationSystem
             set { neighbors = value; }
         }
 
-        public int NoOfRecommendedMovies
+        public int TopNrecommendations
         {
-            get { return noOfRecommendedMovies; }
-            set { noOfRecommendedMovies = value; }
+            get { return topNrecommendations; }
+            set { topNrecommendations = value; }
         }
 
         public RecommendationEngine()
@@ -42,7 +43,7 @@ namespace RecommendationSystem
             this.users = 0;
             this.movies = 0;
             this.neighbors = 0;
-            this.noOfRecommendedMovies = 0;
+            this.topNrecommendations = 0;
         }
 
         ~RecommendationEngine()
@@ -51,7 +52,7 @@ namespace RecommendationSystem
         }
 
         /*
-        * Calculate pearson correlation among users
+        * Calculate pearson correlation among all users
         */
         public double[,] CalculateCorrelations(int[,] Ratings)
         {
@@ -60,8 +61,10 @@ namespace RecommendationSystem
             movies = Ratings.GetLength(1);
 
             // Check for errors
-            if (users <= 0 || movies <= 0)
-                throw new IOException("Please enter appropriate numbers");
+            if (users <= 0)
+                throw new InvalidUsersValueException("Users count is zero or less!");
+            if (movies <= 0)
+                throw new InvalidMoviesValueException("Movies count is zero or less!");
 
             // Initialize the users correlation array
             double[,] UsersCorrelation = new double[users, movies];
@@ -81,14 +84,14 @@ namespace RecommendationSystem
             {
                 for (int j = i; j < users - 1; j++)
                 {
-                    //Find the summation of vectors x and y
+                    // Find the summation of vectors x and y
                     for (int k = 0; k < movies; k++)
                     {
                         sumx += Ratings[i, k];
                         sumy += Ratings[j + 1, k];
                     }
 
-                    //If summation of any is 0 then zeroing and continue the loop
+                    // If summation of any is 0 then zeroing and continue the loop
                     if (sumx == 0 || sumy == 0)
                     {
                         UsersCorrelation[i, j + 1] = 0;
@@ -98,7 +101,7 @@ namespace RecommendationSystem
                         continue;
                     }
 
-                    //Calculate the mean of x and y
+                    // Calculate the mean of x and y
                     xbar = sumx / movies;
                     ybar = sumy / movies;
 
@@ -113,11 +116,10 @@ namespace RecommendationSystem
                     }
                     lower = Math.Sqrt(sumxipowr2 * sumyipowr2);
 
-                    //Calculate the correlation and round off the result
+                    // Calculate the correlation and round off the result
                     r = upersum / lower;
                     r = Math.Round(r, 4, MidpointRounding.ToEven);
 
-                    //Insert the result into the users correlation array
                     UsersCorrelation[i, j + 1] = r;
                     UsersCorrelation[j + 1, i] = r;
 
@@ -138,9 +140,11 @@ namespace RecommendationSystem
         {
             users = Correlations.GetLength(0);
 
-            //Check for errors
-            if (users <= 0 || neighbors <= 0)
-                throw new IOException("Please enter appropriate numbers");
+            // Check for errors
+            if (users <= 0)
+                throw new InvalidUsersValueException("Users count is zero or less!");
+            if (neighbors <= 0)
+                throw new InvalidNeighborsValueException("Neighbors count is zero or less!");
 
             int NeighborIndex = 0;
             double Max = -1;
@@ -164,7 +168,7 @@ namespace RecommendationSystem
                     Correlations[i, NeighborIndex] = -1;
                     Max = -1;
 
-                    //Neighbor index + 1 (C#) = Real User ID (MovieLens)
+                    // Neighbor index + 1 (C#) = Real User ID (MovieLens)
                     UserNeighbors[i, j] = NeighborIndex;
                 }
             }
@@ -180,17 +184,23 @@ namespace RecommendationSystem
             users = Ratings.GetLength(0);
             movies = Ratings.GetLength(1);
 
-            //Check for errors
-            if (users <= 0 || neighbors <= 0 || movies<= 0 || noOfRecommendedMovies <=0)
-                throw new IOException("Please enter appropriate numbers");
+            // Check for errors
+            if (users <= 0)
+                throw new InvalidUsersValueException("Users count is zero or less!");
+            if (movies <= 0)
+                throw new InvalidMoviesValueException("Movies count is zero or less!");
+            if (neighbors <= 0)
+                throw new InvalidNeighborsValueException("Neighbors count is zero or less!");
+            if (topNrecommendations <= 0)
+                throw new InvalidTopNrecommendationsValueException("TopNrecommendations count is zero or less!");
 
-            //index 0 ==> summation
-            //index 1 ==> counter
+            // index 0 ==> summation
+            // index 1 ==> counter
             double[,] TempNeighborsInfo = new double[users * 2, movies];
             double[,] NeighborsInfo = new double[users, movies];
 
-            //Rows:Users ; Columns:# of Recommended movies
-            double[,] RecommendedMovies = new double[users, noOfRecommendedMovies];
+            // Rows:Users ; Columns:# of Recommended movies
+            double[,] RecommendedMovies = new double[users, topNrecommendations];
 
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
@@ -214,20 +224,19 @@ namespace RecommendationSystem
 
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
-                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && Ratings[i, j] == 0)   // count > 10
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && Ratings[i, j] == 0)   // # people who rate the movie > 10
                         NeighborsInfo[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
                     else
                         NeighborsInfo[i, j] = 0;
 
-
-            //Needed variables
+            // Needed variables
             double Max = 0;
             int MovieIndex = 0;
 
-            //Sorting the array for n movies
+            // Sorting the array for n movies
             for (int i = 0; i < users; i++)
             {
-                for (int j = 0; j < noOfRecommendedMovies; j++)
+                for (int j = 0; j < topNrecommendations; j++)
                 {
                     for (int k = 0; k < movies; k++)
                     {
