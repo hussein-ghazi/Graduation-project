@@ -195,6 +195,7 @@ namespace Recommendation_System
             }
         }
 
+        // test code for saving files
         private void SelectFolderBtn_Click(object sender, EventArgs e)
         {
             SaveFileDialog SFD = new SaveFileDialog();
@@ -207,6 +208,11 @@ namespace Recommendation_System
             {
                 MessageBox.Show(SFD.FileName);
             }
+        }
+
+        private void SFD_FileOk(object sender, CancelEventArgs e)
+        {
+
         }
     }
 }
