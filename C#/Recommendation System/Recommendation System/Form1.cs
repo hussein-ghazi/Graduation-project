@@ -110,8 +110,20 @@ namespace Recommendation_System
         {
             try
             {
-                int[,] Ratings = RSF.ReadRatingsFile("Ratings.txt");
-                ShowData(ref Ratings, "M", "U", 10, 1);
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                    openFileDialog.FilterIndex = 2;
+                    openFileDialog.RestoreDirectory = true;
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = openFileDialog.FileName;
+                        int[,] Ratings = RSF.ReadRatingsFile(filePath);
+                        ShowData(ref Ratings, "M", "U", 10, 1);
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
@@ -123,8 +135,19 @@ namespace Recommendation_System
         {
             try
             {
-                double[,] Neighbors = RSF.ReadUsersNeighborsFile("Neighbors.txt");
-                ShowData(ref Neighbors, "U", "U", 10, 1);
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                    openFileDialog.FilterIndex = 2;
+                    openFileDialog.RestoreDirectory = true;
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = openFileDialog.FileName;
+                        double[,] Neighbors = RSF.ReadUsersNeighborsFile(filePath);
+                        ShowData(ref Neighbors, "U", "U", 10, 1);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -141,8 +164,19 @@ namespace Recommendation_System
         {
             try
             {
-                double[,] Correlations = RSF.ReadUsersCorrelationsFile("Correlation.txt");
-                ShowData(ref Correlations, "U", "U", 10, 1);
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                    openFileDialog.FilterIndex = 2;
+                    openFileDialog.RestoreDirectory = true;
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = openFileDialog.FileName;
+                        double[,] Correlations = RSF.ReadUsersCorrelationsFile(filePath);
+                        ShowData(ref Correlations, "U", "U", 10, 1);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -154,9 +188,22 @@ namespace Recommendation_System
         {
             try
             {
-                int[,] Ratings = RSF.ReadRatingsFile("Ratings.txt");
-                double[,] Correlations = RE.CalculateCorrelations(Ratings);
-                ShowData(ref Correlations, "U", "U", 10, 2);
+                MessageBox.Show("Select ratings file please.");
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                    openFileDialog.FilterIndex = 2;
+                    openFileDialog.RestoreDirectory = true;
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = openFileDialog.FileName;
+
+                        int[,] Ratings = RSF.ReadRatingsFile(filePath);
+                        double[,] Correlations = RE.CalculateCorrelations(Ratings);
+                        ShowData(ref Correlations, "U", "U", 10, 2);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -168,10 +215,21 @@ namespace Recommendation_System
         {
             try
             {
-                int[,] Ratings = RSF.ReadRatingsFile("Ratings.txt");
-                double[,] Correlations = RSF.ReadUsersCorrelationsFile("Correlation.txt");
-                double[,] Neighbors = RE.FindNeighbors(Correlations);
-                ShowData(ref Neighbors, "U", "U", 10, 2);
+                MessageBox.Show("Select correlations file please.");
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                    openFileDialog.FilterIndex = 2;
+                    openFileDialog.RestoreDirectory = true;
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = openFileDialog.FileName;
+                        double[,] Correlations = RSF.ReadUsersCorrelationsFile(filePath);
+                        double[,] Neighbors = RE.FindNeighbors(Correlations);
+                        ShowData(ref Neighbors, "U", "U", 10, 2);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -183,10 +241,31 @@ namespace Recommendation_System
         {
             try
             {
-                int[,] Ratings = RSF.ReadRatingsFile("Ratings.txt");
-                double[,] Correlations = RSF.ReadUsersCorrelationsFile("Correlation.txt");
-                double[,] Neighbors = RSF.ReadUsersNeighborsFile("Neighbors.txt");
-                double[,] Recommendations = RE.Recommendations(Ratings,Neighbors);
+                int[,] Ratings = new int[RSF.Users,RSF.Movies];
+                double[,] Neighbors = new double[RSF.Users,RSF.Neighbors];
+
+                MessageBox.Show("Select ratings file please.");
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    Ratings = RSF.ReadRatingsFile(filePath);
+                }
+
+                MessageBox.Show("Select neighbors file please.");
+                openFileDialog = new OpenFileDialog();
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    Neighbors = RSF.ReadUsersNeighborsFile(filePath);
+                }
+
+                double[,] Recommendations = RE.Recommendations(Ratings, Neighbors);
                 ShowData(ref Recommendations, "M", "U", 10, 2);
             }
             catch (Exception ex)

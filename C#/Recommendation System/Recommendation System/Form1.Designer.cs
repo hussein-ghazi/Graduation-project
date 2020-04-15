@@ -40,6 +40,7 @@
             this.LoadFilesDG = new System.Windows.Forms.DataGridView();
             this.TabControl = new System.Windows.Forms.TabControl();
             this.SFD = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.RecommendationsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecommendationDG)).BeginInit();
             this.DataPreparationTab.SuspendLayout();
@@ -198,6 +199,10 @@
             // 
             this.SFD.FileOk += new System.ComponentModel.CancelEventHandler(this.SFD_FileOk);
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -233,6 +238,7 @@
         private System.Windows.Forms.DataGridView LoadFilesDG;
         private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.SaveFileDialog SFD;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 
