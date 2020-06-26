@@ -304,7 +304,6 @@ namespace Recommendation_System
 
         private void EvaluationBtn_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(Math.Pow(4,2).ToString());
             try
             {
                 int[,] Ratings = new int[Ev.Users, Ev.Movies];
@@ -347,14 +346,27 @@ namespace Recommendation_System
 
                 int[,] TestingData = Ev.GenerateTestingData(Ratings, RemovedRatingsFile);
                 double[,] PredictiveRatings = Ev.RatingsPrediction(Ratings, Neighbors);
-                double MAE = Ev.RMSE(Ratings, PredictiveRatings, RemovedRatingsFile);
 
-                MessageBox.Show(MAE.ToString());
+                double[] MAEStatistics = Ev.MAE(Ratings, PredictiveRatings, RemovedRatingsFile);
+                double[] RMSEStatistics = Ev.RMSE(Ratings, PredictiveRatings, RemovedRatingsFile);
+
+                MaeBox.Text = MAEStatistics[0].ToString();
+                MaeRRBox.Text = MAEStatistics[1].ToString();
+                MaeZerosBox.Text = MAEStatistics[2].ToString();
+
+                RmseBox.Text = RMSEStatistics[0].ToString();
+                RmseRRBox.Text = RMSEStatistics[1].ToString();
+                RmseZerosBox.Text = RMSEStatistics[2].ToString();
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

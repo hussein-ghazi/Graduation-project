@@ -40,15 +40,32 @@
             this.LoadFilesDG = new System.Windows.Forms.DataGridView();
             this.TabControl = new System.Windows.Forms.TabControl();
             this.EvaluationTab = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.RmseBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.MaeBox = new System.Windows.Forms.TextBox();
             this.EvaluationBtn = new System.Windows.Forms.Button();
             this.SFD = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.RmseRRBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.MaeRRBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.MaeZerosBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.RmseZerosBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.RecommendationsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecommendationDG)).BeginInit();
             this.DataPreparationTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoadFilesDG)).BeginInit();
             this.TabControl.SuspendLayout();
             this.EvaluationTab.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // RecommendationsTab
@@ -120,6 +137,7 @@
             // 
             // DataPreparationTab
             // 
+            this.DataPreparationTab.BackColor = System.Drawing.Color.Transparent;
             this.DataPreparationTab.Controls.Add(this.NeighborsButton);
             this.DataPreparationTab.Controls.Add(this.CorrelationButton);
             this.DataPreparationTab.Controls.Add(this.RatingsButton);
@@ -130,7 +148,6 @@
             this.DataPreparationTab.Size = new System.Drawing.Size(752, 508);
             this.DataPreparationTab.TabIndex = 0;
             this.DataPreparationTab.Text = "Load data from files";
-            this.DataPreparationTab.UseVisualStyleBackColor = true;
             this.DataPreparationTab.Click += new System.EventHandler(this.DataPreparationTab_Click);
             // 
             // NeighborsButton
@@ -201,6 +218,9 @@
             // 
             // EvaluationTab
             // 
+            this.EvaluationTab.Controls.Add(this.groupBox2);
+            this.EvaluationTab.Controls.Add(this.groupBox1);
+            this.EvaluationTab.Controls.Add(this.label3);
             this.EvaluationTab.Controls.Add(this.EvaluationBtn);
             this.EvaluationTab.Location = new System.Drawing.Point(4, 25);
             this.EvaluationTab.Name = "EvaluationTab";
@@ -210,13 +230,63 @@
             this.EvaluationTab.Text = "Evaluation";
             this.EvaluationTab.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Arial Rounded MT Bold", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(117, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(501, 55);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Evaluation Statistics";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(6, 39);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 24);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "RMSE";
+            // 
+            // RmseBox
+            // 
+            this.RmseBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RmseBox.Location = new System.Drawing.Point(10, 68);
+            this.RmseBox.Name = "RmseBox";
+            this.RmseBox.ReadOnly = true;
+            this.RmseBox.Size = new System.Drawing.Size(334, 32);
+            this.RmseBox.TabIndex = 10;
+            this.RmseBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(6, 39);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 24);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "MAE";
+            // 
+            // MaeBox
+            // 
+            this.MaeBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MaeBox.Location = new System.Drawing.Point(6, 68);
+            this.MaeBox.Name = "MaeBox";
+            this.MaeBox.ReadOnly = true;
+            this.MaeBox.Size = new System.Drawing.Size(338, 32);
+            this.MaeBox.TabIndex = 8;
+            this.MaeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // EvaluationBtn
             // 
             this.EvaluationBtn.BackColor = System.Drawing.Color.SteelBlue;
             this.EvaluationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EvaluationBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EvaluationBtn.ForeColor = System.Drawing.Color.White;
-            this.EvaluationBtn.Location = new System.Drawing.Point(242, 465);
+            this.EvaluationBtn.Location = new System.Drawing.Point(243, 465);
             this.EvaluationBtn.Name = "EvaluationBtn";
             this.EvaluationBtn.Size = new System.Drawing.Size(254, 37);
             this.EvaluationBtn.TabIndex = 7;
@@ -231,6 +301,115 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.MaeZerosBox);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.MaeRRBox);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.MaeBox);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Font = new System.Drawing.Font("Arial Rounded MT Bold", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(6, 61);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(350, 398);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "MAE Statistics";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.RmseZerosBox);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.RmseRRBox);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.RmseBox);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Font = new System.Drawing.Font("Arial Rounded MT Bold", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Location = new System.Drawing.Point(396, 61);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(350, 398);
+            this.groupBox2.TabIndex = 14;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "RMSE Statistics";
+            // 
+            // RmseRRBox
+            // 
+            this.RmseRRBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RmseRRBox.Location = new System.Drawing.Point(6, 211);
+            this.RmseRRBox.Name = "RmseRRBox";
+            this.RmseRRBox.ReadOnly = true;
+            this.RmseRRBox.Size = new System.Drawing.Size(338, 32);
+            this.RmseRRBox.TabIndex = 12;
+            this.RmseRRBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(6, 150);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(338, 58);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "# removed ratings from ratings matrix";
+            // 
+            // MaeRRBox
+            // 
+            this.MaeRRBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MaeRRBox.Location = new System.Drawing.Point(6, 211);
+            this.MaeRRBox.Name = "MaeRRBox";
+            this.MaeRRBox.ReadOnly = true;
+            this.MaeRRBox.Size = new System.Drawing.Size(338, 32);
+            this.MaeRRBox.TabIndex = 14;
+            this.MaeRRBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(6, 150);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(343, 58);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "# removed ratings from ratings matrix";
+            // 
+            // MaeZerosBox
+            // 
+            this.MaeZerosBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MaeZerosBox.Location = new System.Drawing.Point(6, 337);
+            this.MaeZerosBox.Name = "MaeZerosBox";
+            this.MaeZerosBox.ReadOnly = true;
+            this.MaeZerosBox.Size = new System.Drawing.Size(339, 32);
+            this.MaeZerosBox.TabIndex = 16;
+            this.MaeZerosBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(6, 308);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(334, 24);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "# zeros in prediction";
+            // 
+            // RmseZerosBox
+            // 
+            this.RmseZerosBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RmseZerosBox.Location = new System.Drawing.Point(6, 337);
+            this.RmseZerosBox.Name = "RmseZerosBox";
+            this.RmseZerosBox.ReadOnly = true;
+            this.RmseZerosBox.Size = new System.Drawing.Size(339, 32);
+            this.RmseZerosBox.TabIndex = 18;
+            this.RmseZerosBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(6, 308);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(334, 24);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "# zeros in prediction";
             // 
             // MainWindow
             // 
@@ -251,6 +430,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.LoadFilesDG)).EndInit();
             this.TabControl.ResumeLayout(false);
             this.EvaluationTab.ResumeLayout(false);
+            this.EvaluationTab.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -271,6 +455,21 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.TabPage EvaluationTab;
         private System.Windows.Forms.Button EvaluationBtn;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox RmseBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox MaeBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox RmseRRBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox MaeZerosBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox MaeRRBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox RmseZerosBox;
+        private System.Windows.Forms.Label label7;
     }
 }
 

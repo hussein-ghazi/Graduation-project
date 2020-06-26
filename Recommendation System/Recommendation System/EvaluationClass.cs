@@ -103,12 +103,14 @@ namespace EvaluationModel
             return PredictiveRatings;
         }
 
-        public double MAE(int[,] Ratings,double[,] PredictiveRatings, string RemovedRatingsFile)
+        public double[] MAE(int[,] Ratings,double[,] PredictiveRatings, string RemovedRatingsFile)
         {
             string[] lines = File.ReadAllLines(RemovedRatingsFile);
             double sum = 0;
             int count = 0;
             int userIndex, movieIndex;
+            int predictiveZeroRatedCount = 0;
+            double[] MAEStatistics = new double[3];
 
             //Read each line and fill it into the ratings array
             string[] DataLine;
@@ -121,18 +123,26 @@ namespace EvaluationModel
                     movieIndex = int.Parse(DataLine[j]);
                     sum += Math.Abs(PredictiveRatings[userIndex, movieIndex] - Ratings[userIndex, movieIndex]);
                     count++;
+                    if (PredictiveRatings[userIndex, movieIndex] == 0)
+                        predictiveZeroRatedCount++;
                 }
             }
 
-            return sum / count;
+            MAEStatistics[0] = sum / count;
+            MAEStatistics[1] = count;
+            MAEStatistics[2] = predictiveZeroRatedCount;
+
+            return MAEStatistics;
         }
 
-        public double RMSE(int[,] Ratings, double[,] PredictiveRatings, string RemovedRatingsFile)
+        public double[] RMSE(int[,] Ratings, double[,] PredictiveRatings, string RemovedRatingsFile)
         {
             string[] lines = File.ReadAllLines(RemovedRatingsFile);
             double sum = 0;
             int count = 0;
             int userIndex, movieIndex;
+            int predictiveZeroRatedCount = 0;
+            double[] RMSEStatistics = new double[3];
 
             //Read each line and fill it into the ratings array
             string[] DataLine;
@@ -145,10 +155,16 @@ namespace EvaluationModel
                     movieIndex = int.Parse(DataLine[j]);
                     sum += Math.Pow(PredictiveRatings[userIndex, movieIndex] - Ratings[userIndex, movieIndex], 2);
                     count++;
+                    if (PredictiveRatings[userIndex, movieIndex] == 0)
+                        predictiveZeroRatedCount++;
                 }
             }
-            return Math.Sqrt(sum / count);
-        }
 
+            RMSEStatistics[0] = Math.Sqrt(sum / count);
+            RMSEStatistics[1] = count;
+            RMSEStatistics[2] = predictiveZeroRatedCount;
+
+            return RMSEStatistics;
+        }
     }
 }
