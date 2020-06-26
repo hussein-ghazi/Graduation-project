@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.RecommendationsTab = new System.Windows.Forms.TabPage();
+            this.FullRBtn = new System.Windows.Forms.Button();
             this.RecommendationsBtn = new System.Windows.Forms.Button();
             this.FindNeighbors = new System.Windows.Forms.Button();
             this.CalculateCorrelations = new System.Windows.Forms.Button();
@@ -58,6 +59,7 @@
             this.EvaluationBtn = new System.Windows.Forms.Button();
             this.SFD = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.FullEvBtn = new System.Windows.Forms.Button();
             this.RecommendationsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecommendationDG)).BeginInit();
             this.DataPreparationTab.SuspendLayout();
@@ -70,6 +72,7 @@
             // 
             // RecommendationsTab
             // 
+            this.RecommendationsTab.Controls.Add(this.FullRBtn);
             this.RecommendationsTab.Controls.Add(this.RecommendationsBtn);
             this.RecommendationsTab.Controls.Add(this.FindNeighbors);
             this.RecommendationsTab.Controls.Add(this.CalculateCorrelations);
@@ -82,15 +85,29 @@
             this.RecommendationsTab.Text = "Recommendation Process";
             this.RecommendationsTab.UseVisualStyleBackColor = true;
             // 
+            // FullRBtn
+            // 
+            this.FullRBtn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.FullRBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.FullRBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FullRBtn.ForeColor = System.Drawing.Color.White;
+            this.FullRBtn.Location = new System.Drawing.Point(377, 468);
+            this.FullRBtn.Name = "FullRBtn";
+            this.FullRBtn.Size = new System.Drawing.Size(201, 37);
+            this.FullRBtn.TabIndex = 7;
+            this.FullRBtn.Text = "Full Recommndations";
+            this.FullRBtn.UseVisualStyleBackColor = false;
+            this.FullRBtn.Click += new System.EventHandler(this.FullRBtn_Click);
+            // 
             // RecommendationsBtn
             // 
             this.RecommendationsBtn.BackColor = System.Drawing.Color.SteelBlue;
             this.RecommendationsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RecommendationsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RecommendationsBtn.ForeColor = System.Drawing.Color.White;
-            this.RecommendationsBtn.Location = new System.Drawing.Point(245, 468);
+            this.RecommendationsBtn.Location = new System.Drawing.Point(180, 468);
             this.RecommendationsBtn.Name = "RecommendationsBtn";
-            this.RecommendationsBtn.Size = new System.Drawing.Size(254, 37);
+            this.RecommendationsBtn.Size = new System.Drawing.Size(191, 37);
             this.RecommendationsBtn.TabIndex = 6;
             this.RecommendationsBtn.Text = "Recommndations";
             this.RecommendationsBtn.UseVisualStyleBackColor = false;
@@ -102,9 +119,9 @@
             this.FindNeighbors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FindNeighbors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FindNeighbors.ForeColor = System.Drawing.Color.White;
-            this.FindNeighbors.Location = new System.Drawing.Point(505, 468);
+            this.FindNeighbors.Location = new System.Drawing.Point(584, 468);
             this.FindNeighbors.Name = "FindNeighbors";
-            this.FindNeighbors.Size = new System.Drawing.Size(241, 37);
+            this.FindNeighbors.Size = new System.Drawing.Size(162, 37);
             this.FindNeighbors.TabIndex = 5;
             this.FindNeighbors.Text = "Find Neighbors";
             this.FindNeighbors.UseVisualStyleBackColor = false;
@@ -118,7 +135,7 @@
             this.CalculateCorrelations.ForeColor = System.Drawing.Color.White;
             this.CalculateCorrelations.Location = new System.Drawing.Point(3, 468);
             this.CalculateCorrelations.Name = "CalculateCorrelations";
-            this.CalculateCorrelations.Size = new System.Drawing.Size(236, 37);
+            this.CalculateCorrelations.Size = new System.Drawing.Size(171, 37);
             this.CalculateCorrelations.TabIndex = 4;
             this.CalculateCorrelations.Text = "Calculate Correlations";
             this.CalculateCorrelations.UseVisualStyleBackColor = false;
@@ -218,6 +235,7 @@
             // 
             // EvaluationTab
             // 
+            this.EvaluationTab.Controls.Add(this.FullEvBtn);
             this.EvaluationTab.Controls.Add(this.groupBox2);
             this.EvaluationTab.Controls.Add(this.groupBox1);
             this.EvaluationTab.Controls.Add(this.label3);
@@ -395,9 +413,9 @@
             this.EvaluationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EvaluationBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EvaluationBtn.ForeColor = System.Drawing.Color.White;
-            this.EvaluationBtn.Location = new System.Drawing.Point(243, 465);
+            this.EvaluationBtn.Location = new System.Drawing.Point(396, 465);
             this.EvaluationBtn.Name = "EvaluationBtn";
-            this.EvaluationBtn.Size = new System.Drawing.Size(254, 37);
+            this.EvaluationBtn.Size = new System.Drawing.Size(350, 37);
             this.EvaluationBtn.TabIndex = 7;
             this.EvaluationBtn.Text = "Evaluation";
             this.EvaluationBtn.UseVisualStyleBackColor = false;
@@ -410,6 +428,20 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // FullEvBtn
+            // 
+            this.FullEvBtn.BackColor = System.Drawing.Color.SteelBlue;
+            this.FullEvBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.FullEvBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FullEvBtn.ForeColor = System.Drawing.Color.White;
+            this.FullEvBtn.Location = new System.Drawing.Point(6, 465);
+            this.FullEvBtn.Name = "FullEvBtn";
+            this.FullEvBtn.Size = new System.Drawing.Size(350, 37);
+            this.FullEvBtn.TabIndex = 15;
+            this.FullEvBtn.Text = "Full Evaluation";
+            this.FullEvBtn.UseVisualStyleBackColor = false;
+            this.FullEvBtn.Click += new System.EventHandler(this.FullEvBtn_Click);
             // 
             // MainWindow
             // 
@@ -470,6 +502,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox RmseZerosBox;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button FullRBtn;
+        private System.Windows.Forms.Button FullEvBtn;
     }
 }
 

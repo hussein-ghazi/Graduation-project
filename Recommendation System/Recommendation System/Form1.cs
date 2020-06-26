@@ -20,7 +20,7 @@ namespace Recommendation_System
         RecommendationEngine RE = new RecommendationEngine() 
         {
             Neighbors = 50,
-            TopNrecommendations = 1682
+            TopNrecommendations = 50
         };
 
         RSFile RSF = new RSFile()
@@ -152,7 +152,7 @@ namespace Recommendation_System
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         string filePath = openFileDialog.FileName;
-                        int[,] Neighbors = RSF.ReadUsersNeighborsFile(filePath);
+                        int[,] Neighbors = RSF.LoadUsersNeighborsFile(filePath);
                         ShowData(ref Neighbors, "U", "U", 10, 1);
                     }
                 }
@@ -181,7 +181,7 @@ namespace Recommendation_System
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         string filePath = openFileDialog.FileName;
-                        double[,] Correlations = RSF.ReadUsersCorrelationsFile(filePath);
+                        double[,] Correlations = RSF.LoadUsersCorrelationsFile(filePath);
                         ShowData(ref Correlations, "U", "U", 10, 1);
                     }
                 }
@@ -233,7 +233,7 @@ namespace Recommendation_System
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         string filePath = openFileDialog.FileName;
-                        double[,] Correlations = RSF.ReadUsersCorrelationsFile(filePath);
+                        double[,] Correlations = RSF.LoadUsersCorrelationsFile(filePath);
                         int[,] Neighbors = RE.FindNeighbors(Correlations);
                         ShowData(ref Neighbors, "U", "U", 10, 2);
                     }
@@ -270,10 +270,10 @@ namespace Recommendation_System
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = openFileDialog.FileName;
-                    Neighbors = RSF.ReadUsersNeighborsFile(filePath);
+                    Neighbors = RSF.LoadUsersNeighborsFile(filePath);
                 }
 
-                double[,] Recommendations = RE.PredictiveMartix(Ratings, Neighbors);
+                int[,] Recommendations = RE.PredictiveMartix(Ratings, Neighbors);
                 ShowData(ref Recommendations, "M", "U", 10, 2);
             }
             catch (Exception ex)
@@ -327,7 +327,7 @@ namespace Recommendation_System
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = openFileDialog.FileName;
-                    Neighbors = RSF.ReadUsersNeighborsFile(filePath);
+                    Neighbors = RSF.LoadUsersNeighborsFile(filePath);
                 }
 
                 string RemovedRatingsFile = "";
@@ -378,6 +378,101 @@ namespace Recommendation_System
         private void button2_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void FullRBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                double[,] Ratings = new double[RSF.Users, RSF.Movies];
+                double[,] Correlations = new double[RSF.Users, RSF.Users];
+                int[,] Neighbors = new int[RSF.Users, RSF.Neighbors];
+
+
+                MessageBox.Show("Select ratings file please.");
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    Ratings = RSF.LoadRatingsFile(filePath);
+                }
+
+                int[,] Recommendations = RE.PredictiveMartix(Ratings, RE.FindNeighbors(RE.CalculateCorrelations(Ratings)));
+                ShowData(ref Recommendations, "M", "U", RE.TopNrecommendations, 2);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void FullEvBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                double[,] Ratings = new double[Ev.Users, Ev.Movies];
+                int[,] Neighbors = new int[Ev.Users, Ev.Neighbors];
+
+                MessageBox.Show("Select ratings file please.");
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    Ratings = RSF.LoadRatingsFile(filePath);
+                }
+
+                MessageBox.Show("Select neighbors file please.");
+                openFileDialog = new OpenFileDialog();
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    Neighbors = RSF.LoadUsersNeighborsFile(filePath);
+                }
+
+                string RemovedRatingsFile = "";
+                MessageBox.Show("Select path to save removed ratings file");
+                FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+                folderBrowserDialog1.ShowNewFolderButton = false;
+                folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;
+                DialogResult result = folderBrowserDialog1.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    RemovedRatingsFile = folderBrowserDialog1.SelectedPath;
+                }
+
+                RemovedRatingsFile += "\\RemovedRatingsFile.txt";
+
+                double[,] TestingData = Ev.GenerateTestingData(Ratings, RemovedRatingsFile);
+                double[,] PredictiveRatings = Ev.RatingsPrediction(Ratings, Neighbors);
+
+                double[] MAEStatistics = Ev.MAE(Ratings, PredictiveRatings, RemovedRatingsFile);
+                double[] RMSEStatistics = Ev.RMSE(Ratings, PredictiveRatings, RemovedRatingsFile);
+
+                MaeBox.Text = MAEStatistics[0].ToString();
+                MaeRRBox.Text = MAEStatistics[1].ToString();
+                MaeZerosBox.Text = MAEStatistics[2].ToString();
+
+                RmseBox.Text = RMSEStatistics[0].ToString();
+                RmseRRBox.Text = RMSEStatistics[1].ToString();
+                RmseZerosBox.Text = RMSEStatistics[2].ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

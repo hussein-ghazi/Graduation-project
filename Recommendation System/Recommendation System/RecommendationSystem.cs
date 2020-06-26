@@ -173,7 +173,7 @@ namespace RecommendationSystem
         /*
          * Recommend for all users
          */
-        public double[,] PredictiveMartix(double[,] Ratings, int[,] Neighbors)
+        public int[,] PredictiveMartix(double[,] Ratings, int[,] Neighbors)
         {
             // Get the length of the matrix
             users = Ratings.GetLength(0);
@@ -195,7 +195,7 @@ namespace RecommendationSystem
             double[,] NeighborsInfo = new double[users, movies];
 
             // Rows:Users ; Columns:# of Recommended movies
-            double[,] RecommendedMovies = new double[users, topNrecommendations];
+            int[,] RecommendedMovies = new int[users, topNrecommendations];
 
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
