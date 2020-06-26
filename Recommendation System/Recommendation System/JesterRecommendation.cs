@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Windows.Forms;
 
-namespace RecommendationSystem
+namespace JesterRecommendation
 {
-    class RecommendationEngine
+    class JesterRecommendationEngine
     {
         private int users, movies, neighbors, topNrecommendations;
 
@@ -33,7 +34,7 @@ namespace RecommendationSystem
             set { topNrecommendations = value; }
         }
 
-        public RecommendationEngine()
+        public JesterRecommendationEngine()
         {
             this.users = 0;
             this.movies = 0;
@@ -41,7 +42,7 @@ namespace RecommendationSystem
             this.topNrecommendations = 0;
         }
 
-        ~RecommendationEngine()
+        ~JesterRecommendationEngine()
         {
 
         }
@@ -49,7 +50,7 @@ namespace RecommendationSystem
         /*
         * Calculate pearson correlation among all users
         */
-        public double[,] CalculateCorrelations(int[,] Ratings)
+        public double[,] CalculateCorrelations(double[,] Ratings)
         {
             // Get the length of the matrix
             users = Ratings.GetLength(0);
@@ -124,6 +125,8 @@ namespace RecommendationSystem
                     sumxipowr2 = 0;
                     sumyipowr2 = 0;
                 }
+                if (i % 1000 == 0)
+                    MessageBox.Show("done");
             }
             return UsersCorrelation;
         }
@@ -173,7 +176,7 @@ namespace RecommendationSystem
         /*
          * Recommend for all users
          */
-        public double[,] Recommendations(int[,] Ratings, int[,] Neighbors)
+        public double[,] Recommendations(double[,] Ratings, int[,] Neighbors)
         {
             // Get the length of the matrix
             users = Ratings.GetLength(0);
@@ -249,7 +252,6 @@ namespace RecommendationSystem
             return RecommendedMovies;
         }
     }
-
     /*
      *  The exceptions classes 
      */
@@ -318,3 +320,4 @@ namespace RecommendationSystem
         }
     }
 }
+

@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using RecommendationSystem;
+using JesterRecommendation;
 using LoadRSFiles;
 using EvaluationModel;
+using JesterEvaluationModel;
 
 namespace Recommendation_System
 {
@@ -365,6 +367,93 @@ namespace Recommendation_System
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadRSFile Jester = new LoadRSFile()
+                {
+                    Users = 5000,
+                    Movies = 101,
+                    Neighbors = 50,
+                };
+
+                JesterRecommendationEngine JR = new JesterRecommendationEngine()
+                {
+                    Neighbors = 50,
+                    TopNrecommendations = 101
+                };
+
+                JesterEvaluation JEv = new JesterEvaluation()
+                {
+                    Users = 5000,
+                    Movies = 101,
+                    Neighbors = 50
+                };
+
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                    openFileDialog.FilterIndex = 2;
+                    openFileDialog.RestoreDirectory = true;
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = openFileDialog.FileName;
+                        double[,] Ratings = Jester.ReadJesterRatingsFile(filePath);
+                        double[,] Correlations = JR.CalculateCorrelations(Ratings);
+                        MessageBox.Show("Correlation done!");
+                        double[,] Neighbors = JR.FindNeighbors(Correlations);
+                        MessageBox.Show("Neighbors done!");
+
+
+                        string RemovedRatingsFile = "";
+                        MessageBox.Show("Select path to save removed ratings file");
+                        FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+                        folderBrowserDialog1.ShowNewFolderButton = false;
+                        folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;
+                        DialogResult result = folderBrowserDialog1.ShowDialog();
+
+                        if (result == DialogResult.OK)
+                        {
+                            RemovedRatingsFile = folderBrowserDialog1.SelectedPath;
+                        }
+
+                        RemovedRatingsFile += "\\RemovedRatingsFile.txt";
+
+                        double[,] TestingData = JEv.GenerateTestingData(Ratings, RemovedRatingsFile);
+                        double[,] PredictiveRatings = JEv.RatingsPrediction(Ratings, Neighbors);
+
+                        double[] MAEStatistics = JEv.MAE(Ratings, PredictiveRatings, RemovedRatingsFile);
+                        double[] RMSEStatistics = JEv.RMSE(Ratings, PredictiveRatings, RemovedRatingsFile);
+
+                        MaeBox.Text = MAEStatistics[0].ToString();
+                        MaeRRBox.Text = MAEStatistics[1].ToString();
+                        MaeZerosBox.Text = MAEStatistics[2].ToString();
+
+                        RmseBox.Text = RMSEStatistics[0].ToString();
+                        RmseRRBox.Text = RMSEStatistics[1].ToString();
+                        RmseZerosBox.Text = RMSEStatistics[2].ToString();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
         {
 
         }

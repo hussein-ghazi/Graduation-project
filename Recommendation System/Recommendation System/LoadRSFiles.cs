@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Forms;
 
 namespace LoadRSFiles
 {
@@ -73,6 +74,43 @@ namespace LoadRSFiles
                 DataLine = line.Split('\t');
                 //-1 because there is no movie or user with id 0
                 Ratings[int.Parse(DataLine[0]) - 1, int.Parse(DataLine[1]) - 1] = int.Parse(DataLine[2]);
+            }
+            return Ratings;
+        }
+
+        public double[,] ReadJesterRatingsFile(string ratingsFile)
+        {
+            //Check for errors
+            if (users <= 0 || movies <= 0)
+                throw new IOException("Please enter appropriate numbers");
+            if (string.IsNullOrEmpty(ratingsFile))
+                throw new MissingFieldException("Please enter a file path!");
+            if (!System.IO.File.Exists(ratingsFile))
+                throw new FileNotFoundException("File not found!");
+
+            //Set and initialize ratings array
+            double[,] Ratings = new double[users, movies];
+            //Reading all lines in file
+            string[] lines = System.IO.File.ReadAllLines(ratingsFile);
+
+            for (int i = 0; i < users; i++)
+                for (int j = 0; j < movies; j++)
+                    Ratings[i, j] = 99;
+
+            //Read each line and fill it into the ratings array
+            string[] DataLine;
+            int userIndex = 0;
+            foreach (string line in lines)
+            {
+                if (userIndex == 5000)
+                    break;
+                DataLine = line.Split('\t');
+                
+                for(int i = 1; i < movies; i++)
+                {
+                    Ratings[userIndex, i-1] = double.Parse(DataLine[i]);
+                }
+                userIndex++;
             }
             return Ratings;
         }
