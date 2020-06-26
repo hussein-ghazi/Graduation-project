@@ -126,5 +126,29 @@ namespace EvaluationModel
 
             return sum / count;
         }
+
+        public double RMSE(int[,] Ratings, double[,] PredictiveRatings, string RemovedRatingsFile)
+        {
+            string[] lines = File.ReadAllLines(RemovedRatingsFile);
+            double sum = 0;
+            int count = 0;
+            int userIndex, movieIndex;
+
+            //Read each line and fill it into the ratings array
+            string[] DataLine;
+            foreach (string line in lines)
+            {
+                DataLine = line.Split('\t');
+                userIndex = int.Parse(DataLine[0]);
+                for (int j = 1; j < DataLine.Length - 1; j++)
+                {
+                    movieIndex = int.Parse(DataLine[j]);
+                    sum += Math.Pow(PredictiveRatings[userIndex, movieIndex] - Ratings[userIndex, movieIndex], 2);
+                    count++;
+                }
+            }
+            return Math.Sqrt(sum / count);
+        }
+
     }
 }

@@ -216,7 +216,7 @@
             this.EvaluationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EvaluationBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EvaluationBtn.ForeColor = System.Drawing.Color.White;
-            this.EvaluationBtn.Location = new System.Drawing.Point(226, 465);
+            this.EvaluationBtn.Location = new System.Drawing.Point(242, 465);
             this.EvaluationBtn.Name = "EvaluationBtn";
             this.EvaluationBtn.Size = new System.Drawing.Size(254, 37);
             this.EvaluationBtn.TabIndex = 7;

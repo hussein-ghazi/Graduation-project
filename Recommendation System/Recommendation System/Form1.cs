@@ -304,6 +304,7 @@ namespace Recommendation_System
 
         private void EvaluationBtn_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(Math.Pow(4,2).ToString());
             try
             {
                 int[,] Ratings = new int[Ev.Users, Ev.Movies];
@@ -346,7 +347,7 @@ namespace Recommendation_System
 
                 int[,] TestingData = Ev.GenerateTestingData(Ratings, RemovedRatingsFile);
                 double[,] PredictiveRatings = Ev.RatingsPrediction(Ratings, Neighbors);
-                double MAE = Ev.MAE(Ratings, PredictiveRatings, RemovedRatingsFile);
+                double MAE = Ev.RMSE(Ratings, PredictiveRatings, RemovedRatingsFile);
 
                 MessageBox.Show(MAE.ToString());
             }
