@@ -49,7 +49,7 @@ namespace RecommendationSystem
         /*
         * Calculate pearson correlation among all users
         */
-        public double[,] CalculateCorrelations(int[,] Ratings)
+        public double[,] CalculateCorrelations(double[,] Ratings)
         {
             // Get the length of the matrix
             users = Ratings.GetLength(0);
@@ -131,7 +131,7 @@ namespace RecommendationSystem
         /*
         * Find nearest neighbors for all users
         */
-        public double[,] FindNeighbors(double[,] Correlations)
+        public int[,] FindNeighbors(double[,] Correlations)
         {
             users = Correlations.GetLength(0);
 
@@ -144,7 +144,7 @@ namespace RecommendationSystem
             int NeighborIndex = 0;
             double Max = -1;
             string NeighborsString;
-            double[,] UserNeighbors = new double[users, neighbors];
+            int[,] UserNeighbors = new int[users, neighbors];
 
             for (int i = 0; i < users; i++)
             {
@@ -173,7 +173,7 @@ namespace RecommendationSystem
         /*
          * Recommend for all users
          */
-        public double[,] Recommendations(int[,] Ratings, int[,] Neighbors)
+        public double[,] PredictiveMartix(double[,] Ratings, int[,] Neighbors)
         {
             // Get the length of the matrix
             users = Ratings.GetLength(0);

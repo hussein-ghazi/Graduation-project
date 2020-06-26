@@ -12,7 +12,7 @@ namespace EvaluationModel
 {
     class Evaluation : RecommendationEngine
     {
-        public int[,] GenerateTestingData(int[,] Ratings, string RemovedRatingsFile)
+        public double[,] GenerateTestingData(double[,] Ratings, string RemovedRatingsFile)
         {
             // created to generate random movie index
             Random randomObj = new Random();
@@ -24,7 +24,7 @@ namespace EvaluationModel
             // record in Removed Ratings File -->  U    M   M   M
             string userMoviesString;
 
-            int[,] TestingData = new int[this.Users, this.Movies];
+            double[,] TestingData = new double[this.Users, this.Movies];
 
             // each value represnts number of rated movies for each user
             // RatingsCount[i] = number of rated movies for Users[i]
@@ -66,7 +66,7 @@ namespace EvaluationModel
             return TestingData;
         }
 
-        public double[,] RatingsPrediction(int[,] Ratings,int[,] NeighborsMatrix)
+        public double[,] RatingsPrediction(double[,] Ratings,int[,] NeighborsMatrix)
         {
             //index 0 ==> summation
             //index 1 ==> counter
@@ -103,7 +103,7 @@ namespace EvaluationModel
             return PredictiveRatings;
         }
 
-        public double[] MAE(int[,] Ratings,double[,] PredictiveRatings, string RemovedRatingsFile)
+        public double[] MAE(double[,] Ratings,double[,] PredictiveRatings, string RemovedRatingsFile)
         {
             string[] lines = File.ReadAllLines(RemovedRatingsFile);
             double sum = 0;
@@ -135,7 +135,7 @@ namespace EvaluationModel
             return MAEStatistics;
         }
 
-        public double[] RMSE(int[,] Ratings, double[,] PredictiveRatings, string RemovedRatingsFile)
+        public double[] RMSE(double[,] Ratings, double[,] PredictiveRatings, string RemovedRatingsFile)
         {
             string[] lines = File.ReadAllLines(RemovedRatingsFile);
             double sum = 0;

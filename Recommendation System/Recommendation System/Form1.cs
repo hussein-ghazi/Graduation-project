@@ -9,10 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using RecommendationSystem;
-using JesterRecommendation;
-using LoadRSFiles;
+using RecommendationSystemFiles;
 using EvaluationModel;
-using JesterEvaluationModel;
 
 namespace Recommendation_System
 {
@@ -25,7 +23,7 @@ namespace Recommendation_System
             TopNrecommendations = 1682
         };
 
-        LoadRSFile RSF = new LoadRSFile()
+        RSFile RSF = new RSFile()
         {
             Users = 943,
             Movies = 1682,
@@ -129,7 +127,7 @@ namespace Recommendation_System
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         string filePath = openFileDialog.FileName;
-                        int[,] Ratings = RSF.ReadRatingsFile(filePath);
+                        double[,] Ratings = RSF.LoadRatingsFile(filePath);
                         ShowData(ref Ratings, "M", "U", 10, 1);
                     }
                 }
@@ -137,7 +135,7 @@ namespace Recommendation_System
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.ToString());
             }
         }
 
@@ -209,7 +207,7 @@ namespace Recommendation_System
                     {
                         string filePath = openFileDialog.FileName;
 
-                        int[,] Ratings = RSF.ReadRatingsFile(filePath);
+                        double[,] Ratings = RSF.LoadRatingsFile(filePath);
                         double[,] Correlations = RE.CalculateCorrelations(Ratings);
                         ShowData(ref Correlations, "U", "U", 10, 2);
                     }
@@ -236,7 +234,7 @@ namespace Recommendation_System
                     {
                         string filePath = openFileDialog.FileName;
                         double[,] Correlations = RSF.ReadUsersCorrelationsFile(filePath);
-                        double[,] Neighbors = RE.FindNeighbors(Correlations);
+                        int[,] Neighbors = RE.FindNeighbors(Correlations);
                         ShowData(ref Neighbors, "U", "U", 10, 2);
                     }
                 }
@@ -251,7 +249,7 @@ namespace Recommendation_System
         {
             try
             {
-                int[,] Ratings = new int[RSF.Users,RSF.Movies];
+                double[,] Ratings = new double[RSF.Users,RSF.Movies];
                 int[,] Neighbors = new int[RSF.Users,RSF.Neighbors];
 
                 MessageBox.Show("Select ratings file please.");
@@ -263,7 +261,7 @@ namespace Recommendation_System
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = openFileDialog.FileName;
-                    Ratings = RSF.ReadRatingsFile(filePath);
+                    Ratings = RSF.LoadRatingsFile(filePath);
                 }
 
                 MessageBox.Show("Select neighbors file please.");
@@ -275,7 +273,7 @@ namespace Recommendation_System
                     Neighbors = RSF.ReadUsersNeighborsFile(filePath);
                 }
 
-                double[,] Recommendations = RE.Recommendations(Ratings, Neighbors);
+                double[,] Recommendations = RE.PredictiveMartix(Ratings, Neighbors);
                 ShowData(ref Recommendations, "M", "U", 10, 2);
             }
             catch (Exception ex)
@@ -308,7 +306,7 @@ namespace Recommendation_System
         {
             try
             {
-                int[,] Ratings = new int[Ev.Users, Ev.Movies];
+                double[,] Ratings = new double[Ev.Users, Ev.Movies];
                 int[,] Neighbors = new int[Ev.Users, Ev.Neighbors];
 
                 MessageBox.Show("Select ratings file please.");
@@ -320,7 +318,7 @@ namespace Recommendation_System
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = openFileDialog.FileName;
-                    Ratings = RSF.ReadRatingsFile(filePath);
+                    Ratings = RSF.LoadRatingsFile(filePath);
                 }
 
                 MessageBox.Show("Select neighbors file please.");
@@ -346,7 +344,7 @@ namespace Recommendation_System
 
                 RemovedRatingsFile += "\\RemovedRatingsFile.txt";
 
-                int[,] TestingData = Ev.GenerateTestingData(Ratings, RemovedRatingsFile);
+                double[,] TestingData = Ev.GenerateTestingData(Ratings, RemovedRatingsFile);
                 double[,] PredictiveRatings = Ev.RatingsPrediction(Ratings, Neighbors);
 
                 double[] MAEStatistics = Ev.MAE(Ratings, PredictiveRatings, RemovedRatingsFile);
@@ -370,83 +368,7 @@ namespace Recommendation_System
         {
 
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                LoadRSFile Jester = new LoadRSFile()
-                {
-                    Users = 5000,
-                    Movies = 101,
-                    Neighbors = 50,
-                };
-
-                JesterRecommendationEngine JR = new JesterRecommendationEngine()
-                {
-                    Neighbors = 50,
-                    TopNrecommendations = 101
-                };
-
-                JesterEvaluation JEv = new JesterEvaluation()
-                {
-                    Users = 5000,
-                    Movies = 101,
-                    Neighbors = 50
-                };
-
-                using (OpenFileDialog openFileDialog = new OpenFileDialog())
-                {
-                    openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                    openFileDialog.FilterIndex = 2;
-                    openFileDialog.RestoreDirectory = true;
-
-                    if (openFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        string filePath = openFileDialog.FileName;
-                        double[,] Ratings = Jester.ReadJesterRatingsFile(filePath);
-                        double[,] Correlations = JR.CalculateCorrelations(Ratings);
-                        MessageBox.Show("Correlation done!");
-                        double[,] Neighbors = JR.FindNeighbors(Correlations);
-                        MessageBox.Show("Neighbors done!");
-
-
-                        string RemovedRatingsFile = "";
-                        MessageBox.Show("Select path to save removed ratings file");
-                        FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
-                        folderBrowserDialog1.ShowNewFolderButton = false;
-                        folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;
-                        DialogResult result = folderBrowserDialog1.ShowDialog();
-
-                        if (result == DialogResult.OK)
-                        {
-                            RemovedRatingsFile = folderBrowserDialog1.SelectedPath;
-                        }
-
-                        RemovedRatingsFile += "\\RemovedRatingsFile.txt";
-
-                        double[,] TestingData = JEv.GenerateTestingData(Ratings, RemovedRatingsFile);
-                        double[,] PredictiveRatings = JEv.RatingsPrediction(Ratings, Neighbors);
-
-                        double[] MAEStatistics = JEv.MAE(Ratings, PredictiveRatings, RemovedRatingsFile);
-                        double[] RMSEStatistics = JEv.RMSE(Ratings, PredictiveRatings, RemovedRatingsFile);
-
-                        MaeBox.Text = MAEStatistics[0].ToString();
-                        MaeRRBox.Text = MAEStatistics[1].ToString();
-                        MaeZerosBox.Text = MAEStatistics[2].ToString();
-
-                        RmseBox.Text = RMSEStatistics[0].ToString();
-                        RmseRRBox.Text = RMSEStatistics[1].ToString();
-                        RmseZerosBox.Text = RMSEStatistics[2].ToString();
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
+        
 
         private void button2_Click(object sender, EventArgs e)
         {

@@ -58,8 +58,6 @@
             this.EvaluationBtn = new System.Windows.Forms.Button();
             this.SFD = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.RecommendationsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecommendationDG)).BeginInit();
             this.DataPreparationTab.SuspendLayout();
@@ -140,8 +138,6 @@
             // DataPreparationTab
             // 
             this.DataPreparationTab.BackColor = System.Drawing.Color.Transparent;
-            this.DataPreparationTab.Controls.Add(this.button2);
-            this.DataPreparationTab.Controls.Add(this.button1);
             this.DataPreparationTab.Controls.Add(this.NeighborsButton);
             this.DataPreparationTab.Controls.Add(this.CorrelationButton);
             this.DataPreparationTab.Controls.Add(this.RatingsButton);
@@ -162,7 +158,7 @@
             this.NeighborsButton.ForeColor = System.Drawing.Color.White;
             this.NeighborsButton.Location = new System.Drawing.Point(4, 468);
             this.NeighborsButton.Name = "NeighborsButton";
-            this.NeighborsButton.Size = new System.Drawing.Size(141, 37);
+            this.NeighborsButton.Size = new System.Drawing.Size(244, 37);
             this.NeighborsButton.TabIndex = 3;
             this.NeighborsButton.Text = "Load Neighbors";
             this.NeighborsButton.UseVisualStyleBackColor = false;
@@ -174,9 +170,9 @@
             this.CorrelationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CorrelationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CorrelationButton.ForeColor = System.Drawing.Color.White;
-            this.CorrelationButton.Location = new System.Drawing.Point(151, 468);
+            this.CorrelationButton.Location = new System.Drawing.Point(254, 468);
             this.CorrelationButton.Name = "CorrelationButton";
-            this.CorrelationButton.Size = new System.Drawing.Size(153, 37);
+            this.CorrelationButton.Size = new System.Drawing.Size(232, 37);
             this.CorrelationButton.TabIndex = 2;
             this.CorrelationButton.Text = "Load Correlations";
             this.CorrelationButton.UseVisualStyleBackColor = false;
@@ -188,9 +184,9 @@
             this.RatingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RatingsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RatingsButton.ForeColor = System.Drawing.Color.White;
-            this.RatingsButton.Location = new System.Drawing.Point(310, 468);
+            this.RatingsButton.Location = new System.Drawing.Point(492, 468);
             this.RatingsButton.Name = "RatingsButton";
-            this.RatingsButton.Size = new System.Drawing.Size(114, 37);
+            this.RatingsButton.Size = new System.Drawing.Size(254, 37);
             this.RatingsButton.TabIndex = 1;
             this.RatingsButton.Text = "Load Ratings";
             this.RatingsButton.UseVisualStyleBackColor = false;
@@ -291,10 +287,10 @@
             // RmseBox
             // 
             this.RmseBox.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RmseBox.Location = new System.Drawing.Point(10, 68);
+            this.RmseBox.Location = new System.Drawing.Point(6, 68);
             this.RmseBox.Name = "RmseBox";
             this.RmseBox.ReadOnly = true;
-            this.RmseBox.Size = new System.Drawing.Size(334, 32);
+            this.RmseBox.Size = new System.Drawing.Size(338, 32);
             this.RmseBox.TabIndex = 10;
             this.RmseBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -415,26 +411,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(430, 472);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(142, 30);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Load Jester";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(603, 469);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(111, 32);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -494,8 +470,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox RmseZerosBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
     }
 }
 
