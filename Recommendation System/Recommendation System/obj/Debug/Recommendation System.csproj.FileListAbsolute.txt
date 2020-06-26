@@ -7,3 +7,13 @@ C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendat
 C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\obj\Debug\Recommendation System.pdb
 C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\obj\Debug\Recommendation_System.MainWindow.resources
 C:\Users\Kindman\Desktop\Graduation-project\C#\Recommendation System\Recommendation System\obj\Debug\Recommendation System.csprojAssemblyReference.cache
+C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\bin\Debug\Recommendation System.exe.config
+C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\bin\Debug\Recommendation System.exe
+C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\bin\Debug\Recommendation System.pdb
+C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.csprojAssemblyReference.cache
+C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation_System.MainWindow.resources
+C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation_System.Properties.Resources.resources
+C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.csproj.GenerateResource.cache
+C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.csproj.CoreCompileInputs.cache
+C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.exe
+C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.pdb

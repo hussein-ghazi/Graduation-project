@@ -120,7 +120,7 @@ namespace LoadRSFiles
         /*
          * Load data from neighbors file
          */
-        public double[,] ReadUsersNeighborsFile(string neighborsFile)
+        public int[,] ReadUsersNeighborsFile(string neighborsFile)
         {
             //Check for errors
             if (users <= 0 || neighbors <= 0)
@@ -133,7 +133,7 @@ namespace LoadRSFiles
             //Read all lines from file
             string[] lines = System.IO.File.ReadAllLines(neighborsFile);
 
-            double[,] UsersNeighbors = new double[users, neighbors];
+            int[,] UsersNeighbors = new int[users, neighbors];
 
             //Read each line and fill it into the users correlation array
             string[] DataLine;
@@ -141,7 +141,7 @@ namespace LoadRSFiles
             {
                 DataLine = line.Split('\t');
                 for (int i = 0; i < neighbors; i++)
-                    UsersNeighbors[int.Parse(DataLine[0]), i] = double.Parse(DataLine[i + 1]);
+                    UsersNeighbors[int.Parse(DataLine[0]), i] = int.Parse(DataLine[i + 1]);
             }
             return UsersNeighbors;
         }

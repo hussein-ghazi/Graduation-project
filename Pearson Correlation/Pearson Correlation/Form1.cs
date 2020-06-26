@@ -619,11 +619,18 @@ namespace Pearson_Correlation
                         PredictiveRatings[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
                     else
                         PredictiveRatings[i, j] = 0;
-          
-            ///////////////////////////////////////////////////////////////////////////////////
-            ///    load index of removed data in test
-           
-            MessageBox.Show("Done!");
+
+                ///////////////////////////////////////////////////////////////////////////////////
+                ///    load index of removed data in test
+                ///    
+
+                MessageBox.Show(TempNeighborsInfo[0,0].ToString());
+                MessageBox.Show(TempNeighborsInfo[1,0].ToString());
+
+                MessageBox.Show(TempNeighborsInfo[2, 0].ToString());
+                MessageBox.Show(TempNeighborsInfo[3, 0].ToString());
+
+                MessageBox.Show("Done!");
            }
         }
 

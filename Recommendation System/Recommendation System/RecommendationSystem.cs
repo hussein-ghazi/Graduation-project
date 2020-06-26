@@ -12,11 +12,13 @@ namespace RecommendationSystem
         public int Users
         {
             get { return users; }
+            set { users = value; }
         }
 
         public int Movies
         {
             get { return movies; }
+            set { movies = value; }
         }
 
         public int Neighbors
@@ -171,7 +173,7 @@ namespace RecommendationSystem
         /*
          * Recommend for all users
          */
-        public double[,] Recommendations(int[,] Ratings, double[,] Neighbors)
+        public double[,] Recommendations(int[,] Ratings, int[,] Neighbors)
         {
             // Get the length of the matrix
             users = Ratings.GetLength(0);

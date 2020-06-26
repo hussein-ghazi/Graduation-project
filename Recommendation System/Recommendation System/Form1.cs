@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using RecommendationSystem;
 using LoadRSFiles;
+using EvaluationModel;
 
 namespace Recommendation_System
 {
@@ -28,7 +29,14 @@ namespace Recommendation_System
             Movies = 1682,
             Neighbors = 50,
         };
-        
+
+        Evaluation Ev = new Evaluation()
+        {
+            Users = 943,
+            Movies = 1682,
+            Neighbors = 50
+        };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -144,7 +152,7 @@ namespace Recommendation_System
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         string filePath = openFileDialog.FileName;
-                        double[,] Neighbors = RSF.ReadUsersNeighborsFile(filePath);
+                        int[,] Neighbors = RSF.ReadUsersNeighborsFile(filePath);
                         ShowData(ref Neighbors, "U", "U", 10, 1);
                     }
                 }
@@ -242,7 +250,7 @@ namespace Recommendation_System
             try
             {
                 int[,] Ratings = new int[RSF.Users,RSF.Movies];
-                double[,] Neighbors = new double[RSF.Users,RSF.Neighbors];
+                int[,] Neighbors = new int[RSF.Users,RSF.Neighbors];
 
                 MessageBox.Show("Select ratings file please.");
                 OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -292,6 +300,60 @@ namespace Recommendation_System
         private void SFD_FileOk(object sender, CancelEventArgs e)
         {
 
+        }
+
+        private void EvaluationBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int[,] Ratings = new int[Ev.Users, Ev.Movies];
+                int[,] Neighbors = new int[Ev.Users, Ev.Neighbors];
+
+                MessageBox.Show("Select ratings file please.");
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    Ratings = RSF.ReadRatingsFile(filePath);
+                }
+
+                MessageBox.Show("Select neighbors file please.");
+                openFileDialog = new OpenFileDialog();
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    Neighbors = RSF.ReadUsersNeighborsFile(filePath);
+                }
+
+                string RemovedRatingsFile = "";
+                MessageBox.Show("Select path to save removed ratings file");
+                FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+                folderBrowserDialog1.ShowNewFolderButton = false;
+                folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;
+                DialogResult result = folderBrowserDialog1.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    RemovedRatingsFile = folderBrowserDialog1.SelectedPath;
+                }
+
+                RemovedRatingsFile += "\\RemovedRatingsFile.txt";
+
+                int[,] TestingData = Ev.GenerateTestingData(Ratings, RemovedRatingsFile);
+                double[,] PredictiveRatings = Ev.RatingsPrediction(Ratings, Neighbors);
+                double MAE = Ev.MAE(Ratings, PredictiveRatings, RemovedRatingsFile);
+
+                MessageBox.Show(MAE.ToString());
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

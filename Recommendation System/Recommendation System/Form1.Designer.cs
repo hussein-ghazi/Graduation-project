@@ -39,6 +39,8 @@
             this.RatingsButton = new System.Windows.Forms.Button();
             this.LoadFilesDG = new System.Windows.Forms.DataGridView();
             this.TabControl = new System.Windows.Forms.TabControl();
+            this.EvaluationTab = new System.Windows.Forms.TabPage();
+            this.EvaluationBtn = new System.Windows.Forms.Button();
             this.SFD = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.RecommendationsTab.SuspendLayout();
@@ -46,6 +48,7 @@
             this.DataPreparationTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoadFilesDG)).BeginInit();
             this.TabControl.SuspendLayout();
+            this.EvaluationTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // RecommendationsTab
@@ -59,18 +62,18 @@
             this.RecommendationsTab.Padding = new System.Windows.Forms.Padding(3);
             this.RecommendationsTab.Size = new System.Drawing.Size(752, 508);
             this.RecommendationsTab.TabIndex = 1;
-            this.RecommendationsTab.Text = "Recommendations";
+            this.RecommendationsTab.Text = "Recommendation Process";
             this.RecommendationsTab.UseVisualStyleBackColor = true;
             // 
             // RecommendationsBtn
             // 
-            this.RecommendationsBtn.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.RecommendationsBtn.BackColor = System.Drawing.Color.SteelBlue;
             this.RecommendationsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RecommendationsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RecommendationsBtn.ForeColor = System.Drawing.Color.White;
-            this.RecommendationsBtn.Location = new System.Drawing.Point(260, 468);
+            this.RecommendationsBtn.Location = new System.Drawing.Point(245, 468);
             this.RecommendationsBtn.Name = "RecommendationsBtn";
-            this.RecommendationsBtn.Size = new System.Drawing.Size(229, 37);
+            this.RecommendationsBtn.Size = new System.Drawing.Size(254, 37);
             this.RecommendationsBtn.TabIndex = 6;
             this.RecommendationsBtn.Text = "Recommndations";
             this.RecommendationsBtn.UseVisualStyleBackColor = false;
@@ -82,9 +85,9 @@
             this.FindNeighbors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FindNeighbors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FindNeighbors.ForeColor = System.Drawing.Color.White;
-            this.FindNeighbors.Location = new System.Drawing.Point(520, 468);
+            this.FindNeighbors.Location = new System.Drawing.Point(505, 468);
             this.FindNeighbors.Name = "FindNeighbors";
-            this.FindNeighbors.Size = new System.Drawing.Size(229, 37);
+            this.FindNeighbors.Size = new System.Drawing.Size(241, 37);
             this.FindNeighbors.TabIndex = 5;
             this.FindNeighbors.Text = "Find Neighbors";
             this.FindNeighbors.UseVisualStyleBackColor = false;
@@ -98,7 +101,7 @@
             this.CalculateCorrelations.ForeColor = System.Drawing.Color.White;
             this.CalculateCorrelations.Location = new System.Drawing.Point(3, 468);
             this.CalculateCorrelations.Name = "CalculateCorrelations";
-            this.CalculateCorrelations.Size = new System.Drawing.Size(229, 37);
+            this.CalculateCorrelations.Size = new System.Drawing.Size(236, 37);
             this.CalculateCorrelations.TabIndex = 4;
             this.CalculateCorrelations.Text = "Calculate Correlations";
             this.CalculateCorrelations.UseVisualStyleBackColor = false;
@@ -188,12 +191,38 @@
             // 
             this.TabControl.Controls.Add(this.DataPreparationTab);
             this.TabControl.Controls.Add(this.RecommendationsTab);
+            this.TabControl.Controls.Add(this.EvaluationTab);
             this.TabControl.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TabControl.Location = new System.Drawing.Point(12, 12);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
             this.TabControl.Size = new System.Drawing.Size(760, 537);
             this.TabControl.TabIndex = 0;
+            // 
+            // EvaluationTab
+            // 
+            this.EvaluationTab.Controls.Add(this.EvaluationBtn);
+            this.EvaluationTab.Location = new System.Drawing.Point(4, 25);
+            this.EvaluationTab.Name = "EvaluationTab";
+            this.EvaluationTab.Padding = new System.Windows.Forms.Padding(3);
+            this.EvaluationTab.Size = new System.Drawing.Size(752, 508);
+            this.EvaluationTab.TabIndex = 2;
+            this.EvaluationTab.Text = "Evaluation";
+            this.EvaluationTab.UseVisualStyleBackColor = true;
+            // 
+            // EvaluationBtn
+            // 
+            this.EvaluationBtn.BackColor = System.Drawing.Color.SteelBlue;
+            this.EvaluationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EvaluationBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EvaluationBtn.ForeColor = System.Drawing.Color.White;
+            this.EvaluationBtn.Location = new System.Drawing.Point(226, 465);
+            this.EvaluationBtn.Name = "EvaluationBtn";
+            this.EvaluationBtn.Size = new System.Drawing.Size(254, 37);
+            this.EvaluationBtn.TabIndex = 7;
+            this.EvaluationBtn.Text = "Evaluation";
+            this.EvaluationBtn.UseVisualStyleBackColor = false;
+            this.EvaluationBtn.Click += new System.EventHandler(this.EvaluationBtn_Click);
             // 
             // SFD
             // 
@@ -221,6 +250,7 @@
             this.DataPreparationTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LoadFilesDG)).EndInit();
             this.TabControl.ResumeLayout(false);
+            this.EvaluationTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -239,6 +269,8 @@
         private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.SaveFileDialog SFD;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.TabPage EvaluationTab;
+        private System.Windows.Forms.Button EvaluationBtn;
     }
 }
 
