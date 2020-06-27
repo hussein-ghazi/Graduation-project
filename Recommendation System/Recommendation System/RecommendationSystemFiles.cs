@@ -36,6 +36,7 @@ namespace RecommendationSystemFiles
             DataLine = lines[0].Split('\t');
             this.Users = int.Parse(DataLine[0]);
             this.Movies = int.Parse(DataLine[1]);
+            MessageBox.Show("Users: " + this.Users + "\n" + "Movies: " + this.Movies);
 
             //Check for errors
             if (this.Users <= 0 || this.Movies <= 0)
