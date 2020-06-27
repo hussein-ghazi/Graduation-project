@@ -29,12 +29,14 @@
         private void InitializeComponent()
         {
             this.RecommendationsTab = new System.Windows.Forms.TabPage();
-            this.FullRBtn = new System.Windows.Forms.Button();
+            this.PredictiveBtn = new System.Windows.Forms.Button();
             this.RecommendationsBtn = new System.Windows.Forms.Button();
             this.FindNeighbors = new System.Windows.Forms.Button();
             this.CalculateCorrelations = new System.Windows.Forms.Button();
             this.RecommendationDG = new System.Windows.Forms.DataGridView();
             this.DataPreparationTab = new System.Windows.Forms.TabPage();
+            this.PrediciveButton = new System.Windows.Forms.Button();
+            this.TopnButton = new System.Windows.Forms.Button();
             this.NeighborsButton = new System.Windows.Forms.Button();
             this.CorrelationButton = new System.Windows.Forms.Button();
             this.RatingsButton = new System.Windows.Forms.Button();
@@ -72,32 +74,31 @@
             // 
             // RecommendationsTab
             // 
-            this.RecommendationsTab.Controls.Add(this.FullRBtn);
+            this.RecommendationsTab.Controls.Add(this.PredictiveBtn);
             this.RecommendationsTab.Controls.Add(this.RecommendationsBtn);
             this.RecommendationsTab.Controls.Add(this.FindNeighbors);
             this.RecommendationsTab.Controls.Add(this.CalculateCorrelations);
             this.RecommendationsTab.Controls.Add(this.RecommendationDG);
-            this.RecommendationsTab.Location = new System.Drawing.Point(4, 25);
+            this.RecommendationsTab.Location = new System.Drawing.Point(4, 26);
             this.RecommendationsTab.Name = "RecommendationsTab";
             this.RecommendationsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.RecommendationsTab.Size = new System.Drawing.Size(752, 508);
+            this.RecommendationsTab.Size = new System.Drawing.Size(752, 507);
             this.RecommendationsTab.TabIndex = 1;
             this.RecommendationsTab.Text = "Recommendation Process";
             this.RecommendationsTab.UseVisualStyleBackColor = true;
             // 
-            // FullRBtn
+            // PredictiveBtn
             // 
-            this.FullRBtn.BackColor = System.Drawing.Color.DodgerBlue;
-            this.FullRBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FullRBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FullRBtn.ForeColor = System.Drawing.Color.White;
-            this.FullRBtn.Location = new System.Drawing.Point(545, 468);
-            this.FullRBtn.Name = "FullRBtn";
-            this.FullRBtn.Size = new System.Drawing.Size(201, 37);
-            this.FullRBtn.TabIndex = 7;
-            this.FullRBtn.Text = "Full Recommndations";
-            this.FullRBtn.UseVisualStyleBackColor = false;
-            this.FullRBtn.Click += new System.EventHandler(this.FullRBtn_Click);
+            this.PredictiveBtn.BackColor = System.Drawing.Color.SteelBlue;
+            this.PredictiveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PredictiveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PredictiveBtn.ForeColor = System.Drawing.Color.White;
+            this.PredictiveBtn.Location = new System.Drawing.Point(544, 467);
+            this.PredictiveBtn.Name = "PredictiveBtn";
+            this.PredictiveBtn.Size = new System.Drawing.Size(202, 37);
+            this.PredictiveBtn.TabIndex = 8;
+            this.PredictiveBtn.Text = "Calculate Predictive Matrix";
+            this.PredictiveBtn.UseVisualStyleBackColor = false;
             // 
             // RecommendationsBtn
             // 
@@ -105,11 +106,11 @@
             this.RecommendationsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RecommendationsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RecommendationsBtn.ForeColor = System.Drawing.Color.White;
-            this.RecommendationsBtn.Location = new System.Drawing.Point(348, 468);
+            this.RecommendationsBtn.Location = new System.Drawing.Point(331, 467);
             this.RecommendationsBtn.Name = "RecommendationsBtn";
-            this.RecommendationsBtn.Size = new System.Drawing.Size(191, 37);
+            this.RecommendationsBtn.Size = new System.Drawing.Size(207, 37);
             this.RecommendationsBtn.TabIndex = 6;
-            this.RecommendationsBtn.Text = "Recommndations";
+            this.RecommendationsBtn.Text = "Calculate Recommndations";
             this.RecommendationsBtn.UseVisualStyleBackColor = false;
             this.RecommendationsBtn.Click += new System.EventHandler(this.RecommendationsBtn_Click);
             // 
@@ -119,9 +120,9 @@
             this.FindNeighbors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FindNeighbors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FindNeighbors.ForeColor = System.Drawing.Color.White;
-            this.FindNeighbors.Location = new System.Drawing.Point(180, 468);
+            this.FindNeighbors.Location = new System.Drawing.Point(6, 467);
             this.FindNeighbors.Name = "FindNeighbors";
-            this.FindNeighbors.Size = new System.Drawing.Size(162, 37);
+            this.FindNeighbors.Size = new System.Drawing.Size(142, 37);
             this.FindNeighbors.TabIndex = 5;
             this.FindNeighbors.Text = "Find Neighbors";
             this.FindNeighbors.UseVisualStyleBackColor = false;
@@ -133,7 +134,7 @@
             this.CalculateCorrelations.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CalculateCorrelations.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CalculateCorrelations.ForeColor = System.Drawing.Color.White;
-            this.CalculateCorrelations.Location = new System.Drawing.Point(3, 468);
+            this.CalculateCorrelations.Location = new System.Drawing.Point(154, 467);
             this.CalculateCorrelations.Name = "CalculateCorrelations";
             this.CalculateCorrelations.Size = new System.Drawing.Size(171, 37);
             this.CalculateCorrelations.TabIndex = 4;
@@ -155,17 +156,45 @@
             // DataPreparationTab
             // 
             this.DataPreparationTab.BackColor = System.Drawing.Color.Transparent;
+            this.DataPreparationTab.Controls.Add(this.PrediciveButton);
+            this.DataPreparationTab.Controls.Add(this.TopnButton);
             this.DataPreparationTab.Controls.Add(this.NeighborsButton);
             this.DataPreparationTab.Controls.Add(this.CorrelationButton);
             this.DataPreparationTab.Controls.Add(this.RatingsButton);
             this.DataPreparationTab.Controls.Add(this.LoadFilesDG);
-            this.DataPreparationTab.Location = new System.Drawing.Point(4, 25);
+            this.DataPreparationTab.Location = new System.Drawing.Point(4, 26);
             this.DataPreparationTab.Name = "DataPreparationTab";
             this.DataPreparationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.DataPreparationTab.Size = new System.Drawing.Size(752, 508);
+            this.DataPreparationTab.Size = new System.Drawing.Size(752, 507);
             this.DataPreparationTab.TabIndex = 0;
             this.DataPreparationTab.Text = "Load data from files";
             this.DataPreparationTab.Click += new System.EventHandler(this.DataPreparationTab_Click);
+            // 
+            // PrediciveButton
+            // 
+            this.PrediciveButton.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.PrediciveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PrediciveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PrediciveButton.ForeColor = System.Drawing.Color.White;
+            this.PrediciveButton.Location = new System.Drawing.Point(128, 465);
+            this.PrediciveButton.Name = "PrediciveButton";
+            this.PrediciveButton.Size = new System.Drawing.Size(229, 37);
+            this.PrediciveButton.TabIndex = 5;
+            this.PrediciveButton.Text = "Load Pridictive Matrix";
+            this.PrediciveButton.UseVisualStyleBackColor = false;
+            // 
+            // TopnButton
+            // 
+            this.TopnButton.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.TopnButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TopnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TopnButton.ForeColor = System.Drawing.Color.White;
+            this.TopnButton.Location = new System.Drawing.Point(373, 465);
+            this.TopnButton.Name = "TopnButton";
+            this.TopnButton.Size = new System.Drawing.Size(229, 37);
+            this.TopnButton.TabIndex = 4;
+            this.TopnButton.Text = "Load TopN Recommendations";
+            this.TopnButton.UseVisualStyleBackColor = false;
             // 
             // NeighborsButton
             // 
@@ -173,9 +202,9 @@
             this.NeighborsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.NeighborsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NeighborsButton.ForeColor = System.Drawing.Color.White;
-            this.NeighborsButton.Location = new System.Drawing.Point(4, 468);
+            this.NeighborsButton.Location = new System.Drawing.Point(27, 422);
             this.NeighborsButton.Name = "NeighborsButton";
-            this.NeighborsButton.Size = new System.Drawing.Size(244, 37);
+            this.NeighborsButton.Size = new System.Drawing.Size(229, 37);
             this.NeighborsButton.TabIndex = 3;
             this.NeighborsButton.Text = "Load Neighbors";
             this.NeighborsButton.UseVisualStyleBackColor = false;
@@ -187,9 +216,9 @@
             this.CorrelationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CorrelationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CorrelationButton.ForeColor = System.Drawing.Color.White;
-            this.CorrelationButton.Location = new System.Drawing.Point(254, 468);
+            this.CorrelationButton.Location = new System.Drawing.Point(497, 422);
             this.CorrelationButton.Name = "CorrelationButton";
-            this.CorrelationButton.Size = new System.Drawing.Size(232, 37);
+            this.CorrelationButton.Size = new System.Drawing.Size(229, 37);
             this.CorrelationButton.TabIndex = 2;
             this.CorrelationButton.Text = "Load Correlations";
             this.CorrelationButton.UseVisualStyleBackColor = false;
@@ -201,9 +230,9 @@
             this.RatingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RatingsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RatingsButton.ForeColor = System.Drawing.Color.White;
-            this.RatingsButton.Location = new System.Drawing.Point(492, 468);
+            this.RatingsButton.Location = new System.Drawing.Point(262, 422);
             this.RatingsButton.Name = "RatingsButton";
-            this.RatingsButton.Size = new System.Drawing.Size(254, 37);
+            this.RatingsButton.Size = new System.Drawing.Size(229, 37);
             this.RatingsButton.TabIndex = 1;
             this.RatingsButton.Text = "Load Ratings";
             this.RatingsButton.UseVisualStyleBackColor = false;
@@ -217,7 +246,7 @@
             this.LoadFilesDG.Location = new System.Drawing.Point(0, 0);
             this.LoadFilesDG.Name = "LoadFilesDG";
             this.LoadFilesDG.ReadOnly = true;
-            this.LoadFilesDG.Size = new System.Drawing.Size(752, 462);
+            this.LoadFilesDG.Size = new System.Drawing.Size(752, 416);
             this.LoadFilesDG.TabIndex = 0;
             this.LoadFilesDG.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.DataPreperationDataGrid_ColumnAdded);
             // 
@@ -226,7 +255,7 @@
             this.TabControl.Controls.Add(this.DataPreparationTab);
             this.TabControl.Controls.Add(this.RecommendationsTab);
             this.TabControl.Controls.Add(this.EvaluationTab);
-            this.TabControl.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TabControl.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TabControl.Location = new System.Drawing.Point(12, 12);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
@@ -240,10 +269,10 @@
             this.EvaluationTab.Controls.Add(this.groupBox1);
             this.EvaluationTab.Controls.Add(this.label3);
             this.EvaluationTab.Controls.Add(this.EvaluationBtn);
-            this.EvaluationTab.Location = new System.Drawing.Point(4, 25);
+            this.EvaluationTab.Location = new System.Drawing.Point(4, 26);
             this.EvaluationTab.Name = "EvaluationTab";
             this.EvaluationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.EvaluationTab.Size = new System.Drawing.Size(752, 508);
+            this.EvaluationTab.Size = new System.Drawing.Size(752, 507);
             this.EvaluationTab.TabIndex = 2;
             this.EvaluationTab.Text = "Evaluation";
             this.EvaluationTab.UseVisualStyleBackColor = true;
@@ -258,7 +287,7 @@
             this.FullEvBtn.Name = "FullEvBtn";
             this.FullEvBtn.Size = new System.Drawing.Size(350, 37);
             this.FullEvBtn.TabIndex = 15;
-            this.FullEvBtn.Text = "Full Evaluation";
+            this.FullEvBtn.Text = "Evaluation";
             this.FullEvBtn.UseVisualStyleBackColor = false;
             this.FullEvBtn.Click += new System.EventHandler(this.FullEvBtn_Click);
             // 
@@ -431,7 +460,7 @@
             this.EvaluationBtn.Name = "EvaluationBtn";
             this.EvaluationBtn.Size = new System.Drawing.Size(350, 37);
             this.EvaluationBtn.TabIndex = 7;
-            this.EvaluationBtn.Text = "Evaluation";
+            this.EvaluationBtn.Text = "Quick Evaluation";
             this.EvaluationBtn.UseVisualStyleBackColor = false;
             this.EvaluationBtn.Click += new System.EventHandler(this.EvaluationBtn_Click);
             // 
@@ -454,7 +483,7 @@
             this.MaximizeBox = false;
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Recommendation System";
+            this.Text = "Movie Recommendation System";
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.RecommendationsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.RecommendationDG)).EndInit();
@@ -502,8 +531,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox RmseZerosBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button FullRBtn;
         private System.Windows.Forms.Button FullEvBtn;
+        private System.Windows.Forms.Button PrediciveButton;
+        private System.Windows.Forms.Button TopnButton;
+        private System.Windows.Forms.Button PredictiveBtn;
     }
 }
 

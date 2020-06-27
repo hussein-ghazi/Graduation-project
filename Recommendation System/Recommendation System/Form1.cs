@@ -374,6 +374,7 @@ namespace Recommendation_System
 
         }
 
+        /*
         private void FullRBtn_Click(object sender, EventArgs e)
         {
             try
@@ -406,6 +407,7 @@ namespace Recommendation_System
                 MessageBox.Show(ex.Message);
             }
         }
+        */
 
         private void FullEvBtn_Click(object sender, EventArgs e)
         {
