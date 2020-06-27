@@ -41,6 +41,7 @@
             this.LoadFilesDG = new System.Windows.Forms.DataGridView();
             this.TabControl = new System.Windows.Forms.TabControl();
             this.EvaluationTab = new System.Windows.Forms.TabPage();
+            this.FullEvBtn = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.RmseZerosBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -59,7 +60,6 @@
             this.EvaluationBtn = new System.Windows.Forms.Button();
             this.SFD = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.FullEvBtn = new System.Windows.Forms.Button();
             this.RecommendationsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecommendationDG)).BeginInit();
             this.DataPreparationTab.SuspendLayout();
@@ -91,7 +91,7 @@
             this.FullRBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FullRBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FullRBtn.ForeColor = System.Drawing.Color.White;
-            this.FullRBtn.Location = new System.Drawing.Point(377, 468);
+            this.FullRBtn.Location = new System.Drawing.Point(545, 468);
             this.FullRBtn.Name = "FullRBtn";
             this.FullRBtn.Size = new System.Drawing.Size(201, 37);
             this.FullRBtn.TabIndex = 7;
@@ -105,7 +105,7 @@
             this.RecommendationsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RecommendationsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RecommendationsBtn.ForeColor = System.Drawing.Color.White;
-            this.RecommendationsBtn.Location = new System.Drawing.Point(180, 468);
+            this.RecommendationsBtn.Location = new System.Drawing.Point(348, 468);
             this.RecommendationsBtn.Name = "RecommendationsBtn";
             this.RecommendationsBtn.Size = new System.Drawing.Size(191, 37);
             this.RecommendationsBtn.TabIndex = 6;
@@ -119,7 +119,7 @@
             this.FindNeighbors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FindNeighbors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FindNeighbors.ForeColor = System.Drawing.Color.White;
-            this.FindNeighbors.Location = new System.Drawing.Point(584, 468);
+            this.FindNeighbors.Location = new System.Drawing.Point(180, 468);
             this.FindNeighbors.Name = "FindNeighbors";
             this.FindNeighbors.Size = new System.Drawing.Size(162, 37);
             this.FindNeighbors.TabIndex = 5;
@@ -247,6 +247,20 @@
             this.EvaluationTab.TabIndex = 2;
             this.EvaluationTab.Text = "Evaluation";
             this.EvaluationTab.UseVisualStyleBackColor = true;
+            // 
+            // FullEvBtn
+            // 
+            this.FullEvBtn.BackColor = System.Drawing.Color.SteelBlue;
+            this.FullEvBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.FullEvBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FullEvBtn.ForeColor = System.Drawing.Color.White;
+            this.FullEvBtn.Location = new System.Drawing.Point(6, 465);
+            this.FullEvBtn.Name = "FullEvBtn";
+            this.FullEvBtn.Size = new System.Drawing.Size(350, 37);
+            this.FullEvBtn.TabIndex = 15;
+            this.FullEvBtn.Text = "Full Evaluation";
+            this.FullEvBtn.UseVisualStyleBackColor = false;
+            this.FullEvBtn.Click += new System.EventHandler(this.FullEvBtn_Click);
             // 
             // groupBox2
             // 
@@ -428,20 +442,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // FullEvBtn
-            // 
-            this.FullEvBtn.BackColor = System.Drawing.Color.SteelBlue;
-            this.FullEvBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FullEvBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FullEvBtn.ForeColor = System.Drawing.Color.White;
-            this.FullEvBtn.Location = new System.Drawing.Point(6, 465);
-            this.FullEvBtn.Name = "FullEvBtn";
-            this.FullEvBtn.Size = new System.Drawing.Size(350, 37);
-            this.FullEvBtn.TabIndex = 15;
-            this.FullEvBtn.Text = "Full Evaluation";
-            this.FullEvBtn.UseVisualStyleBackColor = false;
-            this.FullEvBtn.Click += new System.EventHandler(this.FullEvBtn_Click);
             // 
             // MainWindow
             // 

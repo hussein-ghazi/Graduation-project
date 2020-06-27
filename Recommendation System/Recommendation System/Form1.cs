@@ -25,17 +25,11 @@ namespace Recommendation_System
 
         RSFile RSF = new RSFile()
         {
-            Users = 943,
-            Movies = 1682,
             Neighbors = 50,
         };
 
-        Evaluation Ev = new Evaluation()
-        {
-            Users = 943,
-            Movies = 1682,
-            Neighbors = 50
-        };
+        Evaluation Ev = new Evaluation();
+
 
         public MainWindow()
         {
@@ -417,9 +411,6 @@ namespace Recommendation_System
         {
             try
             {
-                double[,] Ratings = new double[Ev.Users, Ev.Movies];
-                int[,] Neighbors = new int[Ev.Users, Ev.Neighbors];
-
                 MessageBox.Show("Select ratings file please.");
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
@@ -429,49 +420,42 @@ namespace Recommendation_System
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = openFileDialog.FileName;
-                    Ratings = RSF.LoadRatingsFile(filePath);
+                    double[,] Ratings = RSF.LoadRatingsFile(filePath);
+
+                    string RemovedRatingsFile = "";
+                    MessageBox.Show("Select path to save removed ratings file");
+                    FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+                    folderBrowserDialog1.ShowNewFolderButton = false;
+                    folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;
+                    DialogResult result = folderBrowserDialog1.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                        RemovedRatingsFile = folderBrowserDialog1.SelectedPath;
+                    }
+
+                    RemovedRatingsFile += "\\RemovedRatingsFile.txt";
+
+                    double[,] TestingData = Ev.GenerateTestingData(Ratings, RemovedRatingsFile);
+                    double[,] PredictiveRatings = Ev.RatingsPrediction(Ratings, RE.FindNeighbors(RE.CalculateCorrelations(Ratings)));
+
+                    double[] MAEStatistics = Ev.MAE(Ratings, PredictiveRatings, RemovedRatingsFile);
+                    double[] RMSEStatistics = Ev.RMSE(Ratings, PredictiveRatings, RemovedRatingsFile);
+
+                    MaeBox.Text = MAEStatistics[0].ToString();
+                    MaeRRBox.Text = MAEStatistics[1].ToString();
+                    MaeZerosBox.Text = MAEStatistics[2].ToString();
+
+                    RmseBox.Text = RMSEStatistics[0].ToString();
+                    RmseRRBox.Text = RMSEStatistics[1].ToString();
+                    RmseZerosBox.Text = RMSEStatistics[2].ToString();
                 }
 
-                MessageBox.Show("Select neighbors file please.");
-                openFileDialog = new OpenFileDialog();
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string filePath = openFileDialog.FileName;
-                    Neighbors = RSF.LoadUsersNeighborsFile(filePath);
-                }
-
-                string RemovedRatingsFile = "";
-                MessageBox.Show("Select path to save removed ratings file");
-                FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
-                folderBrowserDialog1.ShowNewFolderButton = false;
-                folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;
-                DialogResult result = folderBrowserDialog1.ShowDialog();
-
-                if (result == DialogResult.OK)
-                {
-                    RemovedRatingsFile = folderBrowserDialog1.SelectedPath;
-                }
-
-                RemovedRatingsFile += "\\RemovedRatingsFile.txt";
-
-                double[,] TestingData = Ev.GenerateTestingData(Ratings, RemovedRatingsFile);
-                double[,] PredictiveRatings = Ev.RatingsPrediction(Ratings, Neighbors);
-
-                double[] MAEStatistics = Ev.MAE(Ratings, PredictiveRatings, RemovedRatingsFile);
-                double[] RMSEStatistics = Ev.RMSE(Ratings, PredictiveRatings, RemovedRatingsFile);
-
-                MaeBox.Text = MAEStatistics[0].ToString();
-                MaeRRBox.Text = MAEStatistics[1].ToString();
-                MaeZerosBox.Text = MAEStatistics[2].ToString();
-
-                RmseBox.Text = RMSEStatistics[0].ToString();
-                RmseRRBox.Text = RMSEStatistics[1].ToString();
-                RmseZerosBox.Text = RMSEStatistics[2].ToString();
+                
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.ToString());
             }
         }
     }

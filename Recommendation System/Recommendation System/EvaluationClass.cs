@@ -14,6 +14,9 @@ namespace EvaluationModel
     {
         public double[,] GenerateTestingData(double[,] Ratings, string RemovedRatingsFile)
         {
+            this.Users = Ratings.GetLength(0);
+            this.Movies = Ratings.GetLength(1);
+
             // created to generate random movie index
             Random randomObj = new Random();
             int randomMovieIndex;
@@ -24,6 +27,7 @@ namespace EvaluationModel
             // record in Removed Ratings File -->  U    M   M   M
             string userMoviesString;
 
+            MessageBox.Show("Users: " + this.Users + "\n" + "Movies: " + this.Movies);
             double[,] TestingData = new double[this.Users, this.Movies];
 
             // each value represnts number of rated movies for each user
@@ -68,6 +72,10 @@ namespace EvaluationModel
 
         public double[,] RatingsPrediction(double[,] Ratings,int[,] NeighborsMatrix)
         {
+            this.Users = Ratings.GetLength(0);
+            this.Movies = Ratings.GetLength(1);
+            this.Neighbors = NeighborsMatrix.GetLength(1);
+
             //index 0 ==> summation
             //index 1 ==> counter
             double[,] TempNeighborsInfo = new double[this.Users * 2, this.Movies];
@@ -105,6 +113,9 @@ namespace EvaluationModel
 
         public double[] MAE(double[,] Ratings,double[,] PredictiveRatings, string RemovedRatingsFile)
         {
+            this.Users = Ratings.GetLength(0);
+            this.Movies = Ratings.GetLength(1);
+
             string[] lines = File.ReadAllLines(RemovedRatingsFile);
             double sum = 0;
             int count = 0;
@@ -137,6 +148,9 @@ namespace EvaluationModel
 
         public double[] RMSE(double[,] Ratings, double[,] PredictiveRatings, string RemovedRatingsFile)
         {
+            this.Users = Ratings.GetLength(0);
+            this.Movies = Ratings.GetLength(1);
+
             string[] lines = File.ReadAllLines(RemovedRatingsFile);
             double sum = 0;
             int count = 0;
