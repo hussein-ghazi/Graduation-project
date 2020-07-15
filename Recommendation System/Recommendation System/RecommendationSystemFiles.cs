@@ -36,7 +36,6 @@ namespace RecommendationSystemFiles
             DataLine = lines[0].Split('\t');
             this.Users = int.Parse(DataLine[0]);
             this.Movies = int.Parse(DataLine[1]);
-            MessageBox.Show("Users: " + this.Users + "\n" + "Movies: " + this.Movies);
 
             //Check for errors
             if (this.Users <= 0 || this.Movies <= 0)
@@ -61,28 +60,6 @@ namespace RecommendationSystemFiles
 
             return Ratings;
         }
-
-        /*
-         * Write data on a file
-         */
-         public void CreateRatingsFile(double[,] Ratings, string ratingFilePath)
-         {
-            using (StreamWriter file = new StreamWriter(@"Ratings.txt", true))
-            {
-                string dataLine = "";
-                for (int i = 0; i < this.Users; i++)
-                {
-                    dataLine = (i + 1).ToString() + "\t";
-
-                    for (int j = 0; j < this.Movies; j++)
-                    {
-                        dataLine += Ratings[i, j].ToString() + "\t";
-                    }
-
-                    file.WriteLine(dataLine);
-                }
-            }
-         }
 
         /*
          * Load data from correlation file
@@ -130,23 +107,23 @@ namespace RecommendationSystemFiles
         }
 
         /*
-         * Create correlations file
+         * Write correlations file
          */
-         public void CreateCorrelationsFile(double[,] Correlations, string correlationFilePath)
+         public void WriteCorrelationsFile(double[,] Correlations, string correlationFilePath)
          {
-            using (StreamWriter file = new StreamWriter(@"Correlations.txt", true))
+            this.Users = Correlations.GetLength(0);
+
+            using (StreamWriter file = new StreamWriter(correlationFilePath + @"\Correlations.txt", true))
             {
+                file.WriteLine(this.Users);
                 string dataLine = "";
                 for (int i = 0; i < this.Users; i++)
                 {
-                    dataLine = (i + 1).ToString() + "\t";
-
-                    for (int j = 0; j < this.Users; j++)
+                    for (int j = i + 1; j < this.Users; j++)
                     {
-                        dataLine += Correlations[i, j].ToString() + "\t";
+                        dataLine = i.ToString() + "\t" + j.ToString() + "\t" + Correlations[i, j];
+                        file.WriteLine(dataLine);
                     }
-
-                    file.WriteLine(dataLine);
                 }
             }
          }
@@ -188,22 +165,24 @@ namespace RecommendationSystemFiles
         }
 
         /*
-         * Create Neighbors fileNeighbors
+         * Write Neighbors fileNeighbors
          */
-        public void CreateNeighborsFile(int[,] Neighbors, string neighborsFilePath)
+        public void WriteNeighborsFile(int[,] Neighbors, string neighborsFilePath)
         {
-            using (StreamWriter file = new StreamWriter(@"Neighbors.txt", true))
+            using (StreamWriter file = new StreamWriter(neighborsFilePath + @"\Neighbors.txt", true))
             {
+                this.Users = Neighbors.GetLength(0);
+                this.Neighbors = Neighbors.GetLength(1);
+
                 string dataLine = "";
+                file.WriteLine(this.Users.ToString() + "\t" + this.Neighbors.ToString());
                 for (int i = 0; i < this.Users; i++)
                 {
-                    dataLine = (i + 1).ToString() + "\t";
-
-                    for (int j = 0; j < this.Users; j++)
+                    dataLine = i.ToString() + "\t";
+                    for (int j = 0; j < this.Neighbors; j++)
                     {
                         dataLine += Neighbors[i, j].ToString() + "\t";
                     }
-                    
                     file.WriteLine(dataLine);
                 }
             }
@@ -221,55 +200,118 @@ namespace RecommendationSystemFiles
             string[] DataLine;
             DataLine = lines[0].Split('\t');
             this.Users = int.Parse(DataLine[0]);
-            this.TopNrecommendations = int.Parse(DataLine[1]);
+            this.N = int.Parse(DataLine[1]);
 
             //Check for errors
-            if (this.Users <= 0 || this.Movies <= 0)
+            if (this.Users <= 0 || this.N <= 0)
                 throw new IOException("Please enter appropriate numbers");
             if (string.IsNullOrEmpty(recommendationsFilePath))
                 throw new MissingFieldException("Please enter a file path!");
-            if (!System.IO.File.Exists(recommendationsFilePath))
+            if (!File.Exists(recommendationsFilePath))
                 throw new FileNotFoundException("File not found!");
 
-            int[,] RecommendedMovies = new int[this.Users, this.Movies];
+            //Set and initialize ratings array
+            int[,] Recommendations = new int[this.Users, this.N];
 
-            for (int i = 0; i < lines.Length; i++)
-                for (int j = 0; j < this.Movies; j++)
-                    RecommendedMovies[i, j] = 0;
-
-
-                    //Read each line and fill it into the users correlation array
+            for (int i = 0; i < this.Users; i++)
+                for (int j = 0; j < this.N; j++)
+                    Recommendations[i, j] = 0;
 
             for (int i = 1; i < lines.Length; i++)
             {
                 DataLine = lines[i].Split('\t');
-                for (int j = 1; j < this.TopNrecommendations; j++)
-                {
-                    RecommendedMovies[int.Parse(DataLine[0]), j-1] = int.Parse(DataLine[j]);
-                }
+                Recommendations[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = int.Parse(DataLine[2]);
             }
-
-            return RecommendedMovies;
+            return Recommendations;
         }
 
         /*
-         * Create recommendation file
+         * Load data from Predctive file
          */
-         public void CreateRecommendationsFile(int[,] RecommendedMovies, string recommendationsFilePath)
-         {
-            using (StreamWriter file = new StreamWriter(@"Recommendations.txt", true))
+        public double[,] LoadPredctiveFile(string predctiveFilePath)
+        {
+            //Reading all lines in file
+            string[] lines = File.ReadAllLines(predctiveFilePath);
+
+            //Read each line and fill it into the ratings array
+            string[] DataLine;
+            DataLine = lines[0].Split('\t');
+            this.Users = int.Parse(DataLine[0]);
+            this.Movies = int.Parse(DataLine[1]);
+
+            //Check for errors
+            if (this.Users <= 0 || this.Movies <= 0)
+                throw new IOException("Please enter appropriate numbers");
+            if (string.IsNullOrEmpty(predctiveFilePath))
+                throw new MissingFieldException("Please enter a file path!");
+            if (!File.Exists(predctiveFilePath))
+                throw new FileNotFoundException("File not found!");
+
+            //Set and initialize ratings array
+            double[,] PredctiveMatrix = new double[this.Users, this.Movies];
+
+            for (int i = 0; i < this.Users; i++)
+                for (int j = 0; j < this.Movies; j++)
+                    PredctiveMatrix[i, j] = 0.0;
+
+            for (int i = 1; i < lines.Length; i++)
             {
+                DataLine = lines[i].Split('\t');
+                PredctiveMatrix[int.Parse(DataLine[0]), int.Parse(DataLine[1])] = double.Parse(DataLine[2]);
+            }
+            return PredctiveMatrix;
+        }
+
+        /*
+         * Write recommendation file
+         */
+        public void WriteRecommendationsFile(int[,] RecommendedMovies, string recommendationsFilePath)
+        {
+            this.Users = RecommendedMovies.GetLength(0);
+            this.N = RecommendedMovies.GetLength(1);
+
+            using (StreamWriter file = new StreamWriter(recommendationsFilePath + @"\Recommendations.txt", true))
+            {
+                file.WriteLine(this.Users.ToString() + "\t" + this.N.ToString());
+
                 string dataLine = "";
                 for (int i = 0; i < this.Users; i++)
                 {
-                    dataLine = (i + 1).ToString() + "\t";
-
-                    for (int j = 0; j < this.Users; j++)
+                    for (int j = 0; j < this.N; j++)
                     {
-                        dataLine += RecommendedMovies[i, j].ToString() + "\t";
+                        if (RecommendedMovies[i, j] != 0)
+                        {
+                            dataLine = i.ToString() + "\t" + j.ToString() + "\t" + RecommendedMovies[i, j].ToString();
+                            file.WriteLine(dataLine);
+                        }
                     }
+                }
+            }
+        }
 
-                    file.WriteLine(dataLine);
+        /*
+        * Write Predctive file
+        */
+        public void WritePredctiveFile(double[,] PredctiveMatrix, string predctiveFilePath)
+        {
+            this.Users = PredctiveMatrix.GetLength(0);
+            this.Movies = PredctiveMatrix.GetLength(1);
+
+            using(StreamWriter file = new StreamWriter(predctiveFilePath + @"\PredctiveMatrix.txt", true))
+            {
+                file.WriteLine(this.Users.ToString() + "\t" + this.Movies.ToString());
+
+                string dataLine = "";
+                for (int i = 0; i < this.Users; i++)
+                {
+                    for (int j = 0; j < this.Movies; j++)
+                    {
+                        if(PredctiveMatrix[i,j] != 0)
+                        {
+                            dataLine = i.ToString() + "\t" + j.ToString() + "\t" + PredctiveMatrix[i, j].ToString();
+                            file.WriteLine(dataLine);
+                        }
+                    }
                 }
             }
         }

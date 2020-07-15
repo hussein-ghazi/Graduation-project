@@ -27,7 +27,6 @@ namespace EvaluationModel
             // record in Removed Ratings File -->  U    M   M   M
             string userMoviesString;
 
-            MessageBox.Show("Users: " + this.Users + "\n" + "Movies: " + this.Movies);
             double[,] TestingData = new double[this.Users, this.Movies];
 
             // each value represnts number of rated movies for each user
@@ -49,7 +48,7 @@ namespace EvaluationModel
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(RemovedRatingsFile))
             {
-                for (int i = 0 ; i < this.Users ; i++)
+                for (int i = 0; i < this.Users; i++)
                 {
                     RemovedRatings = RatingsCount[i] / 5;
                     userMoviesString = i.ToString() + "\t";
@@ -70,7 +69,7 @@ namespace EvaluationModel
             return TestingData;
         }
 
-        public double[,] RatingsPrediction(double[,] Ratings,int[,] NeighborsMatrix)
+        public double[,] EvaluationPredictiveMatrix(double[,] Ratings, int[,] NeighborsMatrix)
         {
             this.Users = Ratings.GetLength(0);
             this.Movies = Ratings.GetLength(1);
@@ -90,12 +89,12 @@ namespace EvaluationModel
 
             for (int i = 0; i < this.Users; i++)
             {
-                for (int j = 0; j < this.Neighbors ; j++)
-                    for (int k = 0; k < this.Movies ; k++)
+                for (int j = 0; j < this.Neighbors; j++)
+                    for (int k = 0; k < this.Movies; k++)
                     {
-                        if (Ratings[Convert.ToInt16(NeighborsMatrix[i, j]), k] > 0)
+                        if (Ratings[NeighborsMatrix[i, j], k] > 0)
                         {
-                            TempNeighborsInfo[i * 2, k] += Ratings[Convert.ToInt16(NeighborsMatrix[i, j]), k];
+                            TempNeighborsInfo[i * 2, k] += Ratings[NeighborsMatrix[i, j], k];
                             TempNeighborsInfo[i * 2 + 1, k]++;
                         }
                     }
@@ -103,7 +102,7 @@ namespace EvaluationModel
 
             for (int i = 0; i < this.Users; i++)
                 for (int j = 0; j < this.Movies; j++)
-                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && PredictiveRatings[i, j] == 0)
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 10)
                         PredictiveRatings[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
                     else
                         PredictiveRatings[i, j] = 0;
@@ -111,7 +110,7 @@ namespace EvaluationModel
             return PredictiveRatings;
         }
 
-        public double[] MAE(double[,] Ratings,double[,] PredictiveRatings, string RemovedRatingsFile)
+        public double[] MAE(double[,] Ratings, double[,] PredictiveRatings, string RemovedRatingsFile)
         {
             this.Users = Ratings.GetLength(0);
             this.Movies = Ratings.GetLength(1);

@@ -93,12 +93,13 @@
             this.PredictiveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PredictiveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PredictiveBtn.ForeColor = System.Drawing.Color.White;
-            this.PredictiveBtn.Location = new System.Drawing.Point(544, 467);
+            this.PredictiveBtn.Location = new System.Drawing.Point(331, 467);
             this.PredictiveBtn.Name = "PredictiveBtn";
             this.PredictiveBtn.Size = new System.Drawing.Size(202, 37);
             this.PredictiveBtn.TabIndex = 8;
             this.PredictiveBtn.Text = "Calculate Predictive Matrix";
             this.PredictiveBtn.UseVisualStyleBackColor = false;
+            this.PredictiveBtn.Click += new System.EventHandler(this.PredictiveBtn_Click);
             // 
             // RecommendationsBtn
             // 
@@ -106,7 +107,7 @@
             this.RecommendationsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RecommendationsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RecommendationsBtn.ForeColor = System.Drawing.Color.White;
-            this.RecommendationsBtn.Location = new System.Drawing.Point(331, 467);
+            this.RecommendationsBtn.Location = new System.Drawing.Point(539, 467);
             this.RecommendationsBtn.Name = "RecommendationsBtn";
             this.RecommendationsBtn.Size = new System.Drawing.Size(207, 37);
             this.RecommendationsBtn.TabIndex = 6;
@@ -120,7 +121,7 @@
             this.FindNeighbors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FindNeighbors.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FindNeighbors.ForeColor = System.Drawing.Color.White;
-            this.FindNeighbors.Location = new System.Drawing.Point(6, 467);
+            this.FindNeighbors.Location = new System.Drawing.Point(183, 467);
             this.FindNeighbors.Name = "FindNeighbors";
             this.FindNeighbors.Size = new System.Drawing.Size(142, 37);
             this.FindNeighbors.TabIndex = 5;
@@ -134,7 +135,7 @@
             this.CalculateCorrelations.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CalculateCorrelations.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CalculateCorrelations.ForeColor = System.Drawing.Color.White;
-            this.CalculateCorrelations.Location = new System.Drawing.Point(154, 467);
+            this.CalculateCorrelations.Location = new System.Drawing.Point(6, 467);
             this.CalculateCorrelations.Name = "CalculateCorrelations";
             this.CalculateCorrelations.Size = new System.Drawing.Size(171, 37);
             this.CalculateCorrelations.TabIndex = 4;
@@ -182,6 +183,7 @@
             this.PrediciveButton.TabIndex = 5;
             this.PrediciveButton.Text = "Load Pridictive Matrix";
             this.PrediciveButton.UseVisualStyleBackColor = false;
+            this.PrediciveButton.Click += new System.EventHandler(this.PrediciveButton_Click);
             // 
             // TopnButton
             // 
@@ -195,6 +197,7 @@
             this.TopnButton.TabIndex = 4;
             this.TopnButton.Text = "Load TopN Recommendations";
             this.TopnButton.UseVisualStyleBackColor = false;
+            this.TopnButton.Click += new System.EventHandler(this.TopnButton_Click);
             // 
             // NeighborsButton
             // 

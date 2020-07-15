@@ -4,7 +4,7 @@ namespace RecommendationSystem
 {
     class RecommendationEngine
     {
-        private int users, movies, neighbors, topNrecommendations;
+        private int users, movies, neighbors, n;
 
         /*
          * Property methods
@@ -27,10 +27,10 @@ namespace RecommendationSystem
             set { neighbors = value; }
         }
 
-        public int TopNrecommendations
+        public int N
         {
-            get { return topNrecommendations; }
-            set { topNrecommendations = value; }
+            get { return n; }
+            set { n = value; }
         }
 
         public RecommendationEngine()
@@ -38,7 +38,7 @@ namespace RecommendationSystem
             this.users = 0;
             this.movies = 0;
             this.neighbors = 0;
-            this.topNrecommendations = 0;
+            this.n = 0;
         }
 
         ~RecommendationEngine()
@@ -173,7 +173,7 @@ namespace RecommendationSystem
         /*
          * Recommend for all users
          */
-        public int[,] PredictiveMartix(double[,] Ratings, int[,] Neighbors)
+        public int[,] TopNRecommendations(double[,] Ratings, int[,] Neighbors)
         {
             // Get the length of the matrix
             users = Ratings.GetLength(0);
@@ -186,7 +186,7 @@ namespace RecommendationSystem
                 throw new InvalidMoviesValueException("Movies count is zero or less!");
             if (neighbors <= 0)
                 throw new InvalidNeighborsValueException("Neighbors count is zero or less!");
-            if (topNrecommendations <= 0)
+            if (n <= 0)
                 throw new InvalidTopNrecommendationsValueException("TopNrecommendations count is zero or less!");
 
             // index 0 ==> summation
@@ -195,7 +195,7 @@ namespace RecommendationSystem
             double[,] NeighborsInfo = new double[users, movies];
 
             // Rows:Users ; Columns:# of Recommended movies
-            int[,] RecommendedMovies = new int[users, topNrecommendations];
+            int[,] RecommendedMovies = new int[users, n];
 
             for (int i = 0; i < users; i++)
                 for (int j = 0; j < movies; j++)
@@ -231,7 +231,7 @@ namespace RecommendationSystem
             // Sorting the array for n movies
             for (int i = 0; i < users; i++)
             {
-                for (int j = 0; j < topNrecommendations; j++)
+                for (int j = 0; j < n; j++)
                 {
                     for (int k = 0; k < movies; k++)
                     {
@@ -248,7 +248,52 @@ namespace RecommendationSystem
             }
             return RecommendedMovies;
         }
+
+        /*
+         * PredictiveMatrix
+         */
+        public double[,] PredictiveMatrix(double[,] Ratings, int[,] NeighborsMatrix)
+        {
+            this.Users = Ratings.GetLength(0);
+            this.Movies = Ratings.GetLength(1);
+            this.Neighbors = NeighborsMatrix.GetLength(1);
+
+            //index 0 ==> summation
+            //index 1 ==> counter
+            double[,] TempNeighborsInfo = new double[this.Users * 2, this.Movies];
+            double[,] PredictiveRatings = new double[this.Users, this.Movies];
+
+            for (int i = 0; i < this.Users; i++)
+                for (int j = 0; j < this.Movies; j++)
+                {
+                    TempNeighborsInfo[i * 2, j] = 0;
+                    TempNeighborsInfo[i * 2 + 1, j] = 0;
+                }
+
+            for (int i = 0; i < this.Users; i++)
+            {
+                for (int j = 0; j < this.Neighbors; j++)
+                    for (int k = 0; k < this.Movies; k++)
+                    {
+                        if(Ratings[NeighborsMatrix[i, j], k] > 0)
+                        {
+                            TempNeighborsInfo[i * 2, k] += Ratings[NeighborsMatrix[i, j], k];
+                            TempNeighborsInfo[i * 2 + 1, k]++;
+                        }
+                    }
+            }
+
+            for (int i = 0; i < this.Users; i++)
+                for (int j = 0; j < this.Movies; j++)
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 10 && Ratings[i,j] == 0)
+                        PredictiveRatings[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
+                    else
+                        PredictiveRatings[i, j] = 0;
+
+            return PredictiveRatings;
+        }
     }
+
 
     /*
      *  The exceptions classes 
