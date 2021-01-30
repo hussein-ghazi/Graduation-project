@@ -17,3 +17,13 @@ C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation S
 C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.exe
 C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.pdb
 C:\Users\zaida\Desktop\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.csprojAssemblyReference.cache
+D:\Users\GLOBAL_PC\Documents\GitHub\Graduation-project\Recommendation System\Recommendation System\bin\Debug\Recommendation System.exe.config
+D:\Users\GLOBAL_PC\Documents\GitHub\Graduation-project\Recommendation System\Recommendation System\bin\Debug\Recommendation System.exe
+D:\Users\GLOBAL_PC\Documents\GitHub\Graduation-project\Recommendation System\Recommendation System\bin\Debug\Recommendation System.pdb
+D:\Users\GLOBAL_PC\Documents\GitHub\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.csprojAssemblyReference.cache
+D:\Users\GLOBAL_PC\Documents\GitHub\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation_System.MainWindow.resources
+D:\Users\GLOBAL_PC\Documents\GitHub\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation_System.Properties.Resources.resources
+D:\Users\GLOBAL_PC\Documents\GitHub\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.csproj.GenerateResource.cache
+D:\Users\GLOBAL_PC\Documents\GitHub\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.csproj.CoreCompileInputs.cache
+D:\Users\GLOBAL_PC\Documents\GitHub\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.exe
+D:\Users\GLOBAL_PC\Documents\GitHub\Graduation-project\Recommendation System\Recommendation System\obj\Debug\Recommendation System.pdb

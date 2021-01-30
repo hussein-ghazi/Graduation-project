@@ -18,13 +18,13 @@ namespace Recommendation_System
         // Public variables
         RecommendationEngine RE = new RecommendationEngine() 
         {
-            Neighbors = 50,
+            Neighbors = 300,
             N = 50
         };
 
         RSFile RSF = new RSFile()
         {
-            Neighbors = 50,
+            Neighbors = 300,
         };
 
         Evaluation Ev = new Evaluation();

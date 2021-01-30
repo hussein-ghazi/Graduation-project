@@ -102,7 +102,7 @@ namespace EvaluationModel
 
             for (int i = 0; i < this.Users; i++)
                 for (int j = 0; j < this.Movies; j++)
-                    if (TempNeighborsInfo[i * 2 + 1, j] > 10)
+                    if (TempNeighborsInfo[i * 2 + 1, j] > 5)
                         PredictiveRatings[i, j] = TempNeighborsInfo[i * 2, j] / TempNeighborsInfo[i * 2 + 1, j];
                     else
                         PredictiveRatings[i, j] = 0;
